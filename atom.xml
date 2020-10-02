@@ -1,20 +1,45 @@
 <?xml version="1.0" encoding="utf-8"?>
 <feed xmlns="http://www.w3.org/2005/Atom">
-  <title>Hexo</title>
+  <title>Zou&#39;s life</title>
   
   
   <link href="http://example.com/atom.xml" rel="self"/>
   
   <link href="http://example.com/"/>
-  <updated>2020-10-01T07:13:53.224Z</updated>
+  <updated>2020-10-02T08:16:30.301Z</updated>
   <id>http://example.com/</id>
   
   <author>
-    <name>John Doe</name>
+    <name>Zou</name>
     
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>转录组</title>
+    <link href="http://example.com/2020/10/02/%E8%BD%AC%E5%BD%95%E7%BB%84/"/>
+    <id>http://example.com/2020/10/02/%E8%BD%AC%E5%BD%95%E7%BB%84/</id>
+    <published>2020-10-02T08:11:46.000Z</published>
+    <updated>2020-10-02T08:16:30.301Z</updated>
+    
+    <content type="html"><![CDATA[<p>要写的文章</p>]]></content>
+    
+    
+      
+      
+    <summary type="html">&lt;p&gt;要写的文章&lt;/p&gt;
+</summary>
+      
+    
+    
+    
+    <category term="转录组" scheme="http://example.com/categories/%E8%BD%AC%E5%BD%95%E7%BB%84/"/>
+    
+    
+    <category term="-转录组" scheme="http://example.com/tags/%E8%BD%AC%E5%BD%95%E7%BB%84/"/>
+    
+  </entry>
   
   <entry>
     <title>Hello World</title>
