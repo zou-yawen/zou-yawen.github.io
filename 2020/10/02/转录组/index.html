@@ -77,6 +77,7 @@
   </style>
 </noscript>
 
+  <script type="text/javascript" src="/js/my_js/clicklove.js"></script>
 <link rel="alternate" href="/atom.xml" title="Zou's life" type="application/atom+xml">
 </head>
 
@@ -216,6 +217,26 @@
     
     
     
+        <div class="reward-container">
+  <div>客官打个赏咯.</div>
+  <button onclick="var qr = document.getElementById('qr'); qr.style.display = (qr.style.display === 'none') ? 'block' : 'none';">
+    打赏
+  </button>
+  <div id="qr" style="display: none;">
+      
+      <div style="display: inline-block;">
+        <img src="/images/wechatpay.png" alt="Zou 微信支付">
+        <p>微信支付</p>
+      </div>
+      
+      <div style="display: inline-block;">
+        <img src="/images/alipay.png" alt="Zou 支付宝">
+        <p>支付宝</p>
+      </div>
+
+  </div>
+</div>
+
 
       <footer class="post-footer">
           <div class="post-tags">
@@ -388,6 +409,8 @@
 <script src="/js/next-boot.js"></script>
 
 
+  <script defer src="/lib/three/three.min.js"></script>
+    <script defer src="/lib/three/three-waves.min.js"></script>
 
 
   
