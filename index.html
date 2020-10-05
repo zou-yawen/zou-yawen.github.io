@@ -330,7 +330,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-10-05 15:41:47" itemprop="dateModified" datetime="2020-10-05T15:41:47+08:00">2020-10-05</time>
+                <time title="修改时间：2020-10-05 15:53:04" itemprop="dateModified" datetime="2020-10-05T15:53:04+08:00">2020-10-05</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -423,9 +423,11 @@
 <p>3.通过聚合酶生成杂交片段的互补片段，然后加入NaOH碱溶液后，双链分子变性，原始模板链（左边的链）被流动池中的液体洗去</p>
 <p><img src="https://img-blog.csdn.net/20180102104507815?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvc2l4dV85ZGF5cw==/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/Center"></p>
 <p>4.加入中性液体用于中和碱溶液，Reverse strand的P7’与Flowcell上的P7杂交互补，进行链的合成，聚合酶参与下，生成互补链，最终形成双链桥,这就是我们所熟知的<strong>桥式PCR</strong></p>
-<p><img src="/2020/10/04/%E4%BA%8C%E4%BB%A3%E6%B5%8B%E5%BA%8F/Users\zyw\hexoblog\themes\next\source\images\桥式PCR.PNG"></p>
+<img src="/2020/10/04/%E4%BA%8C%E4%BB%A3%E6%B5%8B%E5%BA%8F/%E6%A1%A5%E5%BC%8FPCR.PNG" class>
+
 <p>5.接下来合成的双链被解链，再分别与Flowcell上的接头杂交互补，延伸，解链，杂交，延伸，解链…如此重复35个循环</p>
-<p><img src="/2020/10/04/%E4%BA%8C%E4%BB%A3%E6%B5%8B%E5%BA%8F/Users\zyw\hexoblog\themes\next\source\images\桥式PCR2.PNG"></p>
+<img src="/2020/10/04/%E4%BA%8C%E4%BB%A3%E6%B5%8B%E5%BA%8F/%E6%A1%A5%E5%BC%8FPCR2.PNG" class>
+
 <p>6.桥式PCR完成后，使用NAOH将双链解链，并利用甲酰胺基嘧啶糖苷酶（Fpg）对8-氧鸟嘌呤糖苷（8-oxo-G）的选择性切断作用，选择性地将P5’与链的连接切断，<strong>留下与Flowcell上P7连接的链</strong>，也就是Forward strand。同时游离的3’端被阻断，防止不必要的DNA延伸</p>
 <p><img src="https://img-blog.csdn.net/20180102110455607?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvc2l4dV85ZGF5cw==/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/Center"></p>
 <h2 id="第三步：测序"><a href="#第三步：测序" class="headerlink" title="第三步：测序"></a>第三步：测序</h2><p>首先，在Flowcell中加入荧光标记的dNTP和酶，由引物起始开始合成子链。但是dNTP存在 3’端叠氮基会阻碍子链延伸，这使得每个循环只能测得一个碱基。合成完一个碱基后， Flowcell 通入液体洗掉多余的dNTP和酶，使用显微镜的激光扫描特征荧光信号。</p>
