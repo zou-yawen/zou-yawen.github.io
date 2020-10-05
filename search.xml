@@ -1,6 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title>转录组</title>
+    <url>/2020/10/02/%E8%BD%AC%E5%BD%95%E7%BB%84/</url>
+    <content><![CDATA[<p>要写的文章</p>
+]]></content>
+      <categories>
+        <category>转录组</category>
+      </categories>
+      <tags>
+        <tag>-转录组</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>一代测序</title>
     <url>/2020/10/05/%E4%B8%80%E4%BB%A3%E6%B5%8B%E5%BA%8F/</url>
     <content><![CDATA[<p>【写在前面的话】：接下来的测序的几篇博文中的内容并非原创，而是对多篇文献中内容的直接摘录（在此深表谢意！），再夹杂自己的零星想法，写在这里分享与大家，同时也是为了方便自己日后若有需要能够方便获得。</p>
@@ -20,10 +32,13 @@
 <p>1.上机测序时现在玻璃毛细管中注入丙烯酰胺溶液，接着使用紫外光照射，丙烯酰胺在紫外电离作用下，发生聚合反应，变成聚丙烯酰胺凝胶。聚丙烯酰胺凝胶对于在其中电泳的核酸有分离作用。片段短，跑得快。</p>
 <p>2.然后把混合DNA片段加到有聚丙烯酰胺凝胶的毛细管的一端，在毛细管的两端加上高电压，DNA片段就在电场的作用下，从负极向正极电泳。</p>
 <p>3.在毛细管正极末端使用激光照射。在通过激光扫描点时，荧光基团就会发出特定颜色的荧光。</p>
-<p><img src="C:\Users\zyw\Desktop\博客\图片\13786870-1236c564ae74e5d8.webp"></p>
-<p><img src="C:\Users\zyw\Desktop\博客\图片\13786870-c40114f3f47bfece.webp"></p>
+<img src="/2020/10/05/%E4%B8%80%E4%BB%A3%E6%B5%8B%E5%BA%8F/13786870-1236c564ae74e5d8.webp" class>
+
+<img src="/2020/10/05/%E4%B8%80%E4%BB%A3%E6%B5%8B%E5%BA%8F/13786870-c40114f3f47bfece.webp" class>
+
 <p>然后就得到了这样的图片，横轴是电泳时间，纵轴是荧光强度。同时，横轴也是碱基的先后次序。峰越高、越尖，与别的峰交错越少，则这个碱基判读准确性越好。</p>
-<p><img src="C:\Users\zyw\Desktop\博客\图片\13786870-c40114f3f47bfece.webp"></p>
+<img src="/2020/10/05/%E4%B8%80%E4%BB%A3%E6%B5%8B%E5%BA%8F/13786870-a9a8563df9706cba.webp" class>
+
 <h2 id="优缺点"><a href="#优缺点" class="headerlink" title="优缺点"></a>优缺点</h2><p>高读长，准确度一次性达标率高，能很好处理重复序列和多聚序列，通量低；</p>
 <p>样品制备成本高，使之难以做大量的平行测序</p>
 <h2 id="引用"><a href="#引用" class="headerlink" title="引用"></a>引用</h2><p>1.<a href="https://www.jianshu.com/p/8455c0c937e5">测序原理</a></p>
@@ -36,18 +51,6 @@
       </categories>
       <tags>
         <tag>-测序原理</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>转录组</title>
-    <url>/2020/10/02/%E8%BD%AC%E5%BD%95%E7%BB%84/</url>
-    <content><![CDATA[<p>要写的文章</p>
-]]></content>
-      <categories>
-        <category>转录组</category>
-      </categories>
-      <tags>
-        <tag>-转录组</tag>
       </tags>
   </entry>
 </search>
