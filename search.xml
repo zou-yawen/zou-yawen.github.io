@@ -45,6 +45,18 @@
       </tags>
   </entry>
   <entry>
+    <title>转录组</title>
+    <url>/2020/10/02/%E8%BD%AC%E5%BD%95%E7%BB%84/</url>
+    <content><![CDATA[<p>要写的文章</p>
+]]></content>
+      <categories>
+        <category>转录组</category>
+      </categories>
+      <tags>
+        <tag>-转录组</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>二代测序</title>
     <url>/2020/10/04/%E4%BA%8C%E4%BB%A3%E6%B5%8B%E5%BA%8F/</url>
     <content><![CDATA[<p>第二代测序（Next-generation sequencing，NGS）又称为高通量测序，其开创性的引入了可逆终止末端，从而实现边合成边测序，在DNA复制过程中通过捕捉新添加的碱基所携带的特殊标记来确定DNA序列。</p>
@@ -137,24 +149,13 @@
 <h2 id="引用"><a href="#引用" class="headerlink" title="引用"></a>引用</h2><p>1.<a href="https://zhuanlan.zhihu.com/p/35278810">测序之前篇： NGS测序中，接头是如何添加上的，以及如何去接头</a></p>
 <p>2.<a href="https://blog.csdn.net/u011262253/article/details/102525491">二代测序原理（Illumina）</a></p>
 <p>3.<a href="https://wenku.baidu.com/view/6aa1c0e1a55177232f60ddccda38376bae1fe042.html">二代测序文库构建</a></p>
+<p>4.<a href="https://blog.csdn.net/sixu_9days/article/details/78948914">illumina SBS测序详解</a></p>
 ]]></content>
       <categories>
         <category>测序原理</category>
       </categories>
       <tags>
         <tag>-测序原理</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>转录组</title>
-    <url>/2020/10/02/%E8%BD%AC%E5%BD%95%E7%BB%84/</url>
-    <content><![CDATA[<p>要写的文章</p>
-]]></content>
-      <categories>
-        <category>转录组</category>
-      </categories>
-      <tags>
-        <tag>-转录组</tag>
       </tags>
   </entry>
 </search>
