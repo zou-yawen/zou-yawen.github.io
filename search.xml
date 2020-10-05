@@ -117,8 +117,7 @@
 <p>因此在聚合酶的作用下，与Forward strand相应位置碱基配对的dNTP就会结合到新合成的链上，而由于叠氮基的存在，后面的dNTP无法继续连接。这时用水将剩余的dNTP和酶给冲掉，将Flowcell进行扫描，扫描出来的荧光对应的碱基的配对碱基即是该链该位置的碱基。同时在这个Flowcell上有成千上万个cluster也在进行同样的反应，因此一个循环就能同时检测多个样本（这也是高通量的核心所在）。这个循环完成后，加入化学试剂把叠氮基和标记的荧光基团切掉，进行下一个循环（碱基的连接、检测与切除）。如此重复直至所有链的碱基序列被检测出，也就是Forward read 序列。</p>
 <p>2.Index测序：所有循环结束后，read products 被洗掉，index1 primer与链上index primer1 结合位点杂交配对，进行index1的合成及检测</p>
 <p><img src="https://img-blog.csdn.net/20180102111207627?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvc2l4dV85ZGF5cw==/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/Center"></p>
-</li>
-<li><p>Index1测序完成后，洗脱测序产物。此时机器已通过荧光得到了index1的序列</p>
+<p>3.Index1测序完成后，洗脱测序产物。此时机器已通过荧光得到了index1的序列</p>
 <p><img src="https://img-blog.csdn.net/20180102111345135?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvc2l4dV85ZGF5cw==/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/Center"></p>
 </li>
 </ol>
