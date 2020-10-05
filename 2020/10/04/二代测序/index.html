@@ -23,28 +23,60 @@
     var CONFIG = {"hostname":"example.com","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":null},"back2top":{"enable":false,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":null,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
   </script>
 
-  <meta property="og:type" content="website">
-<meta property="og:title" content="zero">
-<meta property="og:url" content="http://example.com/index.html">
+  <meta name="description" content="第二代测序（Next-generation sequencing，NGS）又称为高通量测序，其开创性的引入了可逆终止末端，从而实现边合成边测序，在DNA复制过程中通过捕捉新添加的碱基所携带的特殊标记来确定DNA序列。 二代测序有两个重要特点：1．高通量，二代测序能一次并行对几十、几百万条DNA分子进行测序；2．读长短，测序过程随着读长增长，基因簇复制的协同性降低，会导致测序质量下降，二代测序的读长">
+<meta property="og:type" content="article">
+<meta property="og:title" content="二代测序">
+<meta property="og:url" content="http://example.com/2020/10/04/%E4%BA%8C%E4%BB%A3%E6%B5%8B%E5%BA%8F/index.html">
 <meta property="og:site_name" content="zero">
+<meta property="og:description" content="第二代测序（Next-generation sequencing，NGS）又称为高通量测序，其开创性的引入了可逆终止末端，从而实现边合成边测序，在DNA复制过程中通过捕捉新添加的碱基所携带的特殊标记来确定DNA序列。 二代测序有两个重要特点：1．高通量，二代测序能一次并行对几十、几百万条DNA分子进行测序；2．读长短，测序过程随着读长增长，基因簇复制的协同性降低，会导致测序质量下降，二代测序的读长">
 <meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://ss0.bdstatic.com/70cFvHSh_Q1YnxGkpoWK1HF6hhy/it/u=1022250266,1017686506&fm=26&gp=0.jpg">
+<meta property="og:image" content="http://example.com/2020/10/04/%E4%BA%8C%E4%BB%A3%E6%B5%8B%E5%BA%8F/7eef8f255f0e7cd185253634.jpg">
+<meta property="og:image" content="http://example.com/2020/10/04/%E4%BA%8C%E4%BB%A3%E6%B5%8B%E5%BA%8F/7eef8f255f0e7cd185253634(1).jpg">
+<meta property="og:image" content="http://example.com/2020/10/04/%E4%BA%8C%E4%BB%A3%E6%B5%8B%E5%BA%8F/7eef8f255f0e7cd185253634(2).jpg">
+<meta property="og:image" content="http://example.com/2020/10/04/%E4%BA%8C%E4%BB%A3%E6%B5%8B%E5%BA%8F/7eef8f255f0e7cd185253634(3).jpg">
+<meta property="og:image" content="https://pic3.zhimg.com/80/v2-815463cd17ad105115f6c8440c43ea66_1440w.jpg">
+<meta property="og:image" content="https://pic1.zhimg.com/80/v2-0abfd5500a3559cb71003b6ca4322b50_1440w.jpg">
+<meta property="og:image" content="https://img-blog.csdn.net/20180102102643081">
+<meta property="og:image" content="https://img-blog.csdn.net/2018100911424515?watermark/2/text/aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L2hhbmxpMTk5Mg==/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70">
+<meta property="og:image" content="https://img-blog.csdn.net/20180102103623636?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvc2l4dV85ZGF5cw==/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/Center">
+<meta property="og:image" content="https://img-blog.csdn.net/20180102104221274?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvc2l4dV85ZGF5cw==/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/Center">
+<meta property="og:image" content="https://img-blog.csdn.net/20180102103954806?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvc2l4dV85ZGF5cw==/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/Center">
+<meta property="og:image" content="https://img-blog.csdn.net/20180102104507815?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvc2l4dV85ZGF5cw==/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/Center">
+<meta property="og:image" content="http://example.com/2020/10/04/%E4%BA%8C%E4%BB%A3%E6%B5%8B%E5%BA%8F/Users/zyw/hexoblog/themes/next/source/images/桥式PCR.PNG">
+<meta property="og:image" content="http://example.com/2020/10/04/%E4%BA%8C%E4%BB%A3%E6%B5%8B%E5%BA%8F/Users/zyw/hexoblog/themes/next/source/images/桥式PCR2.PNG">
+<meta property="og:image" content="https://img-blog.csdn.net/20180102110455607?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvc2l4dV85ZGF5cw==/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/Center">
+<meta property="og:image" content="https://img-blog.csdn.net/20180102110709747?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvc2l4dV85ZGF5cw==/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/Center">
+<meta property="og:image" content="https://img-blog.csdn.net/20180102111207627?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvc2l4dV85ZGF5cw==/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/Center">
+<meta property="og:image" content="https://img-blog.csdn.net/20180102111345135?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvc2l4dV85ZGF5cw==/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/Center">
+<meta property="og:image" content="https://img-blog.csdn.net/20180102121740290?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvc2l4dV85ZGF5cw==/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/Center">
+<meta property="og:image" content="https://img-blog.csdn.net/20180102121753750?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvc2l4dV85ZGF5cw==/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/Center">
+<meta property="og:image" content="https://img-blog.csdn.net/20180102122603418?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvc2l4dV85ZGF5cw==/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/Center">
+<meta property="og:image" content="https://img-blog.csdn.net/20180102122804843?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvc2l4dV85ZGF5cw==/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/Center">
+<meta property="og:image" content="https://img-blog.csdn.net/20180102122822016?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvc2l4dV85ZGF5cw==/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/Center">
+<meta property="og:image" content="https://img-blog.csdn.net/20180102123012562?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvc2l4dV85ZGF5cw==/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/Center">
+<meta property="og:image" content="https://imgconvert.csdnimg.cn/aHR0cDovL2JhaW1vYy56aXB0b3AudG9wL2Jsb2cvMjAxODEyMjcvcDZoU3JVY2NNbE9hLnBuZw?x-oss-process=image/format,png">
+<meta property="article:published_time" content="2020-10-04T03:07:55.000Z">
+<meta property="article:modified_time" content="2020-10-05T07:41:47.468Z">
 <meta property="article:author" content="Zou">
+<meta property="article:tag" content="-测序原理">
 <meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://ss0.bdstatic.com/70cFvHSh_Q1YnxGkpoWK1HF6hhy/it/u=1022250266,1017686506&fm=26&gp=0.jpg">
 
-<link rel="canonical" href="http://example.com/">
+<link rel="canonical" href="http://example.com/2020/10/04/%E4%BA%8C%E4%BB%A3%E6%B5%8B%E5%BA%8F/">
 
 
 <script id="page-configurations">
   // https://hexo.io/docs/variables.html
   CONFIG.page = {
     sidebar: "",
-    isHome : true,
-    isPost : false,
+    isHome : false,
+    isPost : true,
     lang   : 'zh-CN'
   };
 </script>
 <link rel="stylesheet" type="text/css" href="/css/injector.css" />
-  <title>zero</title>
+  <title>二代测序 | zero</title>
   
     <script async src="https://www.googletagmanager.com/gtag/js?id=179475982-1"></script>
     <script>
@@ -167,135 +199,10 @@
         <div class="content-wrap">
           
 
-          <div class="content index posts-expand">
+          <div class="content post posts-expand">
             
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2020/10/05/%E4%B8%80%E4%BB%A3%E6%B5%8B%E5%BA%8F/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="https://ss0.bdstatic.com/70cFvHSh_Q1YnxGkpoWK1HF6hhy/it/u=404501654,960623944&fm=26&gp=0.jpg">
-      <meta itemprop="name" content="Zou">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="zero">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2020/10/05/%E4%B8%80%E4%BB%A3%E6%B5%8B%E5%BA%8F/" class="post-title-link" itemprop="url">一代测序</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-              
-
-              <time title="创建时间：2020-10-05 06:56:42 / 修改时间：08:25:36" itemprop="dateCreated datePublished" datetime="2020-10-05T06:56:42+08:00">2020-10-05</time>
-            </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/%E6%B5%8B%E5%BA%8F%E5%8E%9F%E7%90%86/" itemprop="url" rel="index"><span itemprop="name">测序原理</span></a>
-                </span>
-            </span>
-
-          
-  
-  <span class="post-meta-item">
-    
-      <span class="post-meta-item-icon">
-        <i class="far fa-comment"></i>
-      </span>
-      <span class="post-meta-item-text">Valine：</span>
-    
-    <a title="valine" href="/2020/10/05/%E4%B8%80%E4%BB%A3%E6%B5%8B%E5%BA%8F/#valine-comments" itemprop="discussionUrl">
-      <span class="post-comments-count valine-comment-count" data-xid="/2020/10/05/%E4%B8%80%E4%BB%A3%E6%B5%8B%E5%BA%8F/" itemprop="commentCount"></span>
-    </a>
-  </span>
-  
-  
-            <span class="post-meta-item" title="本文字数">
-              <span class="post-meta-item-icon">
-                <i class="far fa-file-word"></i>
-              </span>
-              <span>1.6k</span>
-            </span>
-            <span class="post-meta-item" title="阅读时长">
-              <span class="post-meta-item-icon">
-                <i class="far fa-clock"></i>
-              </span>
-              <span>1 分钟</span>
-            </span>
-
-        </div>
-      </header>
 
     
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p>从1977年第一代DNA测序技术（Sanger法）发展至今三十多年时间，测序技术已取得了相当大的发展，从第一代到第三代，测序读长从长到短，再从短到长。虽然就当前形势看来第二代短读长测序技术在全球测序市场上仍然占有着绝对的优势位置，但第三测序技术也已在这一两年的时间中快速发展着。pacbio的三代测序技术高保真模式下的准确度已经能够和illumina二代测序技术的准确度相媲美，NanoPore开发的便携式测序仪随着其准确度不断的提高未来将会颠覆测序市场。测序仪的每一次变革，也都对基因组研究，疾病医疗研究，药物研发，育种等领域产生巨大的推动作用。</p>
-<h1 id="一代测序（sanger测序法、双脱氧法测序）"><a href="#一代测序（sanger测序法、双脱氧法测序）" class="headerlink" title="一代测序（sanger测序法、双脱氧法测序）"></a>一代测序（sanger测序法、双脱氧法测序）</h1><p><strong>原理：</strong>在4个DNA合成反应体系(含dNTP)中分别加入一定比例带有标记的ddNTP(分为：ddATP,ddCTP,ddGTP和ddTTP)，由于ddNTP的2’和3’都不含羟基，其在DNA的合成过程中不能形成磷酸二酯键，因此可以用来中断DNA合成反应。通过凝胶电泳和放射自显影后可以根据电泳带的位置确定待测分子的DNA序列。</p>
-<h2 id="一-双脱氧核苷酸"><a href="#一-双脱氧核苷酸" class="headerlink" title="一.双脱氧核苷酸"></a>一.双脱氧核苷酸</h2><p>ABI公司根据双脱氧法进一步开发出荧光标记的双脱氧法测序试剂盒即BigDyeTM试剂再结合毛细管电泳生产出ABI 3730和 ABI 3500等测序仪。ABI3730可测序长度一般为700bp以上，ABI3500可测序长度一般为850bp以上。</p>
-<p><img src="https://www.bio-equip.com/img2016/3984326.jpg" alt="ABI3730"></p>
-<p>双脱氧法测序的第一个核心技术就是在用DNA聚合酶合成DNA链的过程中掺入荧光基团标记的双脱氧核苷酸（ddNTP），双脱氧核苷酸是用化学合成的方法合成出3位’没有羟基的核苷酸。双脱氧核苷酸在脱氧核糖上没有聚合酶延伸链所需要的3－OH基团，所以可被用作链终止试剂。天然DNA组成元件是单脱氧核苷酸（dNTP），其糖基的3’和5’位各有一个羟基，5’位的羟基连接到上游的磷酸基团，不断重复，形成一条DNA骨架链。</p>
-<img src="/2020/10/05/%E4%B8%80%E4%BB%A3%E6%B5%8B%E5%BA%8F/13786870-a9a8563df9706cba1.webp" class>
-
-
-
-<h2 id="二-测序步骤："><a href="#二-测序步骤：" class="headerlink" title="二.测序步骤："></a>二.测序步骤：</h2><img src="/2020/10/05/%E4%B8%80%E4%BB%A3%E6%B5%8B%E5%BA%8F/SouthEast" class>
-
-<p><strong>第一步：加入bigdye试剂（包含四种带荧光标记的ddNTP、四种dNTP、DNA聚合酶、镁离子、ph缓冲液等。）进行聚合反应。</strong></p>
-<p>实际测序过程中先在反应体系中加入要测序的DNA模板，<strong>一般是经过纯化的质粒，或者经过纯化好的PCR扩增片段</strong>，再加入与测序起始位置相互补的测序引物DNA，（引物的作用是与模板的特定序列位置相结合，引导聚合反应发生，同时确保DNA聚合反应从已知的、确定的起点开始）。</p>
-<p>延伸反应由4个反应系统组成，每个反应系统加入四种不同的脱氧核苷酸三磷酸 (dNTP)和四种ddNTP（双脱氧核苷酸）中的一种来进行终止。dNTP可以正常合成DNA；由于体系中同时含有ddNTP，ddNTP随机整合到产物链上，ddNTP缺乏延伸所需要的3-OH基团，使延长的寡聚核苷酸选择性地在G、A、T或C处终止，得到一系列不同长短的DNA片段，每个片段的3’末端都是一个双脱氧的核苷酸残基。</p>
-<p><img src="https://pic4.zhimg.com/80/v2-fac0ced943ca188ae5193422705f51ef_1440w.jpg"></p>
-<p><strong>第二步： 过滤混合物，去掉游离的荧光ddNTP单核苷酸等其他杂质，只留下长短不一的DNA片段。</strong></p>
-<p><strong>第三步：上机测序</strong></p>
-<p>1.上机测序时现在玻璃毛细管中注入丙烯酰胺溶液，接着使用紫外光照射，丙烯酰胺在紫外电离作用下，发生聚合反应，变成聚丙烯酰胺凝胶。聚丙烯酰胺凝胶对于在其中电泳的核酸有分离作用。片段短，跑得快。</p>
-<p>2.然后把混合DNA片段加到有聚丙烯酰胺凝胶的毛细管的一端，在毛细管的两端加上高电压，DNA片段就在电场的作用下，从负极向正极电泳。</p>
-<p>3.在毛细管正极末端使用激光照射。在通过激光扫描点时，荧光基团就会发出特定颜色的荧光。</p>
-<img src="/2020/10/05/%E4%B8%80%E4%BB%A3%E6%B5%8B%E5%BA%8F/13786870-1236c564ae74e5d8.webp" class>
-
-<img src="/2020/10/05/%E4%B8%80%E4%BB%A3%E6%B5%8B%E5%BA%8F/13786870-c40114f3f47bfece.webp" class>
-
-<p>然后就得到了这样的图片，横轴是电泳时间，纵轴是荧光强度。同时，横轴也是碱基的先后次序。峰越高、越尖，与别的峰交错越少，则这个碱基判读准确性越好。</p>
-<img src="/2020/10/05/%E4%B8%80%E4%BB%A3%E6%B5%8B%E5%BA%8F/13786870-a9a8563df9706cba.webp" class>
-
-<h2 id="三-优缺点"><a href="#三-优缺点" class="headerlink" title="三.优缺点"></a>三.优缺点</h2><p>高读长，准确度一次性达标率高，能很好处理重复序列和多聚序列，通量低；</p>
-<p>样品制备成本高，使之难以做大量的平行测序</p>
-<h2 id="引用"><a href="#引用" class="headerlink" title="引用"></a>引用</h2><p>1.<a target="_blank" rel="noopener" href="https://www.jianshu.com/p/8455c0c937e5">测序原理</a></p>
-<p>2.<a target="_blank" rel="noopener" href="https://www.jianshu.com/p/71264815fd6a">第一代测序—Sanger法测序又称双脱氧法测序</a></p>
-<p>3.<a target="_blank" rel="noopener" href="https://blog.csdn.net/tanzuozhev/article/details/78499194">一代、二代、三代测序技术原理与比较</a></p>
-<p>4.<a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/94183808">一代测序原理 (Sanger法测序)</a></p>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
@@ -311,10 +218,9 @@
       <meta itemprop="name" content="zero">
     </span>
       <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2020/10/04/%E4%BA%8C%E4%BB%A3%E6%B5%8B%E5%BA%8F/" class="post-title-link" itemprop="url">二代测序</a>
-        </h2>
+        <h1 class="post-title" itemprop="name headline">
+          二代测序
+        </h1>
 
         <div class="post-meta">
             <span class="post-meta-item">
@@ -379,7 +285,7 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <p>第二代测序（Next-generation sequencing，NGS）又称为高通量测序，其开创性的引入了可逆终止末端，从而实现边合成边测序，在DNA复制过程中通过捕捉新添加的碱基所携带的特殊标记来确定DNA序列。</p>
+        <p>第二代测序（Next-generation sequencing，NGS）又称为高通量测序，其开创性的引入了可逆终止末端，从而实现边合成边测序，在DNA复制过程中通过捕捉新添加的碱基所携带的特殊标记来确定DNA序列。</p>
 <p>二代测序有两个重要特点：1．<strong>高通量</strong>，二代测序能一次并行对几十、几百万条DNA分子进行测序；2．<strong>读长短</strong>，测序过程随着读长增长，基因簇复制的协同性降低，会导致测序质量下降，二代测序的读长不超过500bp。因此基因组、宏基因组需要被打断成小片段再测序，测序完毕后再拼接。</p>
 <p>总的说来，第一代测序技术的主要特点是测序读长可达1000bp，准确性高达99.999%，但其测序成本高，通量低等方面的缺点，严重影响了其真正大规模的应用。经过不断的技术开发和改进，以Roche公司的454技术、illumina公司的Solexa，Hiseq技术和ABI公司的Solid技术为标记的第二代测序技术诞生了。第二代测序技术大大降低了测序成本的同时，还大幅提高了测序速度，并且保持了高准确性，以前完成一个人类基因组的测序需要3年时间，而使用二代测序技术则仅仅需要1周，但在序列读长方面比起第一代测序技术则要短很多。目前主流的二代测序平台是illumina，下文主要介绍illumina平台的测序原理。</p>
 <p><strong>Single-Read</strong>测序(Single-read)首先将DNA样本进行片段化处理形成200-500bp的片段，**<em>引物序列连接到DNA片段的一端**</em>，然后末端加上接头，将片段固定在flow cell上生成DNA簇，上机测序单端读取序列。该方式建库简单，操作步骤少，常用于小基因组、转录组、宏基因组测序。</p>
@@ -468,121 +374,63 @@
 <p>2.<a target="_blank" rel="noopener" href="https://blog.csdn.net/u011262253/article/details/102525491">二代测序原理（Illumina）</a></p>
 <p>3.<a target="_blank" rel="noopener" href="https://wenku.baidu.com/view/6aa1c0e1a55177232f60ddccda38376bae1fe042.html">二代测序文库构建</a></p>
 
-      
     </div>
 
     
     
     
+        <div class="reward-container">
+  <div>客官打个赏咯.</div>
+  <button onclick="var qr = document.getElementById('qr'); qr.style.display = (qr.style.display === 'none') ? 'block' : 'none';">
+    打赏
+  </button>
+  <div id="qr" style="display: none;">
+      
+      <div style="display: inline-block;">
+        <img src="/images/wechatpay.png" alt="Zou 微信支付">
+        <p>微信支付</p>
+      </div>
+      
+      <div style="display: inline-block;">
+        <img src="/images/alipay.png" alt="Zou 支付宝">
+        <p>支付宝</p>
+      </div>
+
+  </div>
+</div>
+
+
       <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
+          <div class="post-tags">
+              <a href="/tags/%E6%B5%8B%E5%BA%8F%E5%8E%9F%E7%90%86/" rel="tag"># -测序原理</a>
+          </div>
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2020/10/02/%E8%BD%AC%E5%BD%95%E7%BB%84/">
+        
 
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="https://ss0.bdstatic.com/70cFvHSh_Q1YnxGkpoWK1HF6hhy/it/u=404501654,960623944&fm=26&gp=0.jpg">
-      <meta itemprop="name" content="Zou">
-      <meta itemprop="description" content="">
-    </span>
 
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="zero">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2020/10/02/%E8%BD%AC%E5%BD%95%E7%BB%84/" class="post-title-link" itemprop="url">转录组</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-              
-
-              <time title="创建时间：2020-10-02 16:11:46 / 修改时间：16:16:30" itemprop="dateCreated datePublished" datetime="2020-10-02T16:11:46+08:00">2020-10-02</time>
-            </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/%E8%BD%AC%E5%BD%95%E7%BB%84/" itemprop="url" rel="index"><span itemprop="name">转录组</span></a>
-                </span>
-            </span>
-
-          
-  
-  <span class="post-meta-item">
-    
-      <span class="post-meta-item-icon">
-        <i class="far fa-comment"></i>
-      </span>
-      <span class="post-meta-item-text">Valine：</span>
-    
-    <a title="valine" href="/2020/10/02/%E8%BD%AC%E5%BD%95%E7%BB%84/#valine-comments" itemprop="discussionUrl">
-      <span class="post-comments-count valine-comment-count" data-xid="/2020/10/02/%E8%BD%AC%E5%BD%95%E7%BB%84/" itemprop="commentCount"></span>
-    </a>
-  </span>
-  
-  
-            <span class="post-meta-item" title="本文字数">
-              <span class="post-meta-item-icon">
-                <i class="far fa-file-word"></i>
-              </span>
-              <span>5</span>
-            </span>
-            <span class="post-meta-item" title="阅读时长">
-              <span class="post-meta-item-icon">
-                <i class="far fa-clock"></i>
-              </span>
-              <span>1 分钟</span>
-            </span>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p>要写的文章</p>
-
-      
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2020/10/02/%E8%BD%AC%E5%BD%95%E7%BB%84/" rel="prev" title="转录组">
+      <i class="fa fa-chevron-left"></i> 转录组
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2020/10/05/%E4%B8%80%E4%BB%A3%E6%B5%8B%E5%BA%8F/" rel="next" title="一代测序">
+      一代测序 <i class="fa fa-chevron-right"></i>
+    </a></div>
     </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
       </footer>
+    
   </article>
   
   
-  
-
-
   
 
 
 
           </div>
           
+    <div class="comments" id="valine-comments"></div>
 
 <script>
   window.addEventListener('tabs:register', () => {
@@ -629,6 +477,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%AC%AC%E4%B8%80%E6%AD%A5%EF%BC%9A-%E6%9E%84%E5%BB%BADNA%E6%96%87%E5%BA%93"><span class="nav-number">1.</span> <span class="nav-text">第一步： 构建DNA文库</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%AC%AC%E4%BA%8C%E6%AD%A5%EF%BC%9A%E6%A1%A5%E5%BC%8FPCR"><span class="nav-number">2.</span> <span class="nav-text">第二步：桥式PCR</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%AC%AC%E4%B8%89%E6%AD%A5%EF%BC%9A%E6%B5%8B%E5%BA%8F"><span class="nav-number">3.</span> <span class="nav-text">第三步：测序</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%BC%95%E7%94%A8"><span class="nav-number">4.</span> <span class="nav-text">引用</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 
