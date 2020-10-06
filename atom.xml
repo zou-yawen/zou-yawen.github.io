@@ -6,7 +6,7 @@
   <link href="http://example.com/atom.xml" rel="self"/>
   
   <link href="http://example.com/"/>
-  <updated>2020-10-05T00:25:36.089Z</updated>
+  <updated>2020-10-06T00:38:56.539Z</updated>
   <id>http://example.com/</id>
   
   <author>
@@ -15,6 +15,30 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>三代测序</title>
+    <link href="http://example.com/2020/10/06/%E4%B8%89%E4%BB%A3%E6%B5%8B%E5%BA%8F/"/>
+    <id>http://example.com/2020/10/06/%E4%B8%89%E4%BB%A3%E6%B5%8B%E5%BA%8F/</id>
+    <published>2020-10-05T23:30:51.000Z</published>
+    <updated>2020-10-06T00:38:56.539Z</updated>
+    
+    <content type="html"><![CDATA[<p>三代测序是指单分子测序技术（Single Molecule Real- Time, SMRT），在测序过程中不需要涉及PCR扩增，不仅实现了每一条DNA分子的单独测序，并且避免了潜在的PCR扩增错误和偏好性。<br>目前，三代测序技术原理分为单分子荧光测序和纳米孔测序两大阵营，其代表公司分别为Pacific Bioscience和Oxford Nanopore Technologies。现在市场接受度和使用度最高的是Pacific Bioscience三代测序仪，其SMRT技术建立在两项革命性的发明基础之上，从而克服了测序领域的重大挑战。</p><h1 id="一-PacBio单分子荧光测序"><a href="#一-PacBio单分子荧光测序" class="headerlink" title="一.PacBio单分子荧光测序"></a>一.PacBio单分子荧光测序</h1><h2 id="一-基本原理"><a href="#一-基本原理" class="headerlink" title="一.基本原理"></a>一.基本原理</h2><p>第一大阵营是单分子荧光测序，代表性的技术为美国螺旋生物(Helicos)的SMS技术和美国太平洋生物(Pacific Bioscience)的SMRT技术。脱氧核苷酸用荧光标记，显微镜可以实时记录荧光的强度变化。当荧光标记的脱氧核苷酸被掺入DNA链的时候，它的荧光就同时能在DNA链上探测到。当它与DNA链形成化学键的时候，它的荧光基团就被DNA聚合酶切除，荧光消失。这种荧光标记的脱氧核苷酸不会影响DNA聚合酶的活性，并且在荧光被切除之后，合成的DNA链和天然的DNA链完全一样。</p><p><img src="https://ss0.bdstatic.com/70cFuHSh_Q1YnxGkpoWK1HF6hhy/it/u=3727862966,3282114570&fm=26&gp=0.jpg"></p><p>第一，<strong>零模波导孔技术</strong>（Zero-Mode Waveguides，ZMWs）让光只能照亮固定了单个DNA聚合酶／模板分子的纳米孔底部。</p><p>因为在显微镜实时记录DNA链上的荧光的时候，DNA链周围的众多的荧光标记的脱氧核苷酸形成了非常强大的荧光背景。这种强大的荧光背景使单分子的荧光探测成为不可能。Pacific Biosciences公司发明了一种直径只有几十纳米的纳米孔[zero-mode waveguides (ZMWs)]（零模波导孔），单分子的DNA聚合酶被固定在这个孔内。在这么小的孔内，DNA链周围的荧光标记的脱氧核苷酸有限，而且由于A，T，C，G这四种荧光标记的脱氧核苷酸非常快速地从外面进入到孔内又出去，它们形成了非常稳定的背景荧光信号。而当某一种荧光标记的脱氧核苷酸被掺入到DNA链时，这种特定颜色的荧光会持续一小段时间，直到新的化学键形成，荧光基团被DNA聚合酶切除为止。</p><p>第二，<strong>不同荧光分子标记核苷酸磷酸基团</strong>可帮助固定的DNA聚合酶完成一个全天然的DNA链合成过程。</p><p>2.<em>PacBio</em>的测序实现中,<em>创造性</em>地<em>将不同荧光分子标记在</em>了各种碱基类型磷酸基团上,<em>标记在磷酸基团上</em>的荧光分子可以最大限度上减少其对核酸合成过程的影响,消除测序的负面影响，从而提高测序的准确性。</p><p><img src="https://img-blog.csdn.net/20130803222640203?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvZHlsbG92ZTk4/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast"></p><p>另外，可以通过检测相邻两个碱基之间的测序时间，来检测一些碱基修饰情况，既如果碱基存在修饰，则通过聚合酶时的速度会减慢，相邻两峰之间的距离增大，可以通过这个来之间检测甲基化等信息（图7）。SMRT技术的测序速度很快，每秒约10个dNTP。但是，同时其测序错误率比较高（这几乎是目前单分子测序技术的通病），达到15%,但好在它的出错是随机的，并不会像第二代测序技术那样存在测序错误的偏向，因而可以通过多次测序来进行有效的纠错。</p><p>与二代测序一样，PacBio三代测序的第一步也是建库，其主要区别是建库过程不涉及PCR反应。DNA分子打断之后，经过修复、接头连接、纯化和聚合酶绑定，即可出库准备上机测序。</p><h2 id="二-HIFI模式"><a href="#二-HIFI模式" class="headerlink" title="二.HIFI模式"></a>二.HIFI模式</h2><p><strong>PacBio提供高度准确的长读长的测序技术（HiFi Reads）</strong>，在读长达到15-20 kb的情况下，可提供Sanger测序相当的准确度（&gt; 99％），满足组装复杂基因组的需要，可检测从单核苷酸突变到结构变异的各种基因组变异。HiFi reads（High fidelity reads）是PacBio公司基于Sequel II平台推出的CCS（Circular Consensus Sequencing）测序模式产生的兼具长读长和高准确度的测序序列，又称CCS reads。在这种测序模式下，因酶读长（平均90-100 Kb）远大于插入片段长度（10-20 Kb），测序时，聚合酶会绕着DNA模板进行环形比对测序，使得插入片段被多次测序，产生多条subreads，来源于同一条模板链的subreads经过一致性校正，最终得到高准确度的HiFi reads，用于基因组组装。</p><p><img src="http://p5.itc.cn/images01/20200529/acad15f40abe4221ac5113a0df633439.jpeg"></p><h2 id="三-优势"><a href="#三-优势" class="headerlink" title="三.优势"></a>三.优势</h2><p>优势一  无需扩增，不会人为的引入突变。</p><p>优势二  超长读长，平均读长可达到10 Kb，最长读长可以达到40 Kb。</p><p>优势三  覆盖均匀，无GC偏好性。</p><p>优势四  通过reads的自我矫正，30X以上准确率能够达到99.999%。</p><p>优势五  可以直接检测到甲基化信息，同步进行表观遗传学性别识别。</p><h1 id="二-纳米孔测序技术"><a href="#二-纳米孔测序技术" class="headerlink" title="二.纳米孔测序技术"></a>二.纳米孔测序技术</h1><p>第二大阵营为纳米孔测序，代表性的公司为英国牛津纳米孔公司。目前市场上广泛接受的纳米孔测序平台是Oxford Nanopore Technologies（ONT）公司的<strong>MinION</strong>，<strong>GridION X5</strong> 和 <strong>PromethION</strong> 三款不同类型测序仪。</p><p><img src="http://tiramisutes.github.io/images/NANOPORE.png"></p><h2 id="一-基本原理-1"><a href="#一-基本原理-1" class="headerlink" title="一.基本原理"></a>一.基本原理</h2><p>ONT测序的特点是单分子测序，测序读长长，测序速度快，测序数据实时监控，机器方便携带等。Oxford Nanopore Technologies公司所开发的纳米单分子测序技术与以往的测序技术皆不同，它是基于电信号而不是光信号的测序技术。该技术的关键之一是，他们设计了一种特殊的纳米孔，孔内共价结合有分子接头。当DNA碱基通过纳米孔时，它们使电荷发生变化，从而短暂地影响流过纳米孔的电流强度（每种碱基所影响的电流变化幅度是不同的），灵敏的电子设备检测到这些变化从而鉴定所通过的碱基。</p><p><img src="https://upload-images.jianshu.io/upload_images/15455040-5612ccbe31381926.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/620/format/webp"></p><h2 id="二-相对于其他NGS测序平台的优势"><a href="#二-相对于其他NGS测序平台的优势" class="headerlink" title="二.相对于其他NGS测序平台的优势"></a>二.相对于其他NGS测序平台的优势</h2><p>1、碱基修饰的检测</p><p>它能够直接读取出甲基化的胞嘧啶，而不必像传统方法那样对基因组进行bisulfite处理。这对于在基因组水平直接研究表观遗传相关现象有极大的帮助。并且改方法的测序准确性可达99.8%，而且一旦发现测序错误也能较容易地进行纠正。</p><p>2、实时测序监控</p><p>对于临床实践，实时获取和分析DNA/RNA序列是一件很重要的事情。对于传统的NGS测序，做到这一点非常不易。但对于MinION，实现起来相对容易。这不仅是因为MinION体积小，易操作等，更是因为在测序过程中单分子穿过纳米孔，其电流变化可以检测并识别，这种设计允许用户在测序过程中根据实时结果做出一些判断。与在运行结束时批量交付数据的传统测序技术不同，纳米孔技术提供的是动态、实时的测序，支持在几分钟内就获得病原体鉴定等时间关键型应用的检测结果。用户可以在测序早期了解样本的质量和状态，也可以在获得足够的数据后停止测序。快速的采样到结果周转时间在未来感染性疾病、实地动态监测疫情爆发以及其它诊断方面具有巨大潜力。</p><p>3.长读长</p><p>读长很长，大约在几十kb，甚至100 kb;错误率目前介于1%至4%，且是随机错误，而不是聚集在读取的两端;数据可实时读取;通量很高(30x人类基因组有望在一天内完成);起始DNA在测序过程中不被破坏;以及样品制备简单又便宜。理论上，它也能直接测序RNA。</p>]]></content>
+    
+    
+      
+      
+    <summary type="html">&lt;p&gt;三代测序是指单分子测序技术（Single Molecule Real- Time, SMRT），在测序过程中不需要涉及PCR扩增，不仅实现了每一条DNA分子的单独测序，并且避免了潜在的PCR扩增错误和偏好性。&lt;br&gt;目前，三代测序技术原理分为单分子荧光测序和纳米孔测序两大阵</summary>
+      
+    
+    
+    
+    <category term="测序原理" scheme="http://example.com/categories/%E6%B5%8B%E5%BA%8F%E5%8E%9F%E7%90%86/"/>
+    
+    
+    <category term="-测序原理" scheme="http://example.com/tags/%E6%B5%8B%E5%BA%8F%E5%8E%9F%E7%90%86/"/>
+    
+  </entry>
   
   <entry>
     <title>一代测序</title>
