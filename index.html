@@ -198,7 +198,7 @@
               <span class="post-meta-item-text">发表于</span>
               
 
-              <time title="创建时间：2020-10-06 07:30:51 / 修改时间：09:01:41" itemprop="dateCreated datePublished" datetime="2020-10-06T07:30:51+08:00">2020-10-06</time>
+              <time title="创建时间：2020-10-06 07:30:51 / 修改时间：10:44:10" itemprop="dateCreated datePublished" datetime="2020-10-06T07:30:51+08:00">2020-10-06</time>
             </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -254,7 +254,8 @@
 <p>因为在显微镜实时记录DNA链上的荧光的时候，DNA链周围的众多的荧光标记的脱氧核苷酸形成了非常强大的荧光背景。这种强大的荧光背景使单分子的荧光探测成为不可能。Pacific Biosciences公司发明了一种直径只有几十纳米的纳米孔[zero-mode waveguides (ZMWs)]（零模波导孔），单分子的DNA聚合酶被固定在这个孔内。在这么小的孔内，DNA链周围的荧光标记的脱氧核苷酸有限，而且由于A，T，C，G这四种荧光标记的脱氧核苷酸非常快速地从外面进入到孔内又出去，它们形成了非常稳定的背景荧光信号。而当某一种荧光标记的脱氧核苷酸被掺入到DNA链时，这种特定颜色的荧光会持续一小段时间，直到新的化学键形成，荧光基团被DNA聚合酶切除为止。</p>
 <p>第二，<strong>不同荧光分子标记核苷酸磷酸基团</strong>可帮助固定的DNA聚合酶完成一个全天然的DNA链合成过程。</p>
 <p><em>PacBio</em>的测序实现中,<em>创造性</em>地<em>将不同荧光分子标记在</em>了各种碱基类型磷酸基团上,<em>标记在磷酸基团上</em>的荧光分子可以最大限度上减少其对核酸合成过程的影响,消除测序的负面影响，从而提高测序的准确性。</p>
-<p><img src="https://img-blog.csdn.net/20130803222640203?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvZHlsbG92ZTk4/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast"></p>
+<img src="/2020/10/06/%E4%B8%89%E4%BB%A3%E6%B5%8B%E5%BA%8F/20130803222640203.png" class>
+
 <p>另外，可以通过检测相邻两个碱基之间的测序时间，来检测一些碱基修饰情况，既如果碱基存在修饰，则通过聚合酶时的速度会减慢，相邻两峰之间的距离增大，可以通过这个来之间检测甲基化等信息。SMRT技术的测序速度很快，每秒约10个dNTP。但是，同时其测序错误率比较高（这几乎是目前单分子测序技术的通病），达到15%,但好在它的出错是随机的，并不会像第二代测序技术那样存在测序错误的偏向，因而可以通过多次测序来进行有效的纠错。</p>
 <p>与二代测序一样，PacBio三代测序的第一步也是建库，其主要区别是建库过程不涉及PCR反应。DNA分子打断之后，经过修复、接头连接、纯化和聚合酶绑定，即可出库准备上机测序。</p>
 <h2 id="二-HIFI模式"><a href="#二-HIFI模式" class="headerlink" title="二.HIFI模式"></a>二.HIFI模式</h2><p><strong>PacBio提供高度准确的长读长的测序技术（HiFi Reads）</strong>，在读长达到15-20 kb的情况下，可提供Sanger测序相当的准确度（&gt; 99％），满足组装复杂基因组的需要，可检测从单核苷酸突变到结构变异的各种基因组变异。HiFi reads（High fidelity reads）是PacBio公司基于Sequel II平台推出的CCS（Circular Consensus Sequencing）测序模式产生的兼具长读长和高准确度的测序序列，又称CCS reads。在这种测序模式下，因酶读长（平均90-100 Kb）远大于插入片段长度（10-20 Kb），测序时，聚合酶会绕着DNA模板进行环形比对测序，使得插入片段被多次测序，产生多条subreads，来源于同一条模板链的subreads经过一致性校正，最终得到高准确度的HiFi reads，用于基因组组装。</p>
