@@ -261,7 +261,7 @@
 
 <img src="/2020/10/02/%E8%BD%AC%E5%BD%95%E7%BB%84/QQ%E6%88%AA%E5%9B%BE20201006142636.png" class>
 
-<p>查看命令是否挂后台</p>
+<p>查看命令是否挂后台，top查看进程，-u 参数接用户名</p>
 <figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">top -u liyue</span><br></pre></td></tr></table></figure>
 
 <img src="/2020/10/02/%E8%BD%AC%E5%BD%95%E7%BB%84/QQ%E6%88%AA%E5%9B%BE20201006142829.png" class>
