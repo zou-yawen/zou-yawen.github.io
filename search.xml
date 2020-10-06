@@ -195,9 +195,106 @@
       </tags>
   </entry>
   <entry>
-    <title>转录组</title>
+    <title>RNA-seq第一部分（原始数据下载，提取fastq文件，fastqc质控）</title>
     <url>/2020/10/02/%E8%BD%AC%E5%BD%95%E7%BB%84/</url>
-    <content><![CDATA[<p>要写的文章</p>
+    <content><![CDATA[<p>原始数据下载地址：<a href="https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE50177">https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE50177</a></p>
+<h1 id="一-SRA数据下载"><a href="#一-SRA数据下载" class="headerlink" title="一.SRA数据下载"></a>一.SRA数据下载</h1><p>打开网页按以下步骤进行</p>
+<img src="/2020/10/02/%E8%BD%AC%E5%BD%95%E7%BB%84/%E6%8D%95%E8%8E%B7.PNG" class>
+
+<img src="/2020/10/02/%E8%BD%AC%E5%BD%95%E7%BB%84/%E6%8D%95%E8%8E%B72.PNG" class>
+
+<img src="/2020/10/02/%E8%BD%AC%E5%BD%95%E7%BB%84/VGVFDQ%5BV%60I%5DDNSX5H7UF852.png" class>
+
+<img src="/2020/10/02/%E8%BD%AC%E5%BD%95%E7%BB%84/QQ%E6%88%AA%E5%9B%BE20201006100851.png" class>
+
+<p>将连接复制到迅雷下载，可以淘宝临时买个会员下载，速度较快，建议使用该方式下载。</p>
+<p>也可复制地址用wget下载，速度贼慢，不建议。</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">wget 	https://sra-downloadb.be-md.ncbi.nlm.nih.gov/sos1/sra-pub-run-5/SRR957677/SRR957677.1</span><br></pre></td></tr></table></figure>
+
+<p>数据下载后通过xftp上传到服务器</p>
+<h1 id="二-使用sratoolkit从sra文件提取fastq文件"><a href="#二-使用sratoolkit从sra文件提取fastq文件" class="headerlink" title="二.使用sratoolkit从sra文件提取fastq文件"></a>二.使用sratoolkit从sra文件提取fastq文件</h1><figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">fastq-dump --gzip --split-files SRR957677 #从SRR957677分别提取左端和右端reads</span><br></pre></td></tr></table></figure>
+
+<p>–gzip  生成压缩格式为gz的fastq文件</p>
+<p>SRR957677是一个PE测序结果，所以，需要–split-files参数可以将其分解为两个fastq文件。如果不加该参数，则只有1个fastq文件（包含了两端测序的结果）</p>
+<p>有四个文件分别是SRR957677，SRR957678，SRR957679，SRR957680,；可以一个一个地提取fastq文件，也可以批量提取，有多种方法批量提取。</p>
+<h2 id="1）for循环"><a href="#1）for循环" class="headerlink" title="1）for循环"></a>1）for循环</h2><p>检查当前文件夹是否有SRR文件，*是匹配任意字符</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">ls SRR*</span><br></pre></td></tr></table></figure>
+
+<img src="/2020/10/02/%E8%BD%AC%E5%BD%95%E7%BB%84/QQ%E6%88%AA%E5%9B%BE20201006111404.png" class>
+
+<p>检查循环是否正确，echo打印出脚本</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">for i in `ls SRR*`;do echo fastq-dump --gzip --split-files $i ;done </span><br></pre></td></tr></table></figure>
+
+<img src="/2020/10/02/%E8%BD%AC%E5%BD%95%E7%BB%84/QQ%E6%88%AA%E5%9B%BE20201006111508.png" class>
+
+<p>将上述命令中的echo去掉直接运行即可</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">for i in `ls SRR*`;do fastq-dump --gzip --split-files $i ;done</span><br></pre></td></tr></table></figure>
+
+<h2 id="2）while循环"><a href="#2）while循环" class="headerlink" title="2）while循环"></a>2）while循环</h2><p>新建文件列表这里命名SRR_list</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">ls SRR* &gt;SRR_list</span><br></pre></td></tr></table></figure>
+
+<p>查看文件列表是否正确</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">cat SRR_list</span><br></pre></td></tr></table></figure>
+
+<img src="/2020/10/02/%E8%BD%AC%E5%BD%95%E7%BB%84/QQ%E6%88%AA%E5%9B%BE20201006112142.png" class>
+
+<p>检查循环是否正确，echo打印出脚本</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">cat SRR_list | while read id;do echo fastq-dump --gzip --split-files $id ;done</span><br></pre></td></tr></table></figure>
+
+<img src="/2020/10/02/%E8%BD%AC%E5%BD%95%E7%BB%84/QQ%E6%88%AA%E5%9B%BE20201006140935.png" class>
+
+<p>或者</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">ls SRR95* | while read id;do echo fastq-dump --gzip --split-files $id ;done#这里改为SRR95*是因为当前有个文件名为SRR_list,如果还是SRR*则会把这个文件也匹配进去</span><br></pre></td></tr></table></figure>
+
+<img src="/2020/10/02/%E8%BD%AC%E5%BD%95%E7%BB%84/QQ%E6%88%AA%E5%9B%BE20201006141055.png" class>
+
+<h2 id="3-xargs"><a href="#3-xargs" class="headerlink" title="3)xargs"></a>3)xargs</h2><figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">ls SRR95* | xargs -i echo echo fastq-dump --gzip --split-files &#123;&#125;</span><br></pre></td></tr></table></figure>
+
+<img src="/2020/10/02/%E8%BD%AC%E5%BD%95%E7%BB%84/QQ%E6%88%AA%E5%9B%BE20201006141657.png" class>
+
+<h2 id="4-awk"><a href="#4-awk" class="headerlink" title="4)awk"></a>4)awk</h2><figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">awk &#x27;&#123;print &quot;nohup fastq-dump --gzip --split-files &quot;$0 &quot; &amp;&quot;&#125;&#x27; SRR_list &gt;fastq_dump.sh</span><br></pre></td></tr></table></figure>
+
+<img src="/2020/10/02/%E8%BD%AC%E5%BD%95%E7%BB%84/QQ%E6%88%AA%E5%9B%BE20201006142105.png" class>
+
+<p>加nohup &amp; 是为了放后台，因为每一个子命令都有nohup &amp;所以这些命令是并行，&gt;fastq_dump.sh是将命令写入fastq_dump.sh中。</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">bash fastq_dump.sh</span><br></pre></td></tr></table></figure>
+
+<img src="/2020/10/02/%E8%BD%AC%E5%BD%95%E7%BB%84/QQ%E6%88%AA%E5%9B%BE20201006142636.png" class>
+
+<p>查看命令是否挂后台</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">top -u liyue</span><br></pre></td></tr></table></figure>
+
+<img src="/2020/10/02/%E8%BD%AC%E5%BD%95%E7%BB%84/QQ%E6%88%AA%E5%9B%BE20201006142829.png" class>
+
+<p>可以看到有四个fastq-dump命令运行中</p>
+<p>还可以使用其他命令查询</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">ps -aux | grep &quot;fastq_dump&quot;</span><br></pre></td></tr></table></figure>
+
+<img src="/2020/10/02/%E8%BD%AC%E5%BD%95%E7%BB%84/QQ%E6%88%AA%E5%9B%BE20201006143055.png" class>
+
+<p>注意以上命令有个小问题，-split-files参数可以不加，因为这些测序文件是单端测序，所以即使加了该参数也只有一个fastq文件生成，如果是双端测序则会生成左端，右端两个fastq文件,不过加了也没影响</p>
+<img src="/2020/10/02/%E8%BD%AC%E5%BD%95%E7%BB%84/QQ%E6%88%AA%E5%9B%BE20201006145214.png" class>
+
+<p>生成以下fastq文件</p>
+<img src="/2020/10/02/%E8%BD%AC%E5%BD%95%E7%BB%84/QQ%E6%88%AA%E5%9B%BE20201006145636.png" class>
+
+<h1 id="三-质控"><a href="#三-质控" class="headerlink" title="三.质控"></a>三.质控</h1><h2 id="1-质控使用fastqc软件"><a href="#1-质控使用fastqc软件" class="headerlink" title="1.质控使用fastqc软件"></a>1.质控使用fastqc软件</h2><p>该软件可直接用conda安装，这里使用循环进行质控</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">ls *fastq.gz | awk &#x27;&#123;print &quot;nohup fastqc &quot; $0  &quot; &amp;&quot;&#125;&#x27; &gt;fastqc.sh</span><br></pre></td></tr></table></figure>
+
+<img src="/2020/10/02/%E8%BD%AC%E5%BD%95%E7%BB%84/QQ%E6%88%AA%E5%9B%BE20201006150329.png" class>
+
+<p>运行fastqc.sh脚本</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">bash fastqc.sh</span><br></pre></td></tr></table></figure>
+
+<p>每个fastq文件质控后生一个html和zip压缩格式文件，html可下载到本地用浏览器打开</p>
+<img src="/2020/10/02/%E8%BD%AC%E5%BD%95%E7%BB%84/QQ%E6%88%AA%E5%9B%BE20201006151448.png" class>
+
+<h2 id="2-multiqc"><a href="#2-multiqc" class="headerlink" title="2.multiqc"></a>2.multiqc</h2><p>可以将当前各个fastqz文件的质控报告综合到一起，生成一个总的html命令multiqc接fastqc结果文件所在地址</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">multiqc ./</span><br></pre></td></tr></table></figure>
+
+<img src="/2020/10/02/%E8%BD%AC%E5%BD%95%E7%BB%84/QQ%E6%88%AA%E5%9B%BE20201006151755.png" class>
+
+<p>生成结果文件为multiqc_report.html，html可下载到本地用浏览器打开</p>
 ]]></content>
       <categories>
         <category>转录组</category>
