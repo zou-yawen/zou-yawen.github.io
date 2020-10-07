@@ -23,19 +23,28 @@
     var CONFIG = {"hostname":"example.com","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":null},"back2top":{"enable":false,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":null,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
   </script>
 
-  <meta name="description" content="layout: false google-site-verification: googledd0fd963277ff70b.html">
-<meta property="og:type" content="website">
-<meta property="og:title" content="zero">
-<meta property="og:url" content="http://example.com/googledd0fd963277ff70b.html">
+  <meta name="description" content="ucsc下载基因组及GTF注释文件是较为简单且常用的，推荐使用ucsc下载。 一.参考基因组下载1.有三大网站可以提供基因组下载，它们分别是：  1).NCBI （https:&#x2F;&#x2F;www.ncbi.nlm.nih.gov&#x2F;grc） 2).UCSC (http:&#x2F;&#x2F;hgdownload.soe.ucsc.edu&#x2F;downloads.html) 3).Ensemble （http:&#x2F;&#x2F;asia.ens">
+<meta property="og:type" content="article">
+<meta property="og:title" content="RNA-seq第二部分（基因组序列下载，注释文件下载）">
+<meta property="og:url" content="http://example.com/2020/10/06/%E8%BD%AC%E5%BD%95%E7%BB%842/index.html">
 <meta property="og:site_name" content="zero">
-<meta property="og:description" content="layout: false google-site-verification: googledd0fd963277ff70b.html">
+<meta property="og:description" content="ucsc下载基因组及GTF注释文件是较为简单且常用的，推荐使用ucsc下载。 一.参考基因组下载1.有三大网站可以提供基因组下载，它们分别是：  1).NCBI （https:&#x2F;&#x2F;www.ncbi.nlm.nih.gov&#x2F;grc） 2).UCSC (http:&#x2F;&#x2F;hgdownload.soe.ucsc.edu&#x2F;downloads.html) 3).Ensemble （http:&#x2F;&#x2F;asia.ens">
 <meta property="og:locale" content="zh_CN">
-<meta property="article:published_time" content="2020-10-04T01:51:26.524Z">
-<meta property="article:modified_time" content="2020-10-04T01:16:47.344Z">
+<meta property="og:image" content="http://example.com/2020/10/06/%E8%BD%AC%E5%BD%95%E7%BB%842/QQ%E6%88%AA%E5%9B%BE20201006211756.png">
+<meta property="og:image" content="http://example.com/2020/10/06/%E8%BD%AC%E5%BD%95%E7%BB%842/QQ%E6%88%AA%E5%9B%BE20201007083829.png">
+<meta property="og:image" content="http://example.com/2020/10/06/%E8%BD%AC%E5%BD%95%E7%BB%842/QQ%E6%88%AA%E5%9B%BE20201007083856.png">
+<meta property="og:image" content="http://example.com/2020/10/06/%E8%BD%AC%E5%BD%95%E7%BB%842/QQ%E6%88%AA%E5%9B%BE20201007083924.png">
+<meta property="og:image" content="http://example.com/2020/10/06/%E8%BD%AC%E5%BD%95%E7%BB%842/QQ%E6%88%AA%E5%9B%BE20201007084351.png">
+<meta property="og:image" content="http://example.com/2020/10/06/%E8%BD%AC%E5%BD%95%E7%BB%842/QQ%E6%88%AA%E5%9B%BE20201007083243.png">
+<meta property="og:image" content="http://example.com/2020/10/06/%E8%BD%AC%E5%BD%95%E7%BB%842/QQ%E6%88%AA%E5%9B%BE20201007085438.png">
+<meta property="article:published_time" content="2020-10-06T11:43:30.000Z">
+<meta property="article:modified_time" content="2020-10-07T01:22:56.200Z">
 <meta property="article:author" content="Zou">
+<meta property="article:tag" content="-转录组">
 <meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://example.com/2020/10/06/%E8%BD%AC%E5%BD%95%E7%BB%842/QQ%E6%88%AA%E5%9B%BE20201006211756.png">
 
-<link rel="canonical" href="http://example.com/googledd0fd963277ff70b">
+<link rel="canonical" href="http://example.com/2020/10/06/%E8%BD%AC%E5%BD%95%E7%BB%842/">
 
 
 <script id="page-configurations">
@@ -43,13 +52,12 @@
   CONFIG.page = {
     sidebar: "",
     isHome : false,
-    isPost : false,
+    isPost : true,
     lang   : 'zh-CN'
   };
 </script>
 <link rel="stylesheet" type="text/css" href="/css/injector.css" />
-  <title> | zero
-</title>
+  <title>RNA-seq第二部分（基因组序列下载，注释文件下载） | zero</title>
   
     <script async src="https://www.googletagmanager.com/gtag/js?id=179475982-1"></script>
     <script>
@@ -171,44 +179,183 @@
       <div class="main-inner">
         <div class="content-wrap">
           
-  
-  
 
-          <div class="content page posts-expand">
+          <div class="content post posts-expand">
             
 
     
-    
-    
-    <div class="post-block" lang="zh-CN">
-      <header class="post-header">
-
-<h1 class="post-title" itemprop="name headline">
-</h1>
-
-<div class="post-meta">
   
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2020/10/06/%E8%BD%AC%E5%BD%95%E7%BB%842/">
 
-</div>
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="https://ss0.bdstatic.com/70cFvHSh_Q1YnxGkpoWK1HF6hhy/it/u=404501654,960623944&fm=26&gp=0.jpg">
+      <meta itemprop="name" content="Zou">
+      <meta itemprop="description" content="">
+    </span>
 
-</header>
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="zero">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          RNA-seq第二部分（基因组序列下载，注释文件下载）
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2020-10-06 19:43:30" itemprop="dateCreated datePublished" datetime="2020-10-06T19:43:30+08:00">2020-10-06</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2020-10-07 09:22:56" itemprop="dateModified" datetime="2020-10-07T09:22:56+08:00">2020-10-07</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E8%BD%AC%E5%BD%95%E7%BB%84/" itemprop="url" rel="index"><span itemprop="name">转录组</span></a>
+                </span>
+            </span>
+
+          
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/2020/10/06/%E8%BD%AC%E5%BD%95%E7%BB%842/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2020/10/06/%E8%BD%AC%E5%BD%95%E7%BB%842/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+            <span class="post-meta-item" title="本文字数">
+              <span class="post-meta-item-icon">
+                <i class="far fa-file-word"></i>
+              </span>
+              <span>1.7k</span>
+            </span>
+            <span class="post-meta-item" title="阅读时长">
+              <span class="post-meta-item-icon">
+                <i class="far fa-clock"></i>
+              </span>
+              <span>2 分钟</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
 
       
+        <p>ucsc下载基因组及GTF注释文件是较为简单且常用的，推荐使用ucsc下载。</p>
+<h1 id="一-参考基因组下载"><a href="#一-参考基因组下载" class="headerlink" title="一.参考基因组下载"></a>一.参考基因组下载</h1><h2 id="1-有三大网站可以提供基因组下载，它们分别是："><a href="#1-有三大网站可以提供基因组下载，它们分别是：" class="headerlink" title="1.有三大网站可以提供基因组下载，它们分别是："></a>1.有三大网站可以提供基因组下载，它们分别是：</h2><img src="/2020/10/06/%E8%BD%AC%E5%BD%95%E7%BB%842/QQ%E6%88%AA%E5%9B%BE20201006211756.png" class>
+
+<p>1).NCBI （<a href="https://link.zhihu.com/?target=https://www.ncbi.nlm.nih.gov/grc">https://www.ncbi.nlm.nih.gov/grc</a>）</p>
+<p>2).UCSC (<a href="https://link.zhihu.com/?target=http://hgdownload.soe.ucsc.edu/downloads.html">http://hgdownload.soe.ucsc.edu/downloads.html</a>)</p>
+<p>3).Ensemble （<a href="https://link.zhihu.com/?target=http://asia.ensembl.org/index.html?redirect=no">http://asia.ensembl.org/index.html?redirect=no</a>）</p>
+<h2 id="2-UCSC下载人类hg19参考基因组"><a href="#2-UCSC下载人类hg19参考基因组" class="headerlink" title="2.UCSC下载人类hg19参考基因组"></a>2.UCSC下载人类hg19参考基因组</h2><h5 id="2-1-chromFa-tar-gz"><a href="#2-1-chromFa-tar-gz" class="headerlink" title="2.1 chromFa.tar.gz"></a>2.1 chromFa.tar.gz</h5><blockquote>
+<p>chromFa.tar.gz - The assembly sequence in one file per chromosome.Repeats from RepeatMasker and Tandem Repeats Finder (with period of 12 or less) are shown in lower case; non-repeating sequence is shown in upper case.<br> 每个染色体一个文件中的装配顺序。RepeatMasker和Tandem Repeats Finder的重复（周期为12或更短）以小写形式显示； 大写显示非重复序列。</p>
+</blockquote>
+<h5 id="2-2-UCSC参考基因组下载链接"><a href="#2-2-UCSC参考基因组下载链接" class="headerlink" title="2.2 UCSC参考基因组下载链接"></a>2.2 UCSC参考基因组下载链接</h5><p>hg19：<a target="_blank" rel="noopener" href="https://links.jianshu.com/go?to=http://hgdownload.soe.ucsc.edu/goldenPath/hg19/bigZips/chromFa.tar.gz">http://hgdownload.soe.ucsc.edu/goldenPath/hg19/bigZips/chromFa.tar.gz</a><br>hg38：<a target="_blank" rel="noopener" href="https://links.jianshu.com/go?to=http://hgdownload.soe.ucsc.edu/goldenPath/hg38/bigZips/hg38.chromFa.tar.gz">http://hgdownload.soe.ucsc.edu/goldenPath/hg38/bigZips/hg38.chromFa.tar.gz</a></p>
+<p>human的genome从UCSC上下载很方便，一般只用考虑拼装好的染色体上的内容即可，其他的scafold可以不考虑即 chr1~22 and chrX,Y,M, chrM是线粒体DNA</p>
+<p>将hg19链接复制到迅雷下载并上传到服务器</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">tar -zvfx chromFa.tar.gz#hg19的解压生成不同染色体的文件</span><br><span class="line">cat *.fa &gt; hg19.fa #对解压后的.fa文件进行合并，把所有染色体信息整合到一个文件</span><br><span class="line">rm -rf chr* #删除单独的染色体文件</span><br></pre></td></tr></table></figure>
+
+
+
+<h2 id="3-Ensemble-下载人类hg19参考基因组"><a href="#3-Ensemble-下载人类hg19参考基因组" class="headerlink" title="3.Ensemble 下载人类hg19参考基因组"></a>3.Ensemble 下载人类hg19参考基因组</h2><p>网址：<a target="_blank" rel="noopener" href="http://asia.ensembl.org/index.html">http://asia.ensembl.org/index.html</a></p>
+<img src="/2020/10/06/%E8%BD%AC%E5%BD%95%E7%BB%842/QQ%E6%88%AA%E5%9B%BE20201007083829.png" class>
+
+<img src="/2020/10/06/%E8%BD%AC%E5%BD%95%E7%BB%842/QQ%E6%88%AA%E5%9B%BE20201007083856.png" class>
+
+<img src="/2020/10/06/%E8%BD%AC%E5%BD%95%E7%BB%842/QQ%E6%88%AA%E5%9B%BE20201007083924.png" class>
+
+<p>hg19基因组下载地址：<a href="ftp://ftp.ensembl.org/pub/grch37/current/fasta/homo_sapiens/dna/">ftp://ftp.ensembl.org/pub/grch37/current/fasta/homo_sapiens/dna/</a></p>
+<img src="/2020/10/06/%E8%BD%AC%E5%BD%95%E7%BB%842/QQ%E6%88%AA%E5%9B%BE20201007084351.png" class>
+
+<p> 绿色箭头是所有的拼装信息，包含很多冗余成分；红色箭头是精简信息，不要下载toplevel,这里用Homo_sapiens.GRCh37.dna.primary_assembly.fa.gz</p>
+<h1 id="二-注释下载"><a href="#二-注释下载" class="headerlink" title="二.注释下载"></a>二.注释下载</h1><h2 id="1-基因组在哪个网站下载的注释就在哪个网站下载"><a href="#1-基因组在哪个网站下载的注释就在哪个网站下载" class="headerlink" title="1.基因组在哪个网站下载的注释就在哪个网站下载"></a><strong>1.基因组在哪个网站下载的注释就在哪个网站下载</strong></h2><p>不同网站的染色体编号不一样，有的是纯数字1,2,3…，有的是chr1,chr2,chr3…；不同染色体编号的基因组和GTF不能一起使用的。</p>
+<p>GTF文件的全称是gene transfer format，主要是对染色体上的基因进行标注，而GTF文件的主要功能，就是指出我们所谓的基因在染色体上的位置（coordinate），并且还标注了这一段区间的其他信息</p>
+<h2 id="2-UCSC下载人类hg19GTF"><a href="#2-UCSC下载人类hg19GTF" class="headerlink" title="2.UCSC下载人类hg19GTF"></a>2.UCSC下载人类hg19GTF</h2><p>hg19:网址：<a target="_blank" rel="noopener" href="http://genome.ucsc.edu/cgi-bin/hgTables">http://genome.ucsc.edu/cgi-bin/hgTables</a></p>
+<img src="/2020/10/06/%E8%BD%AC%E5%BD%95%E7%BB%842/QQ%E6%88%AA%E5%9B%BE20201007083243.png" class>
+
+<p>hg38:只需把上图红色箭头标记对应的版本改为hg38即可</p>
+<h2 id="3-Ensemble-下载人类hg19基因组GTF"><a href="#3-Ensemble-下载人类hg19基因组GTF" class="headerlink" title="3.Ensemble 下载人类hg19基因组GTF"></a>3.Ensemble 下载人类hg19基因组GTF</h2><p>下载地址：<a href="ftp://ftp.ensembl.org/pub/grch37/current/gtf/homo_sapiens/">ftp://ftp.ensembl.org/pub/grch37/current/gtf/homo_sapiens/</a></p>
+<img src="/2020/10/06/%E8%BD%AC%E5%BD%95%E7%BB%842/QQ%E6%88%AA%E5%9B%BE20201007085438.png" class>
+
+<p>Homo_sapiens.GRCh37.87.abinitio.gtf.gz 机器重头注释</p>
+<p>我们一般下载的是Homo_sapiens.GRCh37.87.gtf.gz</p>
+<h1 id="引用"><a href="#引用" class="headerlink" title="引用"></a>引用</h1><p>1.<a target="_blank" rel="noopener" href="https://www.jianshu.com/p/849f8ada0ab7">RNA-seq练习 第二部分（基因组序列下载，注释文件下载，索引下载，比对，比对质控,HTseq-count计数，输出count矩阵文件）</a></p>
+<p>2.<a target="_blank" rel="noopener" href="https://www.jianshu.com/p/9f06c3efb000">RNAseq004 转录组入门(4)：参考基因组下载</a></p>
+
+    </div>
+
+    
+    
+    
+        <div class="reward-container">
+  <div>客官打个赏咯.</div>
+  <button onclick="var qr = document.getElementById('qr'); qr.style.display = (qr.style.display === 'none') ? 'block' : 'none';">
+    打赏
+  </button>
+  <div id="qr" style="display: none;">
       
-      
-      <div class="post-body">
-          layout: false
-google-site-verification: googledd0fd963277ff70b.html
+      <div style="display: inline-block;">
+        <img src="/images/wechatpay.png" alt="Zou 微信支付">
+        <p>微信支付</p>
       </div>
       
-      
-      
-    </div>
-    
+      <div style="display: inline-block;">
+        <img src="/images/alipay.png" alt="Zou 支付宝">
+        <p>支付宝</p>
+      </div>
 
+  </div>
+</div>
+
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/%E8%BD%AC%E5%BD%95%E7%BB%84/" rel="tag"># -转录组</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2020/10/06/%E4%B8%89%E4%BB%A3%E6%B5%8B%E5%BA%8F/" rel="prev" title="三代测序">
+      <i class="fa fa-chevron-left"></i> 三代测序
+    </a></div>
+      <div class="post-nav-item"></div>
+    </div>
+      </footer>
     
-    
-    
+  </article>
+  
+  
+  
+
 
 
           </div>
@@ -260,6 +407,7 @@ google-site-verification: googledd0fd963277ff70b.html
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E4%B8%80-%E5%8F%82%E8%80%83%E5%9F%BA%E5%9B%A0%E7%BB%84%E4%B8%8B%E8%BD%BD"><span class="nav-number">1.</span> <span class="nav-text">一.参考基因组下载</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-%E6%9C%89%E4%B8%89%E5%A4%A7%E7%BD%91%E7%AB%99%E5%8F%AF%E4%BB%A5%E6%8F%90%E4%BE%9B%E5%9F%BA%E5%9B%A0%E7%BB%84%E4%B8%8B%E8%BD%BD%EF%BC%8C%E5%AE%83%E4%BB%AC%E5%88%86%E5%88%AB%E6%98%AF%EF%BC%9A"><span class="nav-number">1.1.</span> <span class="nav-text">1.有三大网站可以提供基因组下载，它们分别是：</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-UCSC%E4%B8%8B%E8%BD%BD%E4%BA%BA%E7%B1%BBhg19%E5%8F%82%E8%80%83%E5%9F%BA%E5%9B%A0%E7%BB%84"><span class="nav-number">1.2.</span> <span class="nav-text">2.UCSC下载人类hg19参考基因组</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#2-1-chromFa-tar-gz"><span class="nav-number">1.2.0.0.1.</span> <span class="nav-text">2.1 chromFa.tar.gz</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#2-2-UCSC%E5%8F%82%E8%80%83%E5%9F%BA%E5%9B%A0%E7%BB%84%E4%B8%8B%E8%BD%BD%E9%93%BE%E6%8E%A5"><span class="nav-number">1.2.0.0.2.</span> <span class="nav-text">2.2 UCSC参考基因组下载链接</span></a></li></ol></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-Ensemble-%E4%B8%8B%E8%BD%BD%E4%BA%BA%E7%B1%BBhg19%E5%8F%82%E8%80%83%E5%9F%BA%E5%9B%A0%E7%BB%84"><span class="nav-number">1.3.</span> <span class="nav-text">3.Ensemble 下载人类hg19参考基因组</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E4%BA%8C-%E6%B3%A8%E9%87%8A%E4%B8%8B%E8%BD%BD"><span class="nav-number">2.</span> <span class="nav-text">二.注释下载</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-%E5%9F%BA%E5%9B%A0%E7%BB%84%E5%9C%A8%E5%93%AA%E4%B8%AA%E7%BD%91%E7%AB%99%E4%B8%8B%E8%BD%BD%E7%9A%84%E6%B3%A8%E9%87%8A%E5%B0%B1%E5%9C%A8%E5%93%AA%E4%B8%AA%E7%BD%91%E7%AB%99%E4%B8%8B%E8%BD%BD"><span class="nav-number">2.1.</span> <span class="nav-text">1.基因组在哪个网站下载的注释就在哪个网站下载</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-UCSC%E4%B8%8B%E8%BD%BD%E4%BA%BA%E7%B1%BBhg19GTF"><span class="nav-number">2.2.</span> <span class="nav-text">2.UCSC下载人类hg19GTF</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-Ensemble-%E4%B8%8B%E8%BD%BD%E4%BA%BA%E7%B1%BBhg19%E5%9F%BA%E5%9B%A0%E7%BB%84GTF"><span class="nav-number">2.3.</span> <span class="nav-text">3.Ensemble 下载人类hg19基因组GTF</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%BC%95%E7%94%A8"><span class="nav-number">3.</span> <span class="nav-text">引用</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 
