@@ -1,49 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
-    <title>三代测序</title>
-    <url>/2020/10/06/%E4%B8%89%E4%BB%A3%E6%B5%8B%E5%BA%8F/</url>
-    <content><![CDATA[<p>三代测序是指单分子测序技术（Single Molecule Real- Time, SMRT），在测序过程中不需要涉及PCR扩增，不仅实现了每一条DNA分子的单独测序，并且避免了潜在的PCR扩增错误和偏好性。<br>目前，三代测序技术原理分为单分子荧光测序和纳米孔测序两大阵营，其代表公司分别为Pacific Bioscience和Oxford Nanopore Technologies。现在市场接受度和使用度最高的是Pacific Bioscience三代测序仪，其SMRT技术建立在两项革命性的发明基础之上，从而克服了测序领域的重大挑战。</p>
-<h1 id="一-PacBio单分子荧光测序"><a href="#一-PacBio单分子荧光测序" class="headerlink" title="一.PacBio单分子荧光测序"></a>一.PacBio单分子荧光测序</h1><h2 id="一-基本原理"><a href="#一-基本原理" class="headerlink" title="一.基本原理"></a>一.基本原理</h2><p>第一大阵营是单分子荧光测序，代表性的技术为美国螺旋生物(Helicos)的SMS技术和美国太平洋生物(Pacific Bioscience)的SMRT技术。脱氧核苷酸用荧光标记，显微镜可以实时记录荧光的强度变化。当荧光标记的脱氧核苷酸被掺入DNA链的时候，它的荧光就同时能在DNA链上探测到。当它与DNA链形成化学键的时候，它的荧光基团就被DNA聚合酶切除，荧光消失。这种荧光标记的脱氧核苷酸不会影响DNA聚合酶的活性，并且在荧光被切除之后，合成的DNA链和天然的DNA链完全一样。</p>
-<p><img src="https://ss0.bdstatic.com/70cFuHSh_Q1YnxGkpoWK1HF6hhy/it/u=3727862966,3282114570&fm=26&gp=0.jpg"></p>
-<p>第一，<strong>零模波导孔技术</strong>（Zero-Mode Waveguides，ZMWs）让光只能照亮固定了单个DNA聚合酶／模板分子的纳米孔底部。</p>
-<p>因为在显微镜实时记录DNA链上的荧光的时候，DNA链周围的众多的荧光标记的脱氧核苷酸形成了非常强大的荧光背景。这种强大的荧光背景使单分子的荧光探测成为不可能。Pacific Biosciences公司发明了一种直径只有几十纳米的纳米孔[zero-mode waveguides (ZMWs)]（零模波导孔），单分子的DNA聚合酶被固定在这个孔内。在这么小的孔内，DNA链周围的荧光标记的脱氧核苷酸有限，而且由于A，T，C，G这四种荧光标记的脱氧核苷酸非常快速地从外面进入到孔内又出去，它们形成了非常稳定的背景荧光信号。而当某一种荧光标记的脱氧核苷酸被掺入到DNA链时，这种特定颜色的荧光会持续一小段时间，直到新的化学键形成，荧光基团被DNA聚合酶切除为止。</p>
-<p>第二，<strong>不同荧光分子标记核苷酸磷酸基团</strong>可帮助固定的DNA聚合酶完成一个全天然的DNA链合成过程。</p>
-<p><em>PacBio</em>的测序实现中,<em>创造性</em>地<em>将不同荧光分子标记在</em>了各种碱基类型磷酸基团上,<em>标记在磷酸基团上</em>的荧光分子可以最大限度上减少其对核酸合成过程的影响,消除测序的负面影响，从而提高测序的准确性。</p>
-<img src="/2020/10/06/%E4%B8%89%E4%BB%A3%E6%B5%8B%E5%BA%8F/20130803222640203.png" class>
-
-<p>另外，可以通过检测相邻两个碱基之间的测序时间，来检测一些碱基修饰情况，既如果碱基存在修饰，则通过聚合酶时的速度会减慢，相邻两峰之间的距离增大，可以通过这个来之间检测甲基化等信息。SMRT技术的测序速度很快，每秒约10个dNTP。但是，同时其测序错误率比较高（这几乎是目前单分子测序技术的通病），达到15%,但好在它的出错是随机的，并不会像第二代测序技术那样存在测序错误的偏向，因而可以通过多次测序来进行有效的纠错。</p>
-<p>与二代测序一样，PacBio三代测序的第一步也是建库，其主要区别是建库过程不涉及PCR反应。DNA分子打断之后，经过修复、接头连接、纯化和聚合酶绑定，即可出库准备上机测序。</p>
-<h2 id="二-HIFI模式"><a href="#二-HIFI模式" class="headerlink" title="二.HIFI模式"></a>二.HIFI模式</h2><p><strong>PacBio提供高度准确的长读长的测序技术（HiFi Reads）</strong>，在读长达到15-20 kb的情况下，可提供Sanger测序相当的准确度（&gt; 99％），满足组装复杂基因组的需要，可检测从单核苷酸突变到结构变异的各种基因组变异。HiFi reads（High fidelity reads）是PacBio公司基于Sequel II平台推出的CCS（Circular Consensus Sequencing）测序模式产生的兼具长读长和高准确度的测序序列，又称CCS reads。在这种测序模式下，因酶读长（平均90-100 Kb）远大于插入片段长度（10-20 Kb），测序时，聚合酶会绕着DNA模板进行环形比对测序，使得插入片段被多次测序，产生多条subreads，来源于同一条模板链的subreads经过一致性校正，最终得到高准确度的HiFi reads，用于基因组组装。</p>
-<p><img src="http://p5.itc.cn/images01/20200529/acad15f40abe4221ac5113a0df633439.jpeg"></p>
-<h2 id="三-优势"><a href="#三-优势" class="headerlink" title="三.优势"></a>三.优势</h2><p>优势一  无需扩增，不会人为的引入突变。</p>
-<p>优势二  超长读长，平均读长可达到10 Kb，最长读长可以达到40 Kb。</p>
-<p>优势三  覆盖均匀，无GC偏好性。</p>
-<p>优势四  通过reads的自我矫正，30X以上准确率能够达到99.999%。</p>
-<p>优势五  可以直接检测到甲基化信息，同步进行表观遗传学性别识别。</p>
-<h1 id="二-纳米孔测序技术"><a href="#二-纳米孔测序技术" class="headerlink" title="二.纳米孔测序技术"></a>二.纳米孔测序技术</h1><p>第二大阵营为纳米孔测序，代表性的公司为英国牛津纳米孔公司。目前市场上广泛接受的纳米孔测序平台是Oxford Nanopore Technologies（ONT）公司的<strong>MinION</strong>，<strong>GridION X5</strong> 和 <strong>PromethION</strong> 三款不同类型测序仪。</p>
-<p><img src="http://tiramisutes.github.io/images/NANOPORE.png"></p>
-<h2 id="一-基本原理-1"><a href="#一-基本原理-1" class="headerlink" title="一.基本原理"></a>一.基本原理</h2><p>ONT测序的特点是单分子测序，测序读长长，测序速度快，测序数据实时监控，机器方便携带等。Oxford Nanopore Technologies公司所开发的纳米单分子测序技术与以往的测序技术皆不同，它是基于电信号而不是光信号的测序技术。该技术的关键之一是，他们设计了一种特殊的纳米孔，孔内共价结合有分子接头。当DNA碱基通过纳米孔时，它们使电荷发生变化，从而短暂地影响流过纳米孔的电流强度（每种碱基所影响的电流变化幅度是不同的），灵敏的电子设备检测到这些变化从而鉴定所通过的碱基。</p>
-<img src="/2020/10/06/%E4%B8%89%E4%BB%A3%E6%B5%8B%E5%BA%8F/15455040-5612ccbe31381926.webp" class>
-
-<h2 id="二-相对于其他NGS测序平台的优势"><a href="#二-相对于其他NGS测序平台的优势" class="headerlink" title="二.相对于其他NGS测序平台的优势"></a>二.相对于其他NGS测序平台的优势</h2><p>1、碱基修饰的检测</p>
-<p>它能够直接读取出甲基化的胞嘧啶，而不必像传统方法那样对基因组进行bisulfite处理。这对于在基因组水平直接研究表观遗传相关现象有极大的帮助。并且改方法的测序准确性可达99.8%，而且一旦发现测序错误也能较容易地进行纠正。</p>
-<p>2、实时测序监控</p>
-<p>对于临床实践，实时获取和分析DNA/RNA序列是一件很重要的事情。对于传统的NGS测序，做到这一点非常不易。但对于MinION，实现起来相对容易。这不仅是因为MinION体积小，易操作等，更是因为在测序过程中单分子穿过纳米孔，其电流变化可以检测并识别，这种设计允许用户在测序过程中根据实时结果做出一些判断。与在运行结束时批量交付数据的传统测序技术不同，纳米孔技术提供的是动态、实时的测序，支持在几分钟内就获得病原体鉴定等时间关键型应用的检测结果。用户可以在测序早期了解样本的质量和状态，也可以在获得足够的数据后停止测序。快速的采样到结果周转时间在未来感染性疾病、实地动态监测疫情爆发以及其它诊断方面具有巨大潜力。</p>
-<p>3.长读长</p>
-<p>读长很长，大约在几十kb，甚至100 kb;错误率目前介于1%至4%，且是随机错误，而不是聚集在读取的两端;数据可实时读取;通量很高(30x人类基因组有望在一天内完成);起始DNA在测序过程中不被破坏;以及样品制备简单又便宜。理论上，它也能直接测序RNA。</p>
-<h1 id="引用"><a href="#引用" class="headerlink" title="引用"></a>引用</h1><p>1.<a href="https://blog.csdn.net/weixin_30614109/article/details/96585876">纳米孔测序技术介绍</a></p>
-<p>2.<a href="https://blog.csdn.net/ugfdfgg/article/details/83536063">三代基因组测序技术原理简介</a></p>
-<p>3.<a href="https://www.jianshu.com/p/15dd0baca47c">三代测序入门</a></p>
-]]></content>
-      <categories>
-        <category>测序原理</category>
-      </categories>
-      <tags>
-        <tag>-测序原理</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>一代测序</title>
     <url>/2020/10/05/%E4%B8%80%E4%BB%A3%E6%B5%8B%E5%BA%8F/</url>
     <content><![CDATA[<p>从1977年第一代DNA测序技术（Sanger法）发展至今三十多年时间，测序技术已取得了相当大的发展，从第一代到第三代，测序读长从长到短，再从短到长。虽然就当前形势看来第二代短读长测序技术在全球测序市场上仍然占有着绝对的优势位置，但第三测序技术也已在这一两年的时间中快速发展着。pacbio的三代测序技术高保真模式下的准确度已经能够和illumina二代测序技术的准确度相媲美，NanoPore开发的便携式测序仪随着其准确度不断的提高未来将会颠覆测序市场。测序仪的每一次变革，也都对基因组研究，疾病医疗研究，药物研发，育种等领域产生巨大的推动作用。</p>
@@ -88,104 +45,40 @@
       </tags>
   </entry>
   <entry>
-    <title>二代测序</title>
-    <url>/2020/10/04/%E4%BA%8C%E4%BB%A3%E6%B5%8B%E5%BA%8F/</url>
-    <content><![CDATA[<p>第二代测序（Next-generation sequencing，NGS）又称为高通量测序，其开创性的引入了可逆终止末端，从而实现边合成边测序，在DNA复制过程中通过捕捉新添加的碱基所携带的特殊标记来确定DNA序列。</p>
-<p>二代测序有两个重要特点：1．<strong>高通量</strong>，二代测序能一次并行对几十、几百万条DNA分子进行测序；2．<strong>读长短</strong>，测序过程随着读长增长，基因簇复制的协同性降低，会导致测序质量下降，二代测序的读长不超过500bp。因此基因组、宏基因组需要被打断成小片段再测序，测序完毕后再拼接。</p>
-<p>总的说来，第一代测序技术的主要特点是测序读长可达1000bp，准确性高达99.999%，但其测序成本高，通量低等方面的缺点，严重影响了其真正大规模的应用。经过不断的技术开发和改进，以Roche公司的454技术、illumina公司的Solexa，Hiseq技术和ABI公司的Solid技术为标记的第二代测序技术诞生了。第二代测序技术大大降低了测序成本的同时，还大幅提高了测序速度，并且保持了高准确性，以前完成一个人类基因组的测序需要3年时间，而使用二代测序技术则仅仅需要1周，但在序列读长方面比起第一代测序技术则要短很多。目前主流的二代测序平台是illumina，下文主要介绍illumina平台的测序原理。</p>
-<p><strong>Single-Read</strong>测序(Single-read)首先将DNA样本进行片段化处理形成200-500bp的片段，**<em>引物序列连接到DNA片段的一端**</em>，然后末端加上接头，将片段固定在flow cell上生成DNA簇，上机测序单端读取序列。该方式建库简单，操作步骤少，常用于小基因组、转录组、宏基因组测序。</p>
-<p><strong>Paired-end</strong>文库制备是指在构建待测DNA文库时在**<em>两端的接头上都加上测序引物结合位点**</em>，在第一轮测序完成后，去除第一轮测序的模板链，用对读测序模块(Paired-End Module)引导互补链在原位置再生和扩增，以达到第二轮测序所用的模板量，进行第二轮互补链的合成测序。</p>
-<p><img src="https://ss0.bdstatic.com/70cFvHSh_Q1YnxGkpoWK1HF6hhy/it/u=1022250266,1017686506&fm=26&gp=0.jpg" alt="hiseq3000"></p>
-<h2 id="第一步：-构建DNA文库"><a href="#第一步：-构建DNA文库" class="headerlink" title="第一步： 构建DNA文库"></a>第一步： 构建DNA文库</h2><p>利用超声波把待测的DNA样本打断成小片段，目前除了组装之外和一些其他的特殊要求之外，主要是打断成200-500bp长的序列片段，并在这些小片段的两端添加上不同的接头，构建出单链DNA文库。</p>
-<p>1．末端修饰。打断的片段是随机断裂，其末端可能是不平的。因此，建库第一步是补齐不平的末端。补平之后，需要在3’端加A碱基</p>
-<img src="/2020/10/04/%E4%BA%8C%E4%BB%A3%E6%B5%8B%E5%BA%8F/7eef8f255f0e7cd185253634.jpg" class>
+    <title>三代测序</title>
+    <url>/2020/10/06/%E4%B8%89%E4%BB%A3%E6%B5%8B%E5%BA%8F/</url>
+    <content><![CDATA[<p>三代测序是指单分子测序技术（Single Molecule Real- Time, SMRT），在测序过程中不需要涉及PCR扩增，不仅实现了每一条DNA分子的单独测序，并且避免了潜在的PCR扩增错误和偏好性。<br>目前，三代测序技术原理分为单分子荧光测序和纳米孔测序两大阵营，其代表公司分别为Pacific Bioscience和Oxford Nanopore Technologies。现在市场接受度和使用度最高的是Pacific Bioscience三代测序仪，其SMRT技术建立在两项革命性的发明基础之上，从而克服了测序领域的重大挑战。</p>
+<h1 id="一-PacBio单分子荧光测序"><a href="#一-PacBio单分子荧光测序" class="headerlink" title="一.PacBio单分子荧光测序"></a>一.PacBio单分子荧光测序</h1><h2 id="一-基本原理"><a href="#一-基本原理" class="headerlink" title="一.基本原理"></a>一.基本原理</h2><p>第一大阵营是单分子荧光测序，代表性的技术为美国螺旋生物(Helicos)的SMS技术和美国太平洋生物(Pacific Bioscience)的SMRT技术。脱氧核苷酸用荧光标记，显微镜可以实时记录荧光的强度变化。当荧光标记的脱氧核苷酸被掺入DNA链的时候，它的荧光就同时能在DNA链上探测到。当它与DNA链形成化学键的时候，它的荧光基团就被DNA聚合酶切除，荧光消失。这种荧光标记的脱氧核苷酸不会影响DNA聚合酶的活性，并且在荧光被切除之后，合成的DNA链和天然的DNA链完全一样。</p>
+<p><img src="https://ss0.bdstatic.com/70cFuHSh_Q1YnxGkpoWK1HF6hhy/it/u=3727862966,3282114570&fm=26&gp=0.jpg"></p>
+<p>第一，<strong>零模波导孔技术</strong>（Zero-Mode Waveguides，ZMWs）让光只能照亮固定了单个DNA聚合酶／模板分子的纳米孔底部。</p>
+<p>因为在显微镜实时记录DNA链上的荧光的时候，DNA链周围的众多的荧光标记的脱氧核苷酸形成了非常强大的荧光背景。这种强大的荧光背景使单分子的荧光探测成为不可能。Pacific Biosciences公司发明了一种直径只有几十纳米的纳米孔[zero-mode waveguides (ZMWs)]（零模波导孔），单分子的DNA聚合酶被固定在这个孔内。在这么小的孔内，DNA链周围的荧光标记的脱氧核苷酸有限，而且由于A，T，C，G这四种荧光标记的脱氧核苷酸非常快速地从外面进入到孔内又出去，它们形成了非常稳定的背景荧光信号。而当某一种荧光标记的脱氧核苷酸被掺入到DNA链时，这种特定颜色的荧光会持续一小段时间，直到新的化学键形成，荧光基团被DNA聚合酶切除为止。</p>
+<p>第二，<strong>不同荧光分子标记核苷酸磷酸基团</strong>可帮助固定的DNA聚合酶完成一个全天然的DNA链合成过程。</p>
+<p><em>PacBio</em>的测序实现中,<em>创造性</em>地<em>将不同荧光分子标记在</em>了各种碱基类型磷酸基团上,<em>标记在磷酸基团上</em>的荧光分子可以最大限度上减少其对核酸合成过程的影响,消除测序的负面影响，从而提高测序的准确性。</p>
+<img src="/2020/10/06/%E4%B8%89%E4%BB%A3%E6%B5%8B%E5%BA%8F/20130803222640203.png" class>
 
-<img src="/2020/10/04/%E4%BA%8C%E4%BB%A3%E6%B5%8B%E5%BA%8F/7eef8f255f0e7cd185253634(1).jpg" class>
+<p>另外，可以通过检测相邻两个碱基之间的测序时间，来检测一些碱基修饰情况，既如果碱基存在修饰，则通过聚合酶时的速度会减慢，相邻两峰之间的距离增大，可以通过这个来之间检测甲基化等信息。SMRT技术的测序速度很快，每秒约10个dNTP。但是，同时其测序错误率比较高（这几乎是目前单分子测序技术的通病），达到15%,但好在它的出错是随机的，并不会像第二代测序技术那样存在测序错误的偏向，因而可以通过多次测序来进行有效的纠错。</p>
+<p>与二代测序一样，PacBio三代测序的第一步也是建库，其主要区别是建库过程不涉及PCR反应。DNA分子打断之后，经过修复、接头连接、纯化和聚合酶绑定，即可出库准备上机测序。</p>
+<h2 id="二-HIFI模式"><a href="#二-HIFI模式" class="headerlink" title="二.HIFI模式"></a>二.HIFI模式</h2><p><strong>PacBio提供高度准确的长读长的测序技术（HiFi Reads）</strong>，在读长达到15-20 kb的情况下，可提供Sanger测序相当的准确度（&gt; 99％），满足组装复杂基因组的需要，可检测从单核苷酸突变到结构变异的各种基因组变异。HiFi reads（High fidelity reads）是PacBio公司基于Sequel II平台推出的CCS（Circular Consensus Sequencing）测序模式产生的兼具长读长和高准确度的测序序列，又称CCS reads。在这种测序模式下，因酶读长（平均90-100 Kb）远大于插入片段长度（10-20 Kb），测序时，聚合酶会绕着DNA模板进行环形比对测序，使得插入片段被多次测序，产生多条subreads，来源于同一条模板链的subreads经过一致性校正，最终得到高准确度的HiFi reads，用于基因组组装。</p>
+<p><img src="http://p5.itc.cn/images01/20200529/acad15f40abe4221ac5113a0df633439.jpeg"></p>
+<h2 id="三-优势"><a href="#三-优势" class="headerlink" title="三.优势"></a>三.优势</h2><p>优势一  无需扩增，不会人为的引入突变。</p>
+<p>优势二  超长读长，平均读长可达到10 Kb，最长读长可以达到40 Kb。</p>
+<p>优势三  覆盖均匀，无GC偏好性。</p>
+<p>优势四  通过reads的自我矫正，30X以上准确率能够达到99.999%。</p>
+<p>优势五  可以直接检测到甲基化信息，同步进行表观遗传学性别识别。</p>
+<h1 id="二-纳米孔测序技术"><a href="#二-纳米孔测序技术" class="headerlink" title="二.纳米孔测序技术"></a>二.纳米孔测序技术</h1><p>第二大阵营为纳米孔测序，代表性的公司为英国牛津纳米孔公司。目前市场上广泛接受的纳米孔测序平台是Oxford Nanopore Technologies（ONT）公司的<strong>MinION</strong>，<strong>GridION X5</strong> 和 <strong>PromethION</strong> 三款不同类型测序仪。</p>
+<p><img src="http://tiramisutes.github.io/images/NANOPORE.png"></p>
+<h2 id="一-基本原理-1"><a href="#一-基本原理-1" class="headerlink" title="一.基本原理"></a>一.基本原理</h2><p>ONT测序的特点是单分子测序，测序读长长，测序速度快，测序数据实时监控，机器方便携带等。Oxford Nanopore Technologies公司所开发的纳米单分子测序技术与以往的测序技术皆不同，它是基于电信号而不是光信号的测序技术。该技术的关键之一是，他们设计了一种特殊的纳米孔，孔内共价结合有分子接头。当DNA碱基通过纳米孔时，它们使电荷发生变化，从而短暂地影响流过纳米孔的电流强度（每种碱基所影响的电流变化幅度是不同的），灵敏的电子设备检测到这些变化从而鉴定所通过的碱基。</p>
+<img src="/2020/10/06/%E4%B8%89%E4%BB%A3%E6%B5%8B%E5%BA%8F/15455040-5612ccbe31381926.webp" class>
 
-<p>2．添加接头。经过末端修饰后的DNA片段3’末端具有突出的A尾，而接头具有突出的T尾，可以使用连接酶将接头添加到DNA片段两端，形成“Y”形接头。</p>
-<img src="/2020/10/04/%E4%BA%8C%E4%BB%A3%E6%B5%8B%E5%BA%8F/7eef8f255f0e7cd185253634(2).jpg" class>
-
-<p>3．PCR扩增。添加了接头的DNA片段，可通过与接头互补的引物来扩增，富集文库</p>
-<img src="/2020/10/04/%E4%BA%8C%E4%BB%A3%E6%B5%8B%E5%BA%8F/7eef8f255f0e7cd185253634(3).jpg" class>
-
-<p><img src="https://pic3.zhimg.com/80/v2-815463cd17ad105115f6c8440c43ea66_1440w.jpg"></p>
-<p><strong>左边的是直接在fragment DNA的两端直接加上full Y-adapter</strong>, adapter中已经包括了和P5/P7 oligo互补的序列, index, 以及Read1/Read2的测序引物。</p>
-<p><strong>右边的那种是先在fragment DNA的两端加上PE adapter</strong>, 然后再引入和P5/P7 oligo互补配对的序列以及index序列。</p>
-<p><strong>一句话总结，这两种不同的indexing strategy的差别在于引入index序列的时机和方式不一样。</strong></p>
-<p>其实右边的图并不是画的特别形象，具体的的可以参看下面这张图</p>
-<p><img src="https://pic1.zhimg.com/80/v2-0abfd5500a3559cb71003b6ca4322b50_1440w.jpg"></p>
-<p>在这里我们能够清楚地看到，这种接头添加过程中，fragment DNA两端是<strong>先连上PE adapter</strong>, 然后再通过PCR引入的<strong>region complementary to P5/P7 sequence</strong>, <strong>index</strong>, and <strong>sequencing biding sites</strong>.</p>
-<p>1)P5和P7是不同的，它们分别和flowcell上的接头互补和相同。</p>
-<p>2)index1和index2也是不同的，与P5相连的是index2，与P7相连的是index1</p>
-<p>关于index，也叫barcodes，因为一个lane可以同时测多个样品，为了避免混淆样品的read products，每种样品的DNA由一种index修饰，这样测序得到的reads都是具有index标记的，在测序结果中，依据之前标签与样品的对应关系，就可以获得对应样品的数据。而这里的<strong>index1和index2是为了区分paired-end测序得到的双端reads</strong>。</p>
-<img src="/2020/10/04/%E4%BA%8C%E4%BB%A3%E6%B5%8B%E5%BA%8F/20180102102643081" class>
-
-
-
-<h2 id="第二步：桥式PCR"><a href="#第二步：桥式PCR" class="headerlink" title="第二步：桥式PCR"></a>第二步：桥式PCR</h2><p>Flowcell是用于吸附流动DNA片段的槽道，当文库建好后，这些文库中的DNA在通过flowcell的时候会随机附着在flowcell表面的lane上。每个Flowcell有8个lane，每个lane的表面都附有很多接头，这些接头能和建库过程中加在DNA片段两端的接头相互配对（这就是为什么flowcell能吸附建库后的DNA的原因），并能支持DNA在其表面进行桥式PCR的扩增。</p>
-<img src="/2020/10/04/%E4%BA%8C%E4%BB%A3%E6%B5%8B%E5%BA%8F/2018100911424515(1).jpg" class>
-
-<p>1.Flowcell上随机分布了两种不同的寡核苷酸序列，分别<strong>与P5互补（即P5’），与P7一致（即P7）</strong>。</p>
-<img src="/2020/10/04/%E4%BA%8C%E4%BB%A3%E6%B5%8B%E5%BA%8F/20180102103623636.jpg" class>
-
-<p>2.待测sequence通过P5与folwcell上的P5’序列杂交互补，以待测sequence为模板进行互补链（即reverse strand）的延伸，互补链的两端为P5’和P7’。</p>
-<img src="/2020/10/04/%E4%BA%8C%E4%BB%A3%E6%B5%8B%E5%BA%8F/20180102104221274.jpg" class>
-
-<img src="/2020/10/04/%E4%BA%8C%E4%BB%A3%E6%B5%8B%E5%BA%8F/20180102103954806.jpg" class>
-
-<p>3.通过聚合酶生成杂交片段的互补片段，然后加入NaOH碱溶液后，双链分子变性，原始模板链（左边的链）被流动池中的液体洗去</p>
-<img src="/2020/10/04/%E4%BA%8C%E4%BB%A3%E6%B5%8B%E5%BA%8F/20180102104507815.jpg" class>
-
-<p>4.加入中性液体用于中和碱溶液，Reverse strand的P7’与Flowcell上的P7杂交互补，进行链的合成，聚合酶参与下，生成互补链，最终形成双链桥,这就是我们所熟知的<strong>桥式PCR</strong></p>
-<img src="/2020/10/04/%E4%BA%8C%E4%BB%A3%E6%B5%8B%E5%BA%8F/%E6%A1%A5%E5%BC%8FPCR.PNG" class>
-
-<p>5.接下来合成的双链被解链，再分别与Flowcell上的接头杂交互补，延伸，解链，杂交，延伸，解链…如此重复35个循环</p>
-<img src="/2020/10/04/%E4%BA%8C%E4%BB%A3%E6%B5%8B%E5%BA%8F/%E6%A1%A5%E5%BC%8FPCR2.PNG" class>
-
-<p>6.桥式PCR完成后，使用NAOH将双链解链，并利用甲酰胺基嘧啶糖苷酶（Fpg）对8-氧鸟嘌呤糖苷（8-oxo-G）的选择性切断作用，选择性地将P5’与链的连接切断，<strong>留下与Flowcell上P7连接的链</strong>，也就是Forward strand。同时游离的3’端被阻断，防止不必要的DNA延伸</p>
-<img src="/2020/10/04/%E4%BA%8C%E4%BB%A3%E6%B5%8B%E5%BA%8F/20180102110455607.jpg" class>
-
-<h2 id="第三步：测序"><a href="#第三步：测序" class="headerlink" title="第三步：测序"></a>第三步：测序</h2><p>首先，在Flowcell中加入荧光标记的dNTP和酶，由引物起始开始合成子链。但是dNTP存在 3’端叠氮基会阻碍子链延伸，这使得每个循环只能测得一个碱基。合成完一个碱基后， Flowcell 通入液体洗掉多余的dNTP和酶，使用显微镜的激光扫描特征荧光信号。</p>
-<ol>
-<li><p>测序引物（sequencing primer）结合到靠近P5的测序引物结合位点1（sequencing primer binding site 1）上，在系统中加入四种dNTP和DNA聚合酶。这里的dNTP有两个特点：它是有荧光基团标记的，每种碱基标记的荧光基团不一样；它的3’末端连了一个叠氮基，这个叠氮基能够阻断后面的碱基与它相连</p>
-<img src="/2020/10/04/%E4%BA%8C%E4%BB%A3%E6%B5%8B%E5%BA%8F/20180102110709747.jpg" class>
-
-<p>因此在聚合酶的作用下，与Forward strand相应位置碱基配对的dNTP就会结合到新合成的链上，而由于叠氮基的存在，后面的dNTP无法继续连接。这时用水将剩余的dNTP和酶给冲掉，将Flowcell进行扫描，扫描出来的荧光对应的碱基的配对碱基即是该链该位置的碱基。同时在这个Flowcell上有成千上万个cluster也在进行同样的反应，因此一个循环就能同时检测多个样本（这也是高通量的核心所在）。这个循环完成后，加入化学试剂把叠氮基和标记的荧光基团切掉，进行下一个循环（碱基的连接、检测与切除）。如此重复直至所有链的碱基序列被检测出，也就是Forward read 序列。</p>
-<img src="/2020/10/04/%E4%BA%8C%E4%BB%A3%E6%B5%8B%E5%BA%8F/20180102110801150.jpg" class>
-
-</li>
-</ol>
-<p>2.Index测序：所有循环结束后，read products 被洗掉，index1 primer与链上index primer1 结合位点杂交配对，进行index1的合成及检测</p>
-<img src="/2020/10/04/%E4%BA%8C%E4%BB%A3%E6%B5%8B%E5%BA%8F/20180102111207627.jpg" class>
-
-<p>3.Index1测序完成后，洗脱测序产物。此时机器已通过荧光得到了index1的序列</p>
-<img src="/2020/10/04/%E4%BA%8C%E4%BB%A3%E6%B5%8B%E5%BA%8F/20180102111345135.jpg" class>
-
-<p>4.Index2测序：Forward strand顶端的P5序列与Flowcell上的P5’杂交配对，进行index2测序。测序完成后洗脱产物</p>
-<img src="/2020/10/04/%E4%BA%8C%E4%BB%A3%E6%B5%8B%E5%BA%8F/20180102121740290.jpg" class>
-
-<img src="/2020/10/04/%E4%BA%8C%E4%BB%A3%E6%B5%8B%E5%BA%8F/20180102121753750.jpg" class>
-
-<p><strong>Paried-end sequencing（即对Reverse strand测序）</strong></p>
-<p>Paired-end测序已经是现在的主流，它提高了测序长度的同时，又可以为结构变异分析提供新方法。要完成双末端测序，首先要将模板链3’去保护，模板折叠，index片段引入</p>
-<p>1.洗脱index2测序产物后，以Flowcell上的P5’为引物，Forward strand为模板进行桥式扩增，得到双链</p>
-<img src="/2020/10/04/%E4%BA%8C%E4%BB%A3%E6%B5%8B%E5%BA%8F/20180102122603418.jpg" class>
-
-<p>2.NAOH使双链变性为单链，并洗去已经测序完成的Forward strand</p>
-<img src="/2020/10/04/%E4%BA%8C%E4%BB%A3%E6%B5%8B%E5%BA%8F/20180102122804843.jpg" class>
-
-<img src="/2020/10/04/%E4%BA%8C%E4%BB%A3%E6%B5%8B%E5%BA%8F/20180102122822016.jpg" class>
-
-<p>3.类似的，readprimer2结合到靠近P7’的read primer binding site 2开始对Reverse strand的测序。测序完成后即可得到Reverse read序列。</p>
-<img src="/2020/10/04/%E4%BA%8C%E4%BB%A3%E6%B5%8B%E5%BA%8F/20180102123012562.jpg" class>
-
-<p>荧光发射波长与信号强度一起决定了碱基的读出，所有的DNA片段的一个碱基会被同时读取。在大规模并行的过程中，机器读取的图像类似下面这样</p>
-<p><img src="https://imgconvert.csdnimg.cn/aHR0cDovL2JhaW1vYy56aXB0b3AudG9wL2Jsb2cvMjAxODEyMjcvcDZoU3JVY2NNbE9hLnBuZw?x-oss-process=image/format,png"></p>
-<p>加入化学试剂将叠氮基团与荧光基团切除，然后 Flowcell 再通入荧光标记的dNTP和酶，由引物起始开始合成一个碱基。不断重复这个过程，完成第一次读取</p>
-<h2 id="引用"><a href="#引用" class="headerlink" title="引用"></a>引用</h2><p>1.<a href="https://zhuanlan.zhihu.com/p/35278810">测序之前篇： NGS测序中，接头是如何添加上的，以及如何去接头</a></p>
-<p>2.<a href="https://blog.csdn.net/u011262253/article/details/102525491">二代测序原理（Illumina）</a></p>
-<p>3.<a href="https://wenku.baidu.com/view/6aa1c0e1a55177232f60ddccda38376bae1fe042.html">二代测序文库构建</a></p>
-<p>4.<a href="https://blog.csdn.net/sixu_9days/article/details/78948914">illumina SBS测序详解</a></p>
+<h2 id="二-相对于其他NGS测序平台的优势"><a href="#二-相对于其他NGS测序平台的优势" class="headerlink" title="二.相对于其他NGS测序平台的优势"></a>二.相对于其他NGS测序平台的优势</h2><p>1、碱基修饰的检测</p>
+<p>它能够直接读取出甲基化的胞嘧啶，而不必像传统方法那样对基因组进行bisulfite处理。这对于在基因组水平直接研究表观遗传相关现象有极大的帮助。并且改方法的测序准确性可达99.8%，而且一旦发现测序错误也能较容易地进行纠正。</p>
+<p>2、实时测序监控</p>
+<p>对于临床实践，实时获取和分析DNA/RNA序列是一件很重要的事情。对于传统的NGS测序，做到这一点非常不易。但对于MinION，实现起来相对容易。这不仅是因为MinION体积小，易操作等，更是因为在测序过程中单分子穿过纳米孔，其电流变化可以检测并识别，这种设计允许用户在测序过程中根据实时结果做出一些判断。与在运行结束时批量交付数据的传统测序技术不同，纳米孔技术提供的是动态、实时的测序，支持在几分钟内就获得病原体鉴定等时间关键型应用的检测结果。用户可以在测序早期了解样本的质量和状态，也可以在获得足够的数据后停止测序。快速的采样到结果周转时间在未来感染性疾病、实地动态监测疫情爆发以及其它诊断方面具有巨大潜力。</p>
+<p>3.长读长</p>
+<p>读长很长，大约在几十kb，甚至100 kb;错误率目前介于1%至4%，且是随机错误，而不是聚集在读取的两端;数据可实时读取;通量很高(30x人类基因组有望在一天内完成);起始DNA在测序过程中不被破坏;以及样品制备简单又便宜。理论上，它也能直接测序RNA。</p>
+<h1 id="引用"><a href="#引用" class="headerlink" title="引用"></a>引用</h1><p>1.<a href="https://blog.csdn.net/weixin_30614109/article/details/96585876">纳米孔测序技术介绍</a></p>
+<p>2.<a href="https://blog.csdn.net/ugfdfgg/article/details/83536063">三代基因组测序技术原理简介</a></p>
+<p>3.<a href="https://www.jianshu.com/p/15dd0baca47c">三代测序入门</a></p>
 ]]></content>
       <categories>
         <category>测序原理</category>
@@ -322,6 +215,113 @@
       </tags>
   </entry>
   <entry>
+    <title>二代测序</title>
+    <url>/2020/10/04/%E4%BA%8C%E4%BB%A3%E6%B5%8B%E5%BA%8F/</url>
+    <content><![CDATA[<p>第二代测序（Next-generation sequencing，NGS）又称为高通量测序，其开创性的引入了可逆终止末端，从而实现边合成边测序，在DNA复制过程中通过捕捉新添加的碱基所携带的特殊标记来确定DNA序列。</p>
+<p>二代测序有两个重要特点：1．<strong>高通量</strong>，二代测序能一次并行对几十、几百万条DNA分子进行测序；2．<strong>读长短</strong>，测序过程随着读长增长，基因簇复制的协同性降低，会导致测序质量下降，二代测序的读长不超过500bp。因此基因组、宏基因组需要被打断成小片段再测序，测序完毕后再拼接。</p>
+<p>总的说来，第一代测序技术的主要特点是测序读长可达1000bp，准确性高达99.999%，但其测序成本高，通量低等方面的缺点，严重影响了其真正大规模的应用。经过不断的技术开发和改进，以Roche公司的454技术、illumina公司的Solexa，Hiseq技术和ABI公司的Solid技术为标记的第二代测序技术诞生了。第二代测序技术大大降低了测序成本的同时，还大幅提高了测序速度，并且保持了高准确性，以前完成一个人类基因组的测序需要3年时间，而使用二代测序技术则仅仅需要1周，但在序列读长方面比起第一代测序技术则要短很多。目前主流的二代测序平台是illumina，下文主要介绍illumina平台的测序原理。</p>
+<p><strong>Single-Read</strong>测序(Single-read)首先将DNA样本进行片段化处理形成200-500bp的片段，**<em>引物序列连接到DNA片段的一端**</em>，然后末端加上接头，将片段固定在flow cell上生成DNA簇，上机测序单端读取序列。该方式建库简单，操作步骤少，常用于小基因组、转录组、宏基因组测序。</p>
+<p><strong>Paired-end</strong>文库制备是指在构建待测DNA文库时在**<em>两端的接头上都加上测序引物结合位点**</em>，在第一轮测序完成后，去除第一轮测序的模板链，用对读测序模块(Paired-End Module)引导互补链在原位置再生和扩增，以达到第二轮测序所用的模板量，进行第二轮互补链的合成测序。</p>
+<p><img src="https://ss0.bdstatic.com/70cFvHSh_Q1YnxGkpoWK1HF6hhy/it/u=1022250266,1017686506&fm=26&gp=0.jpg" alt="hiseq3000"></p>
+<h2 id="第一步：-构建DNA文库"><a href="#第一步：-构建DNA文库" class="headerlink" title="第一步： 构建DNA文库"></a>第一步： 构建DNA文库</h2><p>利用超声波把待测的DNA样本打断成小片段，目前除了组装之外和一些其他的特殊要求之外，主要是打断成200-500bp长的序列片段，并在这些小片段的两端添加上不同的接头，构建出单链DNA文库。</p>
+<p>1．末端修饰。打断的片段是随机断裂，其末端可能是不平的。因此，建库第一步是补齐不平的末端。补平之后，需要在3’端加A碱基</p>
+<img src="/2020/10/04/%E4%BA%8C%E4%BB%A3%E6%B5%8B%E5%BA%8F/7eef8f255f0e7cd185253634.jpg" class>
+
+<img src="/2020/10/04/%E4%BA%8C%E4%BB%A3%E6%B5%8B%E5%BA%8F/7eef8f255f0e7cd185253634(1).jpg" class>
+
+<p>2．添加接头。经过末端修饰后的DNA片段3’末端具有突出的A尾，而接头具有突出的T尾，可以使用连接酶将接头添加到DNA片段两端，形成“Y”形接头。</p>
+<img src="/2020/10/04/%E4%BA%8C%E4%BB%A3%E6%B5%8B%E5%BA%8F/7eef8f255f0e7cd185253634(2).jpg" class>
+
+<p>3．PCR扩增。添加了接头的DNA片段，可通过与接头互补的引物来扩增，富集文库</p>
+<img src="/2020/10/04/%E4%BA%8C%E4%BB%A3%E6%B5%8B%E5%BA%8F/7eef8f255f0e7cd185253634(3).jpg" class>
+
+<p><img src="https://pic3.zhimg.com/80/v2-815463cd17ad105115f6c8440c43ea66_1440w.jpg"></p>
+<p><strong>左边的是直接在fragment DNA的两端直接加上full Y-adapter</strong>, adapter中已经包括了和P5/P7 oligo互补的序列, index, 以及Read1/Read2的测序引物。</p>
+<p><strong>右边的那种是先在fragment DNA的两端加上PE adapter</strong>, 然后再引入和P5/P7 oligo互补配对的序列以及index序列。</p>
+<p><strong>一句话总结，这两种不同的indexing strategy的差别在于引入index序列的时机和方式不一样。</strong></p>
+<p>其实右边的图并不是画的特别形象，具体的的可以参看下面这张图</p>
+<p><img src="https://pic1.zhimg.com/80/v2-0abfd5500a3559cb71003b6ca4322b50_1440w.jpg"></p>
+<p>在这里我们能够清楚地看到，这种接头添加过程中，fragment DNA两端是<strong>先连上PE adapter</strong>, 然后再通过PCR引入的<strong>region complementary to P5/P7 sequence</strong>, <strong>index</strong>, and <strong>sequencing biding sites</strong>.</p>
+<p>1)P5和P7是不同的，它们分别和flowcell上的接头互补和相同。</p>
+<p>2)index1和index2也是不同的，与P5相连的是index2，与P7相连的是index1</p>
+<p>关于index，也叫barcodes，因为一个lane可以同时测多个样品，为了避免混淆样品的read products，每种样品的DNA由一种index修饰，这样测序得到的reads都是具有index标记的，在测序结果中，依据之前标签与样品的对应关系，就可以获得对应样品的数据。而这里的<strong>index1和index2是为了区分paired-end测序得到的双端reads</strong>。</p>
+<img src="/2020/10/04/%E4%BA%8C%E4%BB%A3%E6%B5%8B%E5%BA%8F/20180102102643081" class>
+
+
+
+<h2 id="第二步：桥式PCR"><a href="#第二步：桥式PCR" class="headerlink" title="第二步：桥式PCR"></a>第二步：桥式PCR</h2><p>Flowcell是用于吸附流动DNA片段的槽道，当文库建好后，这些文库中的DNA在通过flowcell的时候会随机附着在flowcell表面的lane上。每个Flowcell有8个lane，每个lane的表面都附有很多接头，这些接头能和建库过程中加在DNA片段两端的接头相互配对（这就是为什么flowcell能吸附建库后的DNA的原因），并能支持DNA在其表面进行桥式PCR的扩增。</p>
+<img src="/2020/10/04/%E4%BA%8C%E4%BB%A3%E6%B5%8B%E5%BA%8F/2018100911424515(1).jpg" class>
+
+<p>1.Flowcell上随机分布了两种不同的寡核苷酸序列，分别<strong>与P5互补（即P5’），与P7一致（即P7）</strong>。</p>
+<img src="/2020/10/04/%E4%BA%8C%E4%BB%A3%E6%B5%8B%E5%BA%8F/20180102103623636.jpg" class>
+
+<p>2.待测sequence通过P5与folwcell上的P5’序列杂交互补，以待测sequence为模板进行互补链（即reverse strand）的延伸，互补链的两端为P5’和P7’。</p>
+<img src="/2020/10/04/%E4%BA%8C%E4%BB%A3%E6%B5%8B%E5%BA%8F/20180102104221274.jpg" class>
+
+<img src="/2020/10/04/%E4%BA%8C%E4%BB%A3%E6%B5%8B%E5%BA%8F/20180102103954806.jpg" class>
+
+<p>3.通过聚合酶生成杂交片段的互补片段，然后加入NaOH碱溶液后，双链分子变性，原始模板链（左边的链）被流动池中的液体洗去</p>
+<img src="/2020/10/04/%E4%BA%8C%E4%BB%A3%E6%B5%8B%E5%BA%8F/20180102104507815.jpg" class>
+
+<p>4.加入中性液体用于中和碱溶液，Reverse strand的P7’与Flowcell上的P7杂交互补，进行链的合成，聚合酶参与下，生成互补链，最终形成双链桥,这就是我们所熟知的<strong>桥式PCR</strong></p>
+<img src="/2020/10/04/%E4%BA%8C%E4%BB%A3%E6%B5%8B%E5%BA%8F/%E6%A1%A5%E5%BC%8FPCR.PNG" class>
+
+<p>5.接下来合成的双链被解链，再分别与Flowcell上的接头杂交互补，延伸，解链，杂交，延伸，解链…如此重复35个循环</p>
+<img src="/2020/10/04/%E4%BA%8C%E4%BB%A3%E6%B5%8B%E5%BA%8F/%E6%A1%A5%E5%BC%8FPCR2.PNG" class>
+
+<p>6.桥式PCR完成后，使用NAOH将双链解链，并利用甲酰胺基嘧啶糖苷酶（Fpg）对8-氧鸟嘌呤糖苷（8-oxo-G）的选择性切断作用，选择性地将P5’与链的连接切断，<strong>留下与Flowcell上P7连接的链</strong>，也就是Forward strand。同时游离的3’端被阻断，防止不必要的DNA延伸</p>
+<img src="/2020/10/04/%E4%BA%8C%E4%BB%A3%E6%B5%8B%E5%BA%8F/20180102110455607.jpg" class>
+
+<h2 id="第三步：测序"><a href="#第三步：测序" class="headerlink" title="第三步：测序"></a>第三步：测序</h2><p>首先，在Flowcell中加入荧光标记的dNTP和酶，由引物起始开始合成子链。但是dNTP存在 3’端叠氮基会阻碍子链延伸，这使得每个循环只能测得一个碱基。合成完一个碱基后， Flowcell 通入液体洗掉多余的dNTP和酶，使用显微镜的激光扫描特征荧光信号。</p>
+<ol>
+<li><p>测序引物（sequencing primer）结合到靠近P5的测序引物结合位点1（sequencing primer binding site 1）上，在系统中加入四种dNTP和DNA聚合酶。这里的dNTP有两个特点：它是有荧光基团标记的，每种碱基标记的荧光基团不一样；它的3’末端连了一个叠氮基，这个叠氮基能够阻断后面的碱基与它相连</p>
+<img src="/2020/10/04/%E4%BA%8C%E4%BB%A3%E6%B5%8B%E5%BA%8F/20180102110709747.jpg" class>
+
+<p>因此在聚合酶的作用下，与Forward strand相应位置碱基配对的dNTP就会结合到新合成的链上，而由于叠氮基的存在，后面的dNTP无法继续连接。这时用水将剩余的dNTP和酶给冲掉，将Flowcell进行扫描，扫描出来的荧光对应的碱基的配对碱基即是该链该位置的碱基。同时在这个Flowcell上有成千上万个cluster也在进行同样的反应，因此一个循环就能同时检测多个样本（这也是高通量的核心所在）。这个循环完成后，加入化学试剂把叠氮基和标记的荧光基团切掉，进行下一个循环（碱基的连接、检测与切除）。如此重复直至所有链的碱基序列被检测出，也就是Forward read 序列。</p>
+<img src="/2020/10/04/%E4%BA%8C%E4%BB%A3%E6%B5%8B%E5%BA%8F/20180102110801150.jpg" class>
+
+</li>
+</ol>
+<p>2.Index测序：所有循环结束后，read products 被洗掉，index1 primer与链上index primer1 结合位点杂交配对，进行index1的合成及检测</p>
+<img src="/2020/10/04/%E4%BA%8C%E4%BB%A3%E6%B5%8B%E5%BA%8F/20180102111207627.jpg" class>
+
+<p>3.Index1测序完成后，洗脱测序产物。此时机器已通过荧光得到了index1的序列</p>
+<img src="/2020/10/04/%E4%BA%8C%E4%BB%A3%E6%B5%8B%E5%BA%8F/20180102111345135.jpg" class>
+
+<p>4.Index2测序：Forward strand顶端的P5序列与Flowcell上的P5’杂交配对，进行index2测序。测序完成后洗脱产物</p>
+<img src="/2020/10/04/%E4%BA%8C%E4%BB%A3%E6%B5%8B%E5%BA%8F/20180102121740290.jpg" class>
+
+<img src="/2020/10/04/%E4%BA%8C%E4%BB%A3%E6%B5%8B%E5%BA%8F/20180102121753750.jpg" class>
+
+<p><strong>Paried-end sequencing（即对Reverse strand测序）</strong></p>
+<p>Paired-end测序已经是现在的主流，它提高了测序长度的同时，又可以为结构变异分析提供新方法。要完成双末端测序，首先要将模板链3’去保护，模板折叠，index片段引入</p>
+<p>1.洗脱index2测序产物后，以Flowcell上的P5’为引物，Forward strand为模板进行桥式扩增，得到双链</p>
+<img src="/2020/10/04/%E4%BA%8C%E4%BB%A3%E6%B5%8B%E5%BA%8F/20180102122603418.jpg" class>
+
+<p>2.NAOH使双链变性为单链，并洗去已经测序完成的Forward strand</p>
+<img src="/2020/10/04/%E4%BA%8C%E4%BB%A3%E6%B5%8B%E5%BA%8F/20180102122804843.jpg" class>
+
+<img src="/2020/10/04/%E4%BA%8C%E4%BB%A3%E6%B5%8B%E5%BA%8F/20180102122822016.jpg" class>
+
+<p>3.类似的，readprimer2结合到靠近P7’的read primer binding site 2开始对Reverse strand的测序。测序完成后即可得到Reverse read序列。</p>
+<img src="/2020/10/04/%E4%BA%8C%E4%BB%A3%E6%B5%8B%E5%BA%8F/20180102123012562.jpg" class>
+
+<p>荧光发射波长与信号强度一起决定了碱基的读出，所有的DNA片段的一个碱基会被同时读取。在大规模并行的过程中，机器读取的图像类似下面这样</p>
+<p><img src="https://imgconvert.csdnimg.cn/aHR0cDovL2JhaW1vYy56aXB0b3AudG9wL2Jsb2cvMjAxODEyMjcvcDZoU3JVY2NNbE9hLnBuZw?x-oss-process=image/format,png"></p>
+<p>加入化学试剂将叠氮基团与荧光基团切除，然后 Flowcell 再通入荧光标记的dNTP和酶，由引物起始开始合成一个碱基。不断重复这个过程，完成第一次读取</p>
+<h2 id="引用"><a href="#引用" class="headerlink" title="引用"></a>引用</h2><p>1.<a href="https://zhuanlan.zhihu.com/p/35278810">测序之前篇： NGS测序中，接头是如何添加上的，以及如何去接头</a></p>
+<p>2.<a href="https://blog.csdn.net/u011262253/article/details/102525491">二代测序原理（Illumina）</a></p>
+<p>3.<a href="https://wenku.baidu.com/view/6aa1c0e1a55177232f60ddccda38376bae1fe042.html">二代测序文库构建</a></p>
+<p>4.<a href="https://blog.csdn.net/sixu_9days/article/details/78948914">illumina SBS测序详解</a></p>
+]]></content>
+      <categories>
+        <category>测序原理</category>
+      </categories>
+      <tags>
+        <tag>-测序原理</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>RNA-seq第二部分（基因组序列下载，注释文件下载）</title>
     <url>/2020/10/06/%E8%BD%AC%E5%BD%95%E7%BB%842/</url>
     <content><![CDATA[<p>ucsc下载基因组及GTF注释文件是较为简单且常用的，推荐使用ucsc下载。</p>
@@ -330,10 +330,10 @@
 <p>1).NCBI （<a href="https://link.zhihu.com/?target=https://www.ncbi.nlm.nih.gov/grc">https://www.ncbi.nlm.nih.gov/grc</a>）</p>
 <p>2).UCSC (<a href="https://link.zhihu.com/?target=http://hgdownload.soe.ucsc.edu/downloads.html">http://hgdownload.soe.ucsc.edu/downloads.html</a>)</p>
 <p>3).Ensemble （<a href="https://link.zhihu.com/?target=http://asia.ensembl.org/index.html?redirect=no">http://asia.ensembl.org/index.html?redirect=no</a>）</p>
-<h2 id="2-UCSC下载人类hg19参考基因组"><a href="#2-UCSC下载人类hg19参考基因组" class="headerlink" title="2.UCSC下载人类hg19参考基因组"></a>2.UCSC下载人类hg19参考基因组</h2><h5 id="2-1-chromFa-tar-gz"><a href="#2-1-chromFa-tar-gz" class="headerlink" title="2.1 chromFa.tar.gz"></a>2.1 chromFa.tar.gz</h5><blockquote>
+<h2 id="2-UCSC下载人类hg19参考基因组"><a href="#2-UCSC下载人类hg19参考基因组" class="headerlink" title="2.UCSC下载人类hg19参考基因组"></a>2.UCSC下载人类hg19参考基因组</h2><h3 id="2-1-chromFa-tar-gz"><a href="#2-1-chromFa-tar-gz" class="headerlink" title="2.1 chromFa.tar.gz"></a>2.1 chromFa.tar.gz</h3><blockquote>
 <p>chromFa.tar.gz - The assembly sequence in one file per chromosome.Repeats from RepeatMasker and Tandem Repeats Finder (with period of 12 or less) are shown in lower case; non-repeating sequence is shown in upper case.<br> 每个染色体一个文件中的装配顺序。RepeatMasker和Tandem Repeats Finder的重复（周期为12或更短）以小写形式显示； 大写显示非重复序列。</p>
 </blockquote>
-<h5 id="2-2-UCSC参考基因组下载链接"><a href="#2-2-UCSC参考基因组下载链接" class="headerlink" title="2.2 UCSC参考基因组下载链接"></a>2.2 UCSC参考基因组下载链接</h5><p>hg19：<a href="https://links.jianshu.com/go?to=http://hgdownload.soe.ucsc.edu/goldenPath/hg19/bigZips/chromFa.tar.gz">http://hgdownload.soe.ucsc.edu/goldenPath/hg19/bigZips/chromFa.tar.gz</a><br>hg38：<a href="https://links.jianshu.com/go?to=http://hgdownload.soe.ucsc.edu/goldenPath/hg38/bigZips/hg38.chromFa.tar.gz">http://hgdownload.soe.ucsc.edu/goldenPath/hg38/bigZips/hg38.chromFa.tar.gz</a></p>
+<h3 id="2-2-UCSC参考基因组下载链接"><a href="#2-2-UCSC参考基因组下载链接" class="headerlink" title="2.2 UCSC参考基因组下载链接"></a>2.2 UCSC参考基因组下载链接</h3><p>hg19：<a href="https://links.jianshu.com/go?to=http://hgdownload.soe.ucsc.edu/goldenPath/hg19/bigZips/chromFa.tar.gz">http://hgdownload.soe.ucsc.edu/goldenPath/hg19/bigZips/chromFa.tar.gz</a><br>hg38：<a href="https://links.jianshu.com/go?to=http://hgdownload.soe.ucsc.edu/goldenPath/hg38/bigZips/hg38.chromFa.tar.gz">http://hgdownload.soe.ucsc.edu/goldenPath/hg38/bigZips/hg38.chromFa.tar.gz</a></p>
 <p>human的genome从UCSC上下载很方便，一般只用考虑拼装好的染色体上的内容即可，其他的scafold可以不考虑即 chr1~22 and chrX,Y,M, chrM是线粒体DNA</p>
 <p>将hg19链接复制到迅雷下载并上传到服务器</p>
 <figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">tar -zvfx chromFa.tar.gz#hg19的解压生成不同染色体的文件</span><br><span class="line">cat *.fa &gt; hg19.fa #对解压后的.fa文件进行合并，把所有染色体信息整合到一个文件</span><br><span class="line">rm -rf chr* #删除单独的染色体文件</span><br></pre></td></tr></table></figure>

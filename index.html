@@ -204,7 +204,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-10-07 09:22:56" itemprop="dateModified" datetime="2020-10-07T09:22:56+08:00">2020-10-07</time>
+                <time title="修改时间：2020-10-07 09:27:18" itemprop="dateModified" datetime="2020-10-07T09:27:18+08:00">2020-10-07</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -259,10 +259,10 @@
 <p>1).NCBI （<a href="https://link.zhihu.com/?target=https://www.ncbi.nlm.nih.gov/grc">https://www.ncbi.nlm.nih.gov/grc</a>）</p>
 <p>2).UCSC (<a href="https://link.zhihu.com/?target=http://hgdownload.soe.ucsc.edu/downloads.html">http://hgdownload.soe.ucsc.edu/downloads.html</a>)</p>
 <p>3).Ensemble （<a href="https://link.zhihu.com/?target=http://asia.ensembl.org/index.html?redirect=no">http://asia.ensembl.org/index.html?redirect=no</a>）</p>
-<h2 id="2-UCSC下载人类hg19参考基因组"><a href="#2-UCSC下载人类hg19参考基因组" class="headerlink" title="2.UCSC下载人类hg19参考基因组"></a>2.UCSC下载人类hg19参考基因组</h2><h5 id="2-1-chromFa-tar-gz"><a href="#2-1-chromFa-tar-gz" class="headerlink" title="2.1 chromFa.tar.gz"></a>2.1 chromFa.tar.gz</h5><blockquote>
+<h2 id="2-UCSC下载人类hg19参考基因组"><a href="#2-UCSC下载人类hg19参考基因组" class="headerlink" title="2.UCSC下载人类hg19参考基因组"></a>2.UCSC下载人类hg19参考基因组</h2><h3 id="2-1-chromFa-tar-gz"><a href="#2-1-chromFa-tar-gz" class="headerlink" title="2.1 chromFa.tar.gz"></a>2.1 chromFa.tar.gz</h3><blockquote>
 <p>chromFa.tar.gz - The assembly sequence in one file per chromosome.Repeats from RepeatMasker and Tandem Repeats Finder (with period of 12 or less) are shown in lower case; non-repeating sequence is shown in upper case.<br> 每个染色体一个文件中的装配顺序。RepeatMasker和Tandem Repeats Finder的重复（周期为12或更短）以小写形式显示； 大写显示非重复序列。</p>
 </blockquote>
-<h5 id="2-2-UCSC参考基因组下载链接"><a href="#2-2-UCSC参考基因组下载链接" class="headerlink" title="2.2 UCSC参考基因组下载链接"></a>2.2 UCSC参考基因组下载链接</h5><p>hg19：<a target="_blank" rel="noopener" href="https://links.jianshu.com/go?to=http://hgdownload.soe.ucsc.edu/goldenPath/hg19/bigZips/chromFa.tar.gz">http://hgdownload.soe.ucsc.edu/goldenPath/hg19/bigZips/chromFa.tar.gz</a><br>hg38：<a target="_blank" rel="noopener" href="https://links.jianshu.com/go?to=http://hgdownload.soe.ucsc.edu/goldenPath/hg38/bigZips/hg38.chromFa.tar.gz">http://hgdownload.soe.ucsc.edu/goldenPath/hg38/bigZips/hg38.chromFa.tar.gz</a></p>
+<h3 id="2-2-UCSC参考基因组下载链接"><a href="#2-2-UCSC参考基因组下载链接" class="headerlink" title="2.2 UCSC参考基因组下载链接"></a>2.2 UCSC参考基因组下载链接</h3><p>hg19：<a target="_blank" rel="noopener" href="https://links.jianshu.com/go?to=http://hgdownload.soe.ucsc.edu/goldenPath/hg19/bigZips/chromFa.tar.gz">http://hgdownload.soe.ucsc.edu/goldenPath/hg19/bigZips/chromFa.tar.gz</a><br>hg38：<a target="_blank" rel="noopener" href="https://links.jianshu.com/go?to=http://hgdownload.soe.ucsc.edu/goldenPath/hg38/bigZips/hg38.chromFa.tar.gz">http://hgdownload.soe.ucsc.edu/goldenPath/hg38/bigZips/hg38.chromFa.tar.gz</a></p>
 <p>human的genome从UCSC上下载很方便，一般只用考虑拼装好的染色体上的内容即可，其他的scafold可以不考虑即 chr1~22 and chrX,Y,M, chrM是线粒体DNA</p>
 <p>将hg19链接复制到迅雷下载并上传到服务器</p>
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">tar -zvfx chromFa.tar.gz#hg19的解压生成不同染色体的文件</span><br><span class="line">cat *.fa &gt; hg19.fa #对解压后的.fa文件进行合并，把所有染色体信息整合到一个文件</span><br><span class="line">rm -rf chr* #删除单独的染色体文件</span><br></pre></td></tr></table></figure>
