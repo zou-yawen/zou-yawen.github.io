@@ -1,0 +1,838 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="google-site-verification" content="sJ4ClziWGfZj4sSky9RQA_JbT7FoBV63Y5AlxqvUCQ4" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.2.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+  <link rel="stylesheet" href="/lib/pace/pace-theme-center-atom.min.css">
+  <script src="/lib/pace/pace.min.js"></script>
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"example.com","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":null},"back2top":{"enable":false,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":null,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="1.读取各个样本的矩阵数据合并12345678910111213141516171819202122232425262728293031323334353637383940414243444546474849505152535455565758596061options(stringsAsFactors &#x3D; FALSE)#用read.table和其衍生品比如read.csv read.delim,">
+<meta property="og:type" content="article">
+<meta property="og:title" content="RNA-seq R语言部分（表达矩阵合并及id转换）">
+<meta property="og:url" content="http://example.com/2020/10/09/%E8%BD%AC%E5%BD%95%E7%BB%844/index.html">
+<meta property="og:site_name" content="zero">
+<meta property="og:description" content="1.读取各个样本的矩阵数据合并12345678910111213141516171819202122232425262728293031323334353637383940414243444546474849505152535455565758596061options(stringsAsFactors &#x3D; FALSE)#用read.table和其衍生品比如read.csv read.delim,">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2020-10-09T11:44:14.000Z">
+<meta property="article:modified_time" content="2020-10-10T00:33:59.898Z">
+<meta property="article:author" content="Zou">
+<meta property="article:tag" content="-转录组">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="http://example.com/2020/10/09/%E8%BD%AC%E5%BD%95%E7%BB%844/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+<link rel="stylesheet" type="text/css" href="/css/injector.css" />
+  <title>RNA-seq R语言部分（表达矩阵合并及id转换） | zero</title>
+  
+    <script async src="https://www.googletagmanager.com/gtag/js?id=179475982-1"></script>
+    <script>
+      if (CONFIG.hostname === location.hostname) {
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', '179475982-1');
+      }
+    </script>
+
+
+  <script>
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?6464895b8e8b5662096ffbf3aa270de5";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+<link rel="alternate" href="/atom.xml" title="zero" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+	
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">zero</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2020/10/09/%E8%BD%AC%E5%BD%95%E7%BB%844/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="https://ss0.bdstatic.com/70cFvHSh_Q1YnxGkpoWK1HF6hhy/it/u=404501654,960623944&fm=26&gp=0.jpg">
+      <meta itemprop="name" content="Zou">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="zero">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          RNA-seq R语言部分（表达矩阵合并及id转换）
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2020-10-09 19:44:14" itemprop="dateCreated datePublished" datetime="2020-10-09T19:44:14+08:00">2020-10-09</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2020-10-10 08:33:59" itemprop="dateModified" datetime="2020-10-10T08:33:59+08:00">2020-10-10</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E8%BD%AC%E5%BD%95%E7%BB%84/" itemprop="url" rel="index"><span itemprop="name">转录组</span></a>
+                </span>
+            </span>
+
+          
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/2020/10/09/%E8%BD%AC%E5%BD%95%E7%BB%844/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2020/10/09/%E8%BD%AC%E5%BD%95%E7%BB%844/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+            <span class="post-meta-item" title="本文字数">
+              <span class="post-meta-item-icon">
+                <i class="far fa-file-word"></i>
+              </span>
+              <span>7.4k</span>
+            </span>
+            <span class="post-meta-item" title="阅读时长">
+              <span class="post-meta-item-icon">
+                <i class="far fa-clock"></i>
+              </span>
+              <span>7 分钟</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h2 id="1-读取各个样本的矩阵数据合并"><a href="#1-读取各个样本的矩阵数据合并" class="headerlink" title="1.读取各个样本的矩阵数据合并"></a>1.读取各个样本的矩阵数据合并</h2><figure class="highlight r"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br></pre></td><td class="code"><pre><span class="line">options(stringsAsFactors = <span class="literal">FALSE</span>)<span class="comment">#用read.table和其衍生品比如read.csv read.delim,R会自动把字符串string的列辨认读成factor</span></span><br><span class="line"><span class="keyword">library</span>(<span class="string">&quot;biomaRt&quot;</span>)</span><br><span class="line"><span class="keyword">library</span>(<span class="string">&quot;tidyverse&quot;</span>)</span><br><span class="line">expr_SRR957678 &lt;- read.table(<span class="string">&#x27;SRR957678_count&#x27;</span>,col.names = c(<span class="string">&quot;gene_id&quot;</span>,<span class="string">&quot;control2&quot;</span>))<span class="comment">#col.names设置列名</span></span><br><span class="line">expr_SRR957677 &lt;- read.table(<span class="string">&#x27;SRR957677_count&#x27;</span>,col.names = c(<span class="string">&quot;gene_id&quot;</span>,<span class="string">&quot;control1&quot;</span>))</span><br><span class="line">expr_SRR957679 &lt;- read.table(<span class="string">&#x27;SRR957679_count&#x27;</span>,col.names = c(<span class="string">&quot;gene_id&quot;</span>,<span class="string">&quot;treat1&quot;</span>))</span><br><span class="line">expr_SRR957680 &lt;- read.table(<span class="string">&#x27;SRR957680_count&#x27;</span>,col.names =c(<span class="string">&quot;gene_id&quot;</span>,<span class="string">&quot;treat2&quot;</span>))</span><br><span class="line">&gt; head(expr_SRR957677)</span><br><span class="line">             gene_id control1</span><br><span class="line"><span class="number">1</span> ENSG00000000003.10      <span class="number">796</span></span><br><span class="line"><span class="number">2</span>  ENSG00000000005.5        <span class="number">0</span></span><br><span class="line"><span class="number">3</span>  ENSG00000000419.8      <span class="number">389</span></span><br><span class="line"><span class="number">4</span>  ENSG00000000457.9      <span class="number">288</span></span><br><span class="line"><span class="number">5</span> ENSG00000000460.12      <span class="number">506</span></span><br><span class="line"><span class="number">6</span>  ENSG00000000938.8        <span class="number">0</span></span><br><span class="line">&gt; head(expr_SRR957680)</span><br><span class="line">             gene_id treat2</span><br><span class="line"><span class="number">1</span> ENSG00000000003.10    <span class="number">937</span></span><br><span class="line"><span class="number">2</span>  ENSG00000000005.5      <span class="number">1</span></span><br><span class="line"><span class="number">3</span>  ENSG00000000419.8    <span class="number">503</span></span><br><span class="line"><span class="number">4</span>  ENSG00000000457.9    <span class="number">283</span></span><br><span class="line"><span class="number">5</span> ENSG00000000460.12    <span class="number">543</span></span><br><span class="line"><span class="number">6</span>  ENSG00000000938.8      <span class="number">0</span></span><br><span class="line"><span class="comment">#先对照和实验组分别合并到一个data.frame再合并为一个总的数据框</span></span><br><span class="line">control &lt;- merge(expr_SRR957677,expr_SRR957678,by=<span class="string">&quot;gene_id&quot;</span>)<span class="comment">#by=&quot;gene_id&quot;按照gene_id这列合并</span></span><br><span class="line">&gt; head(control)</span><br><span class="line">                 gene_id control1 control2</span><br><span class="line"><span class="number">1</span> __alignment_not_unique  <span class="number">2454101</span>   <span class="number">977633</span></span><br><span class="line"><span class="number">2</span>            __ambiguous   <span class="number">232830</span>    <span class="number">94141</span></span><br><span class="line"><span class="number">3</span>           __no_feature  <span class="number">9207514</span>  <span class="number">3905808</span></span><br><span class="line"><span class="number">4</span>          __not_aligned  <span class="number">1147541</span>   <span class="number">533575</span></span><br><span class="line"><span class="number">5</span>        __too_low_aQual        <span class="number">0</span>        <span class="number">0</span></span><br><span class="line"><span class="number">6</span>     ENSG00000000003.10      <span class="number">796</span>      <span class="number">349</span></span><br><span class="line">treat &lt;- merge(expr_SRR957679,expr_SRR957680,by=<span class="string">&quot;gene_id&quot;</span>)</span><br><span class="line">&gt; head(treat)</span><br><span class="line">                 gene_id  treat1   treat2</span><br><span class="line"><span class="number">1</span> __alignment_not_unique <span class="number">2583435</span>  <span class="number">2848159</span></span><br><span class="line"><span class="number">2</span>            __ambiguous  <span class="number">255370</span>   <span class="number">283449</span></span><br><span class="line"><span class="number">3</span>           __no_feature <span class="number">8353992</span> <span class="number">10560422</span></span><br><span class="line"><span class="number">4</span>          __not_aligned <span class="number">1204646</span>  <span class="number">1287901</span></span><br><span class="line"><span class="number">5</span>        __too_low_aQual       <span class="number">0</span>        <span class="number">0</span></span><br><span class="line"><span class="number">6</span>     ENSG00000000003.10     <span class="number">780</span>      <span class="number">937</span></span><br><span class="line">raw_count &lt;- merge(control,treat,by=<span class="string">&quot;gene_id&quot;</span>)</span><br><span class="line">&gt; head(raw_count)</span><br><span class="line">                 gene_id control1 control2  treat1   treat2</span><br><span class="line"><span class="number">1</span> __alignment_not_unique  <span class="number">2454101</span>   <span class="number">977633</span> <span class="number">2583435</span>  <span class="number">2848159</span></span><br><span class="line"><span class="number">2</span>            __ambiguous   <span class="number">232830</span>    <span class="number">94141</span>  <span class="number">255370</span>   <span class="number">283449</span></span><br><span class="line"><span class="number">3</span>           __no_feature  <span class="number">9207514</span>  <span class="number">3905808</span> <span class="number">8353992</span> <span class="number">10560422</span></span><br><span class="line"><span class="number">4</span>          __not_aligned  <span class="number">1147541</span>   <span class="number">533575</span> <span class="number">1204646</span>  <span class="number">1287901</span></span><br><span class="line"><span class="number">5</span>        __too_low_aQual        <span class="number">0</span>        <span class="number">0</span>       <span class="number">0</span>        <span class="number">0</span></span><br><span class="line"><span class="number">6</span>     ENSG00000000003.10      <span class="number">796</span>      <span class="number">349</span>     <span class="number">780</span>      <span class="number">937</span></span><br><span class="line">raw_count &lt;-raw_count[-<span class="number">1</span>:-<span class="number">5</span>,]<span class="comment">#删掉前五行，由上一步结果可以看出前五行gene_id有问题</span></span><br><span class="line">&gt; head(raw_count)</span><br><span class="line">              gene_id control1 control2 treat1 treat2</span><br><span class="line"><span class="number">6</span>  ENSG00000000003.10      <span class="number">796</span>      <span class="number">349</span>    <span class="number">780</span>    <span class="number">937</span></span><br><span class="line"><span class="number">7</span>   ENSG00000000005.5        <span class="number">0</span>        <span class="number">0</span>      <span class="number">0</span>      <span class="number">1</span></span><br><span class="line"><span class="number">8</span>   ENSG00000000419.8      <span class="number">389</span>      <span class="number">174</span>    <span class="number">403</span>    <span class="number">503</span></span><br><span class="line"><span class="number">9</span>   ENSG00000000457.9      <span class="number">288</span>      <span class="number">108</span>    <span class="number">218</span>    <span class="number">283</span></span><br><span class="line"><span class="number">10</span> ENSG00000000460.12      <span class="number">506</span>      <span class="number">208</span>    <span class="number">451</span>    <span class="number">543</span></span><br><span class="line"><span class="number">11</span>  ENSG00000000938.8        <span class="number">0</span>        <span class="number">0</span>      <span class="number">0</span>      <span class="number">0</span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<h2 id="2-去除gene-id名字中的小数点"><a href="#2-去除gene-id名字中的小数点" class="headerlink" title="2.去除gene_id名字中的小数点"></a>2.去除gene_id名字中的小数点</h2><p>EBI数据库中无法搜到ENSG00000000003.10这样的基因，只能是整数ENSG00000000003才能进行id转换</p>
+<figure class="highlight r"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">library</span>(stringr)</span><br><span class="line">ENSEMBL &lt;- raw_count$gene_id</span><br><span class="line">&gt; head(ENSEMBL)</span><br><span class="line">[<span class="number">1</span>] <span class="string">&quot;ENSG00000000003.10&quot;</span> <span class="string">&quot;ENSG00000000005.5&quot;</span>  <span class="string">&quot;ENSG00000000419.8&quot;</span> </span><br><span class="line">[<span class="number">4</span>] <span class="string">&quot;ENSG00000000457.9&quot;</span>  <span class="string">&quot;ENSG00000000460.12&quot;</span> <span class="string">&quot;ENSG00000000938.8&quot;</span> </span><br><span class="line">ENSEMBL &lt;- str_split_fixed(ENSEMBL,<span class="string">&#x27;[.]&#x27;</span>,<span class="number">2</span>)[,<span class="number">1</span>]<span class="comment">#将小数点及后面的数字去掉，ensembl_gene_id是整数</span></span><br><span class="line">&gt; head(ENSEMBL)</span><br><span class="line">[<span class="number">1</span>] <span class="string">&quot;ENSG00000000003&quot;</span> <span class="string">&quot;ENSG00000000005&quot;</span> <span class="string">&quot;ENSG00000000419&quot;</span></span><br><span class="line">[<span class="number">4</span>] <span class="string">&quot;ENSG00000000457&quot;</span> <span class="string">&quot;ENSG00000000460&quot;</span> <span class="string">&quot;ENSG00000000938&quot;</span></span><br><span class="line">rownames(raw_count) &lt;- ENSEMBL<span class="comment">#将去除小数点后的ensembl_gene_id作为行名后期方便绘图</span></span><br><span class="line">raw_count$ensembl_gene_id &lt;-  ENSEMBL<span class="comment">#新建ensembl_gene_id列便于合并</span></span><br><span class="line">&gt; head(raw_count)</span><br><span class="line">                           gene_id control1 control2 treat1 treat2</span><br><span class="line">ENSG00000000003 ENSG00000000003.10      <span class="number">796</span>      <span class="number">349</span>    <span class="number">780</span>    <span class="number">937</span></span><br><span class="line">ENSG00000000005  ENSG00000000005.5        <span class="number">0</span>        <span class="number">0</span>      <span class="number">0</span>      <span class="number">1</span></span><br><span class="line">ENSG00000000419  ENSG00000000419.8      <span class="number">389</span>      <span class="number">174</span>    <span class="number">403</span>    <span class="number">503</span></span><br><span class="line">ENSG00000000457  ENSG00000000457.9      <span class="number">288</span>      <span class="number">108</span>    <span class="number">218</span>    <span class="number">283</span></span><br><span class="line">ENSG00000000460 ENSG00000000460.12      <span class="number">506</span>      <span class="number">208</span>    <span class="number">451</span>    <span class="number">543</span></span><br><span class="line">ENSG00000000938  ENSG00000000938.8        <span class="number">0</span>        <span class="number">0</span>      <span class="number">0</span>      <span class="number">0</span></span><br><span class="line">                ensembl_gene_id</span><br><span class="line">ENSG00000000003 ENSG00000000003</span><br><span class="line">ENSG00000000005 ENSG00000000005</span><br><span class="line">ENSG00000000419 ENSG00000000419</span><br><span class="line">ENSG00000000457 ENSG00000000457</span><br><span class="line">ENSG00000000460 ENSG00000000460</span><br><span class="line">ENSG00000000938 ENSG00000000938</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<h2 id="3-对基因进行注释，获取gene-symbol"><a href="#3-对基因进行注释，获取gene-symbol" class="headerlink" title="3.对基因进行注释，获取gene_symbol"></a>3.对基因进行注释，获取gene_symbol</h2><p>bioMart包是一个连接bioMart数据库的R语言接口，能通过这个软件包自由连接到bioMart数据库<br> 这个·包可以做以下几个工作<br> 1.查找某个基因在染色体上的位置。反之，给定染色体每一区间，返回该区间的基因s；<br> 2.通过EntrezGene的ID查找到相关序列的GO注释。反之，给定相关的GO注释，获取相关的EntrezGene的ID；<br> 3.通过EntrezGene的ID查找到相关序列的上游100bp序列（可能包含启动子等调控元件）；<br> 4.查找人类染色体上每一段区域中已知的SNPs；<br> 5.给定一组的序列ID，获得其中具体的序列；</p>
+<figure class="highlight r"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#显示一下能连接的数据库</span></span><br><span class="line">listMarts()</span><br><span class="line">&gt; listMarts()</span><br><span class="line">               biomart                version</span><br><span class="line"><span class="number">1</span> ENSEMBL_MART_ENSEMBL      Ensembl Genes <span class="number">101</span></span><br><span class="line"><span class="number">2</span>   ENSEMBL_MART_MOUSE      Mouse strains <span class="number">101</span></span><br><span class="line"><span class="number">3</span>     ENSEMBL_MART_SNP  Ensembl Variation <span class="number">101</span></span><br><span class="line"><span class="number">4</span> ENSEMBL_MART_FUNCGEN Ensembl Regulation <span class="number">101</span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<figure class="highlight r"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#用useMart函数选定数据库</span></span><br><span class="line">plant&lt;-useMart(<span class="string">&quot;ensembl&quot;</span>)</span><br><span class="line"><span class="comment">#用listDatasets()函数显示当前数据库所含的基因组注释,我们要获取的基因注释的基因是人类基因，所以选择hsapiens_gene_ensembl</span></span><br><span class="line">&gt; listDatasets(plant)</span><br><span class="line">                           dataset</span><br><span class="line"><span class="number">1</span>         acalliptera_gene_ensembl</span><br><span class="line"><span class="number">2</span>       acarolinensis_gene_ensembl</span><br><span class="line"><span class="number">3</span>        acitrinellus_gene_ensembl</span><br><span class="line"><span class="number">4</span>        amelanoleuca_gene_ensembl</span><br><span class="line"><span class="number">5</span>          amexicanus_gene_ensembl</span><br><span class="line"><span class="number">6</span>          anancymaae_gene_ensembl</span><br><span class="line"><span class="number">7</span>          aocellaris_gene_ensembl</span><br><span class="line">···</span><br><span class="line">···</span><br><span class="line"><span class="number">54</span>           hsapiens_gene_ensembl</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<figure class="highlight r"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#选定ensembl数据库中的hsapiens_gene_ensembl基因组</span></span><br><span class="line">mart &lt;- useDataset(<span class="string">&quot;hsapiens_gene_ensembl&quot;</span>, useMart(<span class="string">&quot;ensembl&quot;</span>))</span><br><span class="line"><span class="comment">#选定我们需要获得的注释类型</span></span><br><span class="line"><span class="comment">#用lsitFilters()函数查看可选择的类型，选定要获取的注释类型，以及已知注释的类型用lsitFilters()函数查看可选择的类型，选定要获取的注释类型，以及已知注释的类型</span></span><br><span class="line">&gt; listFilters(mart)</span><br><span class="line">                                     name</span><br><span class="line"><span class="number">1</span>                         chromosome_name</span><br><span class="line"><span class="number">2</span>                                   start</span><br><span class="line"><span class="number">3</span>                                     end</span><br><span class="line"><span class="number">4</span>                              band_start</span><br><span class="line"><span class="number">5</span>                                band_end</span><br><span class="line"><span class="number">6</span>                            marker_start</span><br><span class="line"><span class="number">7</span>                              marker_end</span><br><span class="line"><span class="number">8</span>                           encode_region</span><br><span class="line"><span class="number">9</span>                                  strand</span><br><span class="line"><span class="number">10</span>                     chromosomal_region</span><br><span class="line"><span class="number">11</span>                              with_ccds</span><br><span class="line"><span class="number">12</span>                            with_chembl</span><br><span class="line"><span class="number">13</span>          with_clone_based_ensembl_gene</span><br><span class="line"><span class="number">14</span>    with_clone_based_ensembl_transcript</span><br><span class="line"><span class="number">15</span>                            with_dbass3</span><br><span class="line"><span class="number">16</span>                            with_dbass5</span><br><span class="line"><span class="number">17</span>             with_entrezgene_trans_name</span><br><span class="line"><span class="number">18</span>                              with_embl</span><br><span class="line"><span class="number">19</span>                      with_arrayexpress</span><br><span class="line"><span class="number">20</span>                            with_genedb</span><br><span class="line"><span class="number">21</span>                                with_go</span><br><span class="line"><span class="comment">#这里我们选择这些要获得数值的类型ensembl_gene_id ,hgnc_symbol chromosome_name start_position end_position band我们已知的类型是ensembl_gene_id选择好数据库，基因组，要获得的注释类型，和已知的注释类型，就可以开始获取注释了</span></span><br></pre></td></tr></table></figure>
+
+<figure class="highlight r"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#用getBM()函数获取注释</span></span><br><span class="line">hg_symbols&lt;- getBM(attributes=c(<span class="string">&#x27;ensembl_gene_id&#x27;</span>,<span class="string">&#x27;hgnc_symbol&#x27;</span>,<span class="string">&quot;chromosome_name&quot;</span>, <span class="string">&quot;start_position&quot;</span>,<span class="string">&quot;end_position&quot;</span>, <span class="string">&quot;band&quot;</span>), filters= <span class="string">&#x27;ensembl_gene_id&#x27;</span>, values = ENSEMBL, mart = mart)</span><br><span class="line"><span class="comment">#attributers()里面的值为我们要获取的注释类型ensembl_gene_id ,hgnc_symbol chromosome_name start_position end_position band</span></span><br><span class="line"><span class="comment">#filters（）里面的值为我们已知的注释类型ensembl_gene_id</span></span><br><span class="line"><span class="comment">#values= 这个值就是我们已知的注释类型的数据，把上面我们通过数据处理得到的ensembl基因序号作为ensembl_gene_id 的值</span></span><br><span class="line"><span class="comment">#mart= 这个值是我们所选定的数据库的基因组</span></span><br><span class="line">&gt; head(hg_symbols)</span><br><span class="line">  ensembl_gene_id hgnc_symbol chromosome_name start_position</span><br><span class="line"><span class="number">1</span> ENSG00000000003      TSPAN6               X      <span class="number">100627108</span></span><br><span class="line"><span class="number">2</span> ENSG00000000005        TNMD               X      <span class="number">100584936</span></span><br><span class="line"><span class="number">3</span> ENSG00000000419        DPM1              <span class="number">20</span>       <span class="number">50934867</span></span><br><span class="line"><span class="number">4</span> ENSG00000000457       SCYL3               <span class="number">1</span>      <span class="number">169849631</span></span><br><span class="line"><span class="number">5</span> ENSG00000000460    C1orf112               <span class="number">1</span>      <span class="number">169662007</span></span><br><span class="line"><span class="number">6</span> ENSG00000000938         FGR               <span class="number">1</span>       <span class="number">27612064</span></span><br><span class="line">  end_position   band</span><br><span class="line"><span class="number">1</span>    <span class="number">100639991</span>  q22.1</span><br><span class="line"><span class="number">2</span>    <span class="number">100599885</span>  q22.1</span><br><span class="line"><span class="number">3</span>     <span class="number">50958555</span> q13.13</span><br><span class="line"><span class="number">4</span>    <span class="number">169894267</span>  q24.2</span><br><span class="line"><span class="number">5</span>    <span class="number">169854080</span>  q24.2</span><br><span class="line"><span class="number">6</span>     <span class="number">27635185</span>  p35.3</span><br><span class="line">save(mart, file = <span class="string">&quot;mart.RData&quot;</span>)<span class="comment">#将mart变量保存为mart.RData</span></span><br><span class="line">save(hg_symbols, file = <span class="string">&quot;hg_symbols.RData&quot;</span>)<span class="comment">#将hg_symbols变量保存为hg_symbols，biomart包不太稳定，有时连不上</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="4-将合并后的表达数据框raw-count与注释得到的hg-symbols整合"><a href="#4-将合并后的表达数据框raw-count与注释得到的hg-symbols整合" class="headerlink" title="4.将合并后的表达数据框raw_count与注释得到的hg_symbols整合"></a>4.将合并后的表达数据框raw_count与注释得到的hg_symbols整合</h2><figure class="highlight r"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line">read_count &lt;- merge(raw_count,hg_symbols,by=<span class="string">&quot;ensembl_gene_id&quot;</span>)<span class="comment">#将raw_count与注释后得到的hg_symbols合并</span></span><br><span class="line">&gt; head(read_count)</span><br><span class="line">  ensembl_gene_id            gene_id control1 control2 treat1 treat2</span><br><span class="line"><span class="number">1</span> ENSG00000000003 ENSG00000000003.10      <span class="number">796</span>      <span class="number">349</span>    <span class="number">780</span>    <span class="number">937</span></span><br><span class="line"><span class="number">2</span> ENSG00000000005  ENSG00000000005.5        <span class="number">0</span>        <span class="number">0</span>      <span class="number">0</span>      <span class="number">1</span></span><br><span class="line"><span class="number">3</span> ENSG00000000419  ENSG00000000419.8      <span class="number">389</span>      <span class="number">174</span>    <span class="number">403</span>    <span class="number">503</span></span><br><span class="line"><span class="number">4</span> ENSG00000000457  ENSG00000000457.9      <span class="number">288</span>      <span class="number">108</span>    <span class="number">218</span>    <span class="number">283</span></span><br><span class="line"><span class="number">5</span> ENSG00000000460 ENSG00000000460.12      <span class="number">506</span>      <span class="number">208</span>    <span class="number">451</span>    <span class="number">543</span></span><br><span class="line"><span class="number">6</span> ENSG00000000938  ENSG00000000938.8        <span class="number">0</span>        <span class="number">0</span>      <span class="number">0</span>      <span class="number">0</span></span><br><span class="line">  hgnc_symbol chromosome_name start_position end_position   band</span><br><span class="line"><span class="number">1</span>      TSPAN6               X      <span class="number">100627108</span>    <span class="number">100639991</span>  q22.1</span><br><span class="line"><span class="number">2</span>        TNMD               X      <span class="number">100584936</span>    <span class="number">100599885</span>  q22.1</span><br><span class="line"><span class="number">3</span>        DPM1              <span class="number">20</span>       <span class="number">50934867</span>     <span class="number">50958555</span> q13.13</span><br><span class="line"><span class="number">4</span>       SCYL3               <span class="number">1</span>      <span class="number">169849631</span>    <span class="number">169894267</span>  q24.2</span><br><span class="line"><span class="number">5</span>    C1orf112               <span class="number">1</span>      <span class="number">169662007</span>    <span class="number">169854080</span>  q24.2</span><br><span class="line"><span class="number">6</span>         FGR               <span class="number">1</span>       <span class="number">27612064</span>     <span class="number">27635185</span>  p35.3</span><br><span class="line">write.csv(read_count,file = <span class="string">&quot;readcount_all.csv&quot;</span>)</span><br><span class="line">readcount &lt;- raw_count[,c(-<span class="number">1</span>,-<span class="number">6</span>)]<span class="comment">#删除最后一列ensembl_gene_id和以及第一列gene_id</span></span><br><span class="line">&gt; head(readcount)</span><br><span class="line">                control1 control2 treat1 treat2</span><br><span class="line">ENSG00000000003      <span class="number">796</span>      <span class="number">349</span>    <span class="number">780</span>    <span class="number">937</span></span><br><span class="line">ENSG00000000005        <span class="number">0</span>        <span class="number">0</span>      <span class="number">0</span>      <span class="number">1</span></span><br><span class="line">ENSG00000000419      <span class="number">389</span>      <span class="number">174</span>    <span class="number">403</span>    <span class="number">503</span></span><br><span class="line">ENSG00000000457      <span class="number">288</span>      <span class="number">108</span>    <span class="number">218</span>    <span class="number">283</span></span><br><span class="line">ENSG00000000460      <span class="number">506</span>      <span class="number">208</span>    <span class="number">451</span>    <span class="number">543</span></span><br><span class="line">ENSG00000000938        <span class="number">0</span>        <span class="number">0</span>      <span class="number">0</span>      <span class="number">0</span></span><br><span class="line">write.csv(readcount,file = <span class="string">&quot;readcount.csv&quot;</span>)</span><br></pre></td></tr></table></figure>
+
+<h2 id="引用"><a href="#引用" class="headerlink" title="引用"></a>引用</h2><p>1.<a target="_blank" rel="noopener" href="https://www.jianshu.com/p/849f8ada0ab7">RNA-seq练习 第二部分（基因组序列下载，注释文件下载，索引下载，比对，比对质控,HTseq-count计数，输出count矩阵文件）</a></p>
+<p>2.<a target="_blank" rel="noopener" href="https://www.jianshu.com/p/72ee40bed5b4">实例讲述bioMart包的用法</a></p>
+
+    </div>
+
+    
+    
+    
+        <div class="reward-container">
+  <div>客官打个赏咯.</div>
+  <button onclick="var qr = document.getElementById('qr'); qr.style.display = (qr.style.display === 'none') ? 'block' : 'none';">
+    打赏
+  </button>
+  <div id="qr" style="display: none;">
+      
+      <div style="display: inline-block;">
+        <img src="/images/wechatpay.png" alt="Zou 微信支付">
+        <p>微信支付</p>
+      </div>
+      
+      <div style="display: inline-block;">
+        <img src="/images/alipay.png" alt="Zou 支付宝">
+        <p>支付宝</p>
+      </div>
+
+  </div>
+</div>
+
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/%E8%BD%AC%E5%BD%95%E7%BB%84/" rel="tag"># -转录组</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2020/10/08/%E8%BD%AC%E5%BD%95%E7%BB%843/" rel="prev" title="RNA-seq第三部分（比对，比对质控,HTseq-count计数）">
+      <i class="fa fa-chevron-left"></i> RNA-seq第三部分（比对，比对质控,HTseq-count计数）
+    </a></div>
+      <div class="post-nav-item"></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+    <div class="comments" id="valine-comments"></div>
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-%E8%AF%BB%E5%8F%96%E5%90%84%E4%B8%AA%E6%A0%B7%E6%9C%AC%E7%9A%84%E7%9F%A9%E9%98%B5%E6%95%B0%E6%8D%AE%E5%90%88%E5%B9%B6"><span class="nav-number">1.</span> <span class="nav-text">1.读取各个样本的矩阵数据合并</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-%E5%8E%BB%E9%99%A4gene-id%E5%90%8D%E5%AD%97%E4%B8%AD%E7%9A%84%E5%B0%8F%E6%95%B0%E7%82%B9"><span class="nav-number">2.</span> <span class="nav-text">2.去除gene_id名字中的小数点</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-%E5%AF%B9%E5%9F%BA%E5%9B%A0%E8%BF%9B%E8%A1%8C%E6%B3%A8%E9%87%8A%EF%BC%8C%E8%8E%B7%E5%8F%96gene-symbol"><span class="nav-number">3.</span> <span class="nav-text">3.对基因进行注释，获取gene_symbol</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#4-%E5%B0%86%E5%90%88%E5%B9%B6%E5%90%8E%E7%9A%84%E8%A1%A8%E8%BE%BE%E6%95%B0%E6%8D%AE%E6%A1%86raw-count%E4%B8%8E%E6%B3%A8%E9%87%8A%E5%BE%97%E5%88%B0%E7%9A%84hg-symbols%E6%95%B4%E5%90%88"><span class="nav-number">4.</span> <span class="nav-text">4.将合并后的表达数据框raw_count与注释得到的hg_symbols整合</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%BC%95%E7%94%A8"><span class="nav-number">5.</span> <span class="nav-text">引用</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Zou"
+      src="https://ss0.bdstatic.com/70cFvHSh_Q1YnxGkpoWK1HF6hhy/it/u=404501654,960623944&fm=26&gp=0.jpg">
+  <p class="site-author-name" itemprop="name">Zou</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">7</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">2</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">2</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/zou-yawen" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;zou-yawen" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+  </div>
+
+
+
+      </div>
+	  <div style="">
+  <canvas id="canvas" style="width:60%;">当前浏览器不支持canvas，请更换浏览器后再试</canvas>
+</div>
+<script>
+(function(){
+
+   var digit=
+    [
+        [
+            [0,0,1,1,1,0,0],
+            [0,1,1,0,1,1,0],
+            [1,1,0,0,0,1,1],
+            [1,1,0,0,0,1,1],
+            [1,1,0,0,0,1,1],
+            [1,1,0,0,0,1,1],
+            [1,1,0,0,0,1,1],
+            [1,1,0,0,0,1,1],
+            [0,1,1,0,1,1,0],
+            [0,0,1,1,1,0,0]
+        ],//0
+        [
+            [0,0,0,1,1,0,0],
+            [0,1,1,1,1,0,0],
+            [0,0,0,1,1,0,0],
+            [0,0,0,1,1,0,0],
+            [0,0,0,1,1,0,0],
+            [0,0,0,1,1,0,0],
+            [0,0,0,1,1,0,0],
+            [0,0,0,1,1,0,0],
+            [0,0,0,1,1,0,0],
+            [1,1,1,1,1,1,1]
+        ],//1
+        [
+            [0,1,1,1,1,1,0],
+            [1,1,0,0,0,1,1],
+            [0,0,0,0,0,1,1],
+            [0,0,0,0,1,1,0],
+            [0,0,0,1,1,0,0],
+            [0,0,1,1,0,0,0],
+            [0,1,1,0,0,0,0],
+            [1,1,0,0,0,0,0],
+            [1,1,0,0,0,1,1],
+            [1,1,1,1,1,1,1]
+        ],//2
+        [
+            [1,1,1,1,1,1,1],
+            [0,0,0,0,0,1,1],
+            [0,0,0,0,1,1,0],
+            [0,0,0,1,1,0,0],
+            [0,0,1,1,1,0,0],
+            [0,0,0,0,1,1,0],
+            [0,0,0,0,0,1,1],
+            [0,0,0,0,0,1,1],
+            [1,1,0,0,0,1,1],
+            [0,1,1,1,1,1,0]
+        ],//3
+        [
+            [0,0,0,0,1,1,0],
+            [0,0,0,1,1,1,0],
+            [0,0,1,1,1,1,0],
+            [0,1,1,0,1,1,0],
+            [1,1,0,0,1,1,0],
+            [1,1,1,1,1,1,1],
+            [0,0,0,0,1,1,0],
+            [0,0,0,0,1,1,0],
+            [0,0,0,0,1,1,0],
+            [0,0,0,1,1,1,1]
+        ],//4
+        [
+            [1,1,1,1,1,1,1],
+            [1,1,0,0,0,0,0],
+            [1,1,0,0,0,0,0],
+            [1,1,1,1,1,1,0],
+            [0,0,0,0,0,1,1],
+            [0,0,0,0,0,1,1],
+            [0,0,0,0,0,1,1],
+            [0,0,0,0,0,1,1],
+            [1,1,0,0,0,1,1],
+            [0,1,1,1,1,1,0]
+        ],//5
+        [
+            [0,0,0,0,1,1,0],
+            [0,0,1,1,0,0,0],
+            [0,1,1,0,0,0,0],
+            [1,1,0,0,0,0,0],
+            [1,1,0,1,1,1,0],
+            [1,1,0,0,0,1,1],
+            [1,1,0,0,0,1,1],
+            [1,1,0,0,0,1,1],
+            [1,1,0,0,0,1,1],
+            [0,1,1,1,1,1,0]
+        ],//6
+        [
+            [1,1,1,1,1,1,1],
+            [1,1,0,0,0,1,1],
+            [0,0,0,0,1,1,0],
+            [0,0,0,0,1,1,0],
+            [0,0,0,1,1,0,0],
+            [0,0,0,1,1,0,0],
+            [0,0,1,1,0,0,0],
+            [0,0,1,1,0,0,0],
+            [0,0,1,1,0,0,0],
+            [0,0,1,1,0,0,0]
+        ],//7
+        [
+            [0,1,1,1,1,1,0],
+            [1,1,0,0,0,1,1],
+            [1,1,0,0,0,1,1],
+            [1,1,0,0,0,1,1],
+            [0,1,1,1,1,1,0],
+            [1,1,0,0,0,1,1],
+            [1,1,0,0,0,1,1],
+            [1,1,0,0,0,1,1],
+            [1,1,0,0,0,1,1],
+            [0,1,1,1,1,1,0]
+        ],//8
+        [
+            [0,1,1,1,1,1,0],
+            [1,1,0,0,0,1,1],
+            [1,1,0,0,0,1,1],
+            [1,1,0,0,0,1,1],
+            [0,1,1,1,0,1,1],
+            [0,0,0,0,0,1,1],
+            [0,0,0,0,0,1,1],
+            [0,0,0,0,1,1,0],
+            [0,0,0,1,1,0,0],
+            [0,1,1,0,0,0,0]
+        ],//9
+        [
+            [0,0,0,0,0,0,0],
+            [0,0,1,1,1,0,0],
+            [0,0,1,1,1,0,0],
+            [0,0,1,1,1,0,0],
+            [0,0,0,0,0,0,0],
+            [0,0,0,0,0,0,0],
+            [0,0,1,1,1,0,0],
+            [0,0,1,1,1,0,0],
+            [0,0,1,1,1,0,0],
+            [0,0,0,0,0,0,0]
+        ]//:
+    ];
+
+var canvas = document.getElementById('canvas');
+
+if(canvas.getContext){
+    var cxt = canvas.getContext('2d');
+    //声明canvas的宽高
+    var H = 100,W = 700;
+    canvas.height = H;
+    canvas.width = W;
+    cxt.fillStyle = '#f00';
+    cxt.fillRect(10,10,50,50);
+
+    //存储时间数据
+    var data = [];
+    //存储运动的小球
+    var balls = [];
+    //设置粒子半径
+    var R = canvas.height/20-1;
+    (function(){
+        var temp = /(\d)(\d):(\d)(\d):(\d)(\d)/.exec(new Date());
+        //存储时间数字，由十位小时、个位小时、冒号、十位分钟、个位分钟、冒号、十位秒钟、个位秒钟这7个数字组成
+        data.push(temp[1],temp[2],10,temp[3],temp[4],10,temp[5],temp[6]);
+    })();
+
+    /*生成点阵数字*/
+    function renderDigit(index,num){
+        for(var i = 0; i < digit[num].length; i++){
+            for(var j = 0; j < digit[num][i].length; j++){
+                if(digit[num][i][j] == 1){
+                    cxt.beginPath();
+                    cxt.arc(14*(R+2)*index + j*2*(R+1)+(R+1),i*2*(R+1)+(R+1),R,0,2*Math.PI);
+                    cxt.closePath();
+                    cxt.fill();
+                }
+            }
+        }
+    }
+
+    /*更新时钟*/
+    function updateDigitTime(){
+        var changeNumArray = [];
+        var temp = /(\d)(\d):(\d)(\d):(\d)(\d)/.exec(new Date());
+        var NewData = [];
+        NewData.push(temp[1],temp[2],10,temp[3],temp[4],10,temp[5],temp[6]);
+        for(var i = data.length-1; i >=0 ; i--){
+            //时间发生变化
+            if(NewData[i] !== data[i]){
+                //将变化的数字值和在data数组中的索引存储在changeNumArray数组中
+                changeNumArray.push(i+'_'+(Number(data[i])+1)%10);
+            }
+        }
+        //增加小球
+        for(var i = 0; i< changeNumArray.length; i++){
+            addBalls.apply(this,changeNumArray[i].split('_'));
+        }
+        data = NewData.concat();
+    }
+
+    /*更新小球状态*/
+    function updateBalls(){
+        for(var i = 0; i < balls.length; i++){
+            balls[i].stepY += balls[i].disY;
+            balls[i].x += balls[i].stepX;
+            balls[i].y += balls[i].stepY;
+            if(balls[i].x > W + R || balls[i].y > H + R){
+                balls.splice(i,1);
+                i--;
+            }
+        }
+    }
+
+    /*增加要运动的小球*/
+    function addBalls(index,num){
+        var numArray = [1,2,3];
+        var colorArray =  ["#3BE","#09C","#A6C","#93C","#9C0","#690","#FB3","#F80","#F44","#C00"];
+        for(var i = 0; i < digit[num].length; i++){
+            for(var j = 0; j < digit[num][i].length; j++){
+                if(digit[num][i][j] == 1){
+                    var ball = {
+                        x:14*(R+2)*index + j*2*(R+1)+(R+1),
+                        y:i*2*(R+1)+(R+1),
+                        stepX:Math.floor(Math.random() * 4 -2),
+                        stepY:-2*numArray[Math.floor(Math.random()*numArray.length)],
+                        color:colorArray[Math.floor(Math.random()*colorArray.length)],
+                        disY:1
+                    };
+                    balls.push(ball);
+                }
+            }
+        }
+    }
+
+    /*渲染*/
+    function render(){
+        //重置画布宽度，达到清空画布的效果
+        canvas.height = 100;
+        //渲染时钟
+        for(var i = 0; i < data.length; i++){
+            renderDigit(i,data[i]);
+        }
+        //渲染小球
+        for(var i = 0; i < balls.length; i++){
+            cxt.beginPath();
+            cxt.arc(balls[i].x,balls[i].y,R,0,2*Math.PI);
+            cxt.fillStyle = balls[i].color;
+            cxt.closePath();
+            cxt.fill();
+        }
+    }
+
+    clearInterval(oTimer);
+    var oTimer = setInterval(function(){
+        //更新时钟
+        updateDigitTime();
+        //更新小球状态
+        updateBalls();
+        //渲染
+        render();
+    },50);
+}
+
+})();
+</script>
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Zou</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-area"></i>
+    </span>
+    <span title="站点总字数">33k</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    <span title="站点阅读时长">30 分钟</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
+  </div>
+
+  <div>
+  <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  本站总访问量 <span id="busuanzi_value_site_pv"></span> 次&nbsp&nbsp&nbsp
+  本站访客数<span id="busuanzi_value_site_uv"></span>人次
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  
+  <script color='0,0,255' opacity='0.5' zIndex='-1' count='99' src="/lib/canvas-nest/canvas-nest.min.js"></script>
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+
+<script>
+NexT.utils.loadComments(document.querySelector('#valine-comments'), () => {
+  NexT.utils.getScript('//unpkg.com/valine/dist/Valine.min.js', () => {
+    var GUEST = ['nick', 'mail', 'link'];
+    var guest = 'nick,mail,link';
+    guest = guest.split(',').filter(item => {
+      return GUEST.includes(item);
+    });
+    new Valine({
+      el         : '#valine-comments',
+      verify     : false,
+      notify     : false,
+      appId      : 'y4GHkTMDe6wgDNM2HBBmdCiE-gzGzoHsz',
+      appKey     : 'xCP8RGkrjsLOs5VQOifjzVnA',
+      placeholder: "Just go go",
+      avatar     : 'mm',
+      meta       : guest,
+      pageSize   : '10' || 10,
+      visitor    : false,
+      lang       : '' || 'zh-cn',
+      path       : location.pathname,
+      recordIP   : false,
+      serverURLs : ''
+    });
+  }, window.Valine);
+});
+</script>
+<div class="moon-menu">
+  <div class="moon-menu-items">
+    
+    <div class="moon-menu-item" onclick="back2bottom()">
+      <i class='fa fa-chevron-down'></i>    </div>
+    
+    <div class="moon-menu-item" onclick="back2top()">
+      <i class='fa fa-chevron-up'></i>    </div>
+    
+  </div>
+  <div class="moon-menu-button">
+    <svg class="moon-menu-bg">
+      <circle class="moon-menu-cricle" cx="50%" cy="50%" r="44%"></circle>
+      <circle class="moon-menu-border" cx="50%" cy="50%" r="48%"></circle>
+    </svg>
+    <div class="moon-menu-content">
+      <div class="moon-menu-icon"><i class='fas fa-ellipsis-v'></i></div>
+      <div class="moon-menu-text"></div>
+    </div>
+  </div>
+</div><script src="/js/injector.js"></script>
+  
+  
+    <script src="/js/cursor/love.min.js"></script>
+  
+
+</body>
+</html>
