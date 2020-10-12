@@ -173,6 +173,207 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2020/10/12/%E8%BD%AC%E5%BD%95%E7%BB%845/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="https://ss0.bdstatic.com/70cFvHSh_Q1YnxGkpoWK1HF6hhy/it/u=404501654,960623944&fm=26&gp=0.jpg">
+      <meta itemprop="name" content="Zou">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="zero">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2020/10/12/%E8%BD%AC%E5%BD%95%E7%BB%845/" class="post-title-link" itemprop="url">DESeq2筛选差异表达基因并注释</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2020-10-12 19:31:56 / 修改时间：22:15:33" itemprop="dateCreated datePublished" datetime="2020-10-12T19:31:56+08:00">2020-10-12</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E8%BD%AC%E5%BD%95%E7%BB%84/" itemprop="url" rel="index"><span itemprop="name">转录组</span></a>
+                </span>
+            </span>
+
+          
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/2020/10/12/%E8%BD%AC%E5%BD%95%E7%BB%845/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2020/10/12/%E8%BD%AC%E5%BD%95%E7%BB%845/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+            <span class="post-meta-item" title="本文字数">
+              <span class="post-meta-item-icon">
+                <i class="far fa-file-word"></i>
+              </span>
+              <span>8.1k</span>
+            </span>
+            <span class="post-meta-item" title="阅读时长">
+              <span class="post-meta-item-icon">
+                <i class="far fa-clock"></i>
+              </span>
+              <span>7 分钟</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1 id="一-DESeq2筛选差异表达基因"><a href="#一-DESeq2筛选差异表达基因" class="headerlink" title="一.DESeq2筛选差异表达基因"></a>一.DESeq2筛选差异表达基因</h1><p>a.使用DESeq2的两点要求：</p>
+<ol>
+<li>DEseq2要求输入数据是由整数组成的矩阵。</li>
+<li>DESeq2要求矩阵是没有标准化的。</li>
+</ol>
+<p>b.DESeq2进行差异表达分析</p>
+<p>   DESeq2包分析差异表达基因简单来说只有三步：构建dds矩阵，标准化，以及进行差异分析。</p>
+<h2 id="1-构建dds矩阵"><a href="#1-构建dds矩阵" class="headerlink" title="1.构建dds矩阵"></a>1.构建dds矩阵</h2><p><strong><em>表达矩阵：\</em></strong>即上述代码中的countData，就是我们前面通过read count计算后并融合生成的矩阵，行为各个基因，列为各个样品，中间为计算reads或者fragment得到的整数。</p>
+<p><strong><em>样品信息矩阵：\</em></strong>即上述代码中的colData，它的类型是一个dataframe（数据框），第一列是样品名称，第二列是样品的处理情况（对照还是处理等），即condition，condition的类型是一个factor。</p>
+<p><strong><em>差异比较矩阵：\</em></strong> 即上述代码中的design。 差异比较矩阵就是告诉差异分析函数是要从要分析哪些变量间的差异，简单说就是说明哪些是对照哪些是处理。</p>
+<figure class="highlight r"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line">&gt; countData &lt;- read.csv(<span class="string">&#x27;readcount.csv&#x27;</span>,header = <span class="literal">TRUE</span>,row.names = <span class="number">1</span>)<span class="comment">#读取未标准化的矩阵</span></span><br><span class="line">&gt; head(countData)</span><br><span class="line">                control1 control2 treat1 treat2</span><br><span class="line">ENSG00000000003      <span class="number">796</span>      <span class="number">349</span>    <span class="number">780</span>    <span class="number">937</span></span><br><span class="line">ENSG00000000005        <span class="number">0</span>        <span class="number">0</span>      <span class="number">0</span>      <span class="number">1</span></span><br><span class="line">ENSG00000000419      <span class="number">389</span>      <span class="number">174</span>    <span class="number">403</span>    <span class="number">503</span></span><br><span class="line">ENSG00000000457      <span class="number">288</span>      <span class="number">108</span>    <span class="number">218</span>    <span class="number">283</span></span><br><span class="line">ENSG00000000460      <span class="number">506</span>      <span class="number">208</span>    <span class="number">451</span>    <span class="number">543</span></span><br><span class="line">ENSG00000000938        <span class="number">0</span>        <span class="number">0</span>      <span class="number">0</span>      <span class="number">0</span></span><br><span class="line">&gt; condition &lt;- factor(c(rep(<span class="string">&#x27;control&#x27;</span>,<span class="number">2</span>),rep(<span class="string">&#x27;treat&#x27;</span>,<span class="number">2</span>)),levels=c(<span class="string">&#x27;control&#x27;</span>,<span class="string">&#x27;treat&#x27;</span>))</span><br><span class="line"><span class="comment">#condition这里是因子，不是样本名称；该数据有对照组和处理组，各两个重复</span></span><br><span class="line">&gt; condition</span><br><span class="line">[<span class="number">1</span>] control control treat   treat  </span><br><span class="line">Levels: control treat</span><br><span class="line">&gt; colData &lt;- data.frame(row.names = colnames(countData),condition)</span><br><span class="line"><span class="comment">#将样本名与因子（&#x27;control&#x27;,&#x27;treat&#x27;）对应起来</span></span><br><span class="line">&gt; colData</span><br><span class="line">         condition</span><br><span class="line">control1   control</span><br><span class="line">control2   control</span><br><span class="line">treat1       treat</span><br><span class="line">treat2       treat</span><br><span class="line">&gt; dds &lt;- DESeqDataSetFromMatrix(countData, colData, design= ~ condition)<span class="comment">#构建dds矩阵</span></span><br><span class="line">&gt; head(dds)</span><br><span class="line">class: DESeqDataSet </span><br><span class="line">dim: <span class="number">6</span> <span class="number">4</span> </span><br><span class="line">metadata(<span class="number">1</span>): version</span><br><span class="line">assays(<span class="number">1</span>): counts</span><br><span class="line">rownames(<span class="number">6</span>): ENSG00000000003 ENSG00000000005 <span class="keyword">...</span> ENSG00000000460</span><br><span class="line">  ENSG00000000938</span><br><span class="line">rowData names(<span class="number">0</span>):</span><br><span class="line">colnames(<span class="number">4</span>): control1 control2 treat1 treat2</span><br><span class="line">colData names(<span class="number">1</span>): condition</span><br></pre></td></tr></table></figure>
+
+<h2 id="2-DESeq标准化dds"><a href="#2-DESeq标准化dds" class="headerlink" title="2.DESeq标准化dds"></a>2.DESeq标准化dds</h2><figure class="highlight r"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br></pre></td><td class="code"><pre><span class="line">&gt; dds_nrom &lt;- DESeq(dds)<span class="comment"># normalize 数据</span></span><br><span class="line">estimating size factors</span><br><span class="line">estimating dispersions</span><br><span class="line">gene-wise dispersion estimates</span><br><span class="line">mean-dispersion relationship</span><br><span class="line">final dispersion estimates</span><br><span class="line">fitting model and testing</span><br><span class="line">&gt; dds_nrom<span class="comment">#查看deseq2标准化后的结果</span></span><br><span class="line">class: DESeqDataSet </span><br><span class="line">dim: <span class="number">57820</span> <span class="number">4</span> </span><br><span class="line">metadata(<span class="number">1</span>): version</span><br><span class="line">assays(<span class="number">4</span>): counts mu H cooks</span><br><span class="line">rownames(<span class="number">57820</span>): ENSG00000000003 ENSG00000000005 <span class="keyword">...</span></span><br><span class="line">  ENSGR0000266731 ENSGR0000270726</span><br><span class="line">rowData names(<span class="number">22</span>): baseMean baseVar <span class="keyword">...</span> deviance maxCooks</span><br><span class="line">colnames(<span class="number">4</span>): control1 control2 treat1 treat2</span><br><span class="line">colData names(<span class="number">2</span>): condition sizeFactor</span><br><span class="line">&gt; resultsNames(dds_nrom)<span class="comment"># 查看结果的名称</span></span><br><span class="line">[<span class="number">1</span>] <span class="string">&quot;Intercept&quot;</span>                  <span class="string">&quot;condition_treat_vs_control&quot;</span></span><br><span class="line"><span class="comment"># 将结果用results()函数来获取，赋值给res变量,contrast:定义谁和谁比较</span></span><br><span class="line">&gt; res &lt;- results(dds_nrom,contrast = c(<span class="string">&#x27;condition&#x27;</span>,<span class="string">&#x27;control&#x27;</span>,<span class="string">&#x27;treat&#x27;</span>))<span class="comment">#result提取的结果应该是deseq2标准化之后的</span></span><br><span class="line">&gt; head(res)</span><br><span class="line">log2 fold change (MLE): condition control vs treat </span><br><span class="line">Wald test p-value: condition control vs treat </span><br><span class="line">DataFrame with <span class="number">6</span> rows and <span class="number">6</span> columns</span><br><span class="line">                  baseMean log2FoldChange     lfcSE      stat    pvalue</span><br><span class="line">                 &lt;numeric&gt;      &lt;numeric&gt; &lt;numeric&gt; &lt;numeric&gt; &lt;numeric&gt;</span><br><span class="line">ENSG00000000003 <span class="number">664.272867</span>      <span class="number">0.0532281</span>  <span class="number">0.189912</span>  <span class="number">0.280278</span>  <span class="number">0.779264</span></span><br><span class="line">ENSG00000000005   <span class="number">0.173561</span>     -<span class="number">0.6527476</span>  <span class="number">4.990679</span> -<span class="number">0.130793</span>  <span class="number">0.895939</span></span><br><span class="line">ENSG00000000419 <span class="number">338.705598</span>     -<span class="number">0.0418097</span>  <span class="number">0.218144</span> -<span class="number">0.191661</span>  <span class="number">0.848008</span></span><br><span class="line">ENSG00000000457 <span class="number">208.240952</span>      <span class="number">0.2670211</span>  <span class="number">0.252043</span>  <span class="number">1.059425</span>  <span class="number">0.289406</span></span><br><span class="line">ENSG00000000460 <span class="number">396.971168</span>      <span class="number">0.1448093</span>  <span class="number">0.209989</span>  <span class="number">0.689605</span>  <span class="number">0.490442</span></span><br><span class="line">ENSG00000000938   <span class="number">0.000000</span>             <span class="literal">NA</span>        <span class="literal">NA</span>        <span class="literal">NA</span>        <span class="literal">NA</span></span><br><span class="line">                     padj</span><br><span class="line">                &lt;numeric&gt;</span><br><span class="line">ENSG00000000003  <span class="number">0.914425</span></span><br><span class="line">ENSG00000000005        <span class="literal">NA</span></span><br><span class="line">ENSG00000000419  <span class="number">0.947707</span></span><br><span class="line">ENSG00000000457  <span class="number">0.620808</span></span><br><span class="line">ENSG00000000460  <span class="number">0.764178</span></span><br><span class="line">ENSG00000000938        <span class="literal">NA</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="3-提取差异分析结果"><a href="#3-提取差异分析结果" class="headerlink" title="3.提取差异分析结果"></a>3.提取差异分析结果</h2><figure class="highlight r"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line">&gt; table(res$padj&lt;<span class="number">0.05</span>)</span><br><span class="line"><span class="literal">FALSE</span>  <span class="literal">TRUE</span> </span><br><span class="line"><span class="number">13660</span>    <span class="number">85</span> </span><br><span class="line"><span class="comment"># 获取padj（p值经过多重校验校正后的值）小于0.05，表达倍数取以2为对数后大于1或者小于-1的差异表达基因。</span></span><br><span class="line">&gt; diff_gene_deseq2 &lt;- subset(res,padj&lt;<span class="number">0.05</span> &amp; (log2FoldChange&lt;-<span class="number">1</span> | log2FoldChange&gt;<span class="number">1</span>))</span><br><span class="line">&gt; diff_gene_deseq2 &lt;- diff_gene_deseq2[order(diff_gene_deseq2$padj),]<span class="comment">#根据padj重新排序</span></span><br><span class="line">&gt; head(diff_gene_deseq2)</span><br><span class="line">DataFrame with <span class="number">6</span> rows and <span class="number">6</span> columns</span><br><span class="line">                 baseMean log2FoldChange     lfcSE      stat      pvalue</span><br><span class="line">                &lt;numeric&gt;      &lt;numeric&gt; &lt;numeric&gt; &lt;numeric&gt;   &lt;numeric&gt;</span><br><span class="line">ENSG00000178691   <span class="number">531.592</span>       <span class="number">2.899835</span>  <span class="number">0.236065</span>  <span class="number">12.28407</span> <span class="number">1.10308e-34</span></span><br><span class="line">ENSG00000135535  <span class="number">1195.269</span>       <span class="number">1.236055</span>  <span class="number">0.197024</span>   <span class="number">6.27364</span> <span class="number">3.52700e-10</span></span><br><span class="line">ENSG00000196504  <span class="number">1798.248</span>       <span class="number">1.124007</span>  <span class="number">0.202337</span>   <span class="number">5.55513</span> <span class="number">2.77404e-08</span></span><br><span class="line">ENSG00000141425  <span class="number">1290.172</span>       <span class="number">0.970386</span>  <span class="number">0.179053</span>   <span class="number">5.41955</span> <span class="number">5.97506e-08</span></span><br><span class="line">ENSG00000164172   <span class="number">256.882</span>       <span class="number">1.281828</span>  <span class="number">0.242745</span>   <span class="number">5.28056</span> <span class="number">1.28788e-07</span></span><br><span class="line">ENSG00000173905   <span class="number">551.603</span>       <span class="number">1.180928</span>  <span class="number">0.225624</span>   <span class="number">5.23404</span> <span class="number">1.65840e-07</span></span><br><span class="line">                       padj</span><br><span class="line">                  &lt;numeric&gt;</span><br><span class="line">ENSG00000178691 <span class="number">9.16436e-31</span></span><br><span class="line">ENSG00000135535 <span class="number">1.46512e-06</span></span><br><span class="line">ENSG00000196504 <span class="number">7.68224e-05</span></span><br><span class="line">ENSG00000141425 <span class="number">1.24102e-04</span></span><br><span class="line">ENSG00000164172 <span class="number">2.13994e-04</span></span><br><span class="line">ENSG00000173905 <span class="number">2.29634e-04</span></span><br><span class="line">&gt; summary(res)<span class="comment">#对矩阵进行总结，利用summary命令统计显示一共有多少上调和下调</span></span><br><span class="line">out of <span class="number">29434</span> with nonzero total read count</span><br><span class="line">adjusted p-value &lt; <span class="number">0.1</span></span><br><span class="line">LFC &gt; <span class="number">0</span> (up)       : <span class="number">42</span>, <span class="number">0.14</span>%</span><br><span class="line">LFC &lt; <span class="number">0</span> (down)     : <span class="number">8</span>, <span class="number">0.027</span>%</span><br><span class="line">outliers [<span class="number">1</span>]       : <span class="number">0</span>, <span class="number">0</span>%</span><br><span class="line">low counts [<span class="number">2</span>]     : <span class="number">21126</span>, <span class="number">72</span>%</span><br><span class="line">(mean count &lt; <span class="number">137</span>)</span><br><span class="line">[<span class="number">1</span>] see <span class="string">&#x27;cooksCutoff&#x27;</span> argument of ?results</span><br><span class="line">[<span class="number">2</span>] see <span class="string">&#x27;independentFiltering&#x27;</span> argument of ?results</span><br></pre></td></tr></table></figure>
+
+<img src="/2020/10/12/%E8%BD%AC%E5%BD%95%E7%BB%845/18922188-6aae835d145a8908.webp" class>
+
+<h1 id="二-用biomart对差异表达基因进行注释"><a href="#二-用biomart对差异表达基因进行注释" class="headerlink" title="二.用biomart对差异表达基因进行注释"></a>二.用biomart对差异表达基因进行注释</h1><p>bioMart包是一个连接bioMart数据库的R语言接口，能通过这个软件包自由连接到bioMart数据库<br> 这个·包可以做以下几个工作<br> 1.查找某个基因在染色体上的位置。反之，给定染色体每一区间，返回该区间的基因s；<br> 2.通过EntrezGene的ID查找到相关序列的GO注释。反之，给定相关的GO注释，获取相关的EntrezGene的ID；<br> 3.通过EntrezGene的ID查找到相关序列的上游100bp序列（可能包含启动子等调控元件）；<br> 4.查找人类染色体上每一段区域中已知的SNPs；<br> 5.给定一组的序列ID，获得其中具体的序列；</p>
+<figure class="highlight r"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#选定ensembl数据库中的hsapiens_gene_ensembl基因组</span></span><br><span class="line">mart &lt;- useDataset(<span class="string">&quot;hsapiens_gene_ensembl&quot;</span>, useMart(<span class="string">&quot;ensembl&quot;</span>))</span><br><span class="line">&gt; my_ensembl_gene_id &lt;- rownames(diff_gene_deseq2)</span><br><span class="line">&gt; head(my_ensembl_gene_id)</span><br><span class="line">[<span class="number">1</span>] <span class="string">&quot;ENSG00000178691&quot;</span> <span class="string">&quot;ENSG00000135535&quot;</span> <span class="string">&quot;ENSG00000196504&quot;</span></span><br><span class="line">[<span class="number">4</span>] <span class="string">&quot;ENSG00000141425&quot;</span> <span class="string">&quot;ENSG00000164172&quot;</span> <span class="string">&quot;ENSG00000173905&quot;</span></span><br><span class="line">&gt; hg_symbols&lt;- getBM(attributes=c(<span class="string">&#x27;ensembl_gene_id&#x27;</span>,<span class="string">&#x27;hgnc_symbol&#x27;</span>,<span class="string">&quot;chromosome_name&quot;</span>, <span class="string">&quot;start_position&quot;</span>,<span class="string">&quot;end_position&quot;</span>, <span class="string">&quot;band&quot;</span>), filters= <span class="string">&#x27;ensembl_gene_id&#x27;</span>, values = my_ensembl_gene_id, mart = mart)</span><br><span class="line"><span class="comment">#attributers()里面的值为我们要获取的注释类型ensembl_gene_id ,hgnc_symbol chromosome_name start_position end_position band</span></span><br><span class="line"><span class="comment">#filters（）里面的值为我们已知的注释类型ensembl_gene_id</span></span><br><span class="line"><span class="comment">#values= 这个值就是我们已知的注释类型的数据，把上面我们通过数据处理得到的ensembl基因序号作为ensembl_gene_id 的值</span></span><br><span class="line"><span class="comment">#mart= 这个值是我们所选定的数据库的基因组</span></span><br><span class="line">&gt; head(hg_symbols)</span><br><span class="line">  ensembl_gene_id hgnc_symbol chromosome_name start_position end_position</span><br><span class="line"><span class="number">1</span> ENSG00000039319     ZFYVE16               <span class="number">5</span>       <span class="number">80408013</span>     <span class="number">80483379</span></span><br><span class="line"><span class="number">2</span> ENSG00000054598       FOXC1               <span class="number">6</span>        <span class="number">1609915</span>      <span class="number">1613897</span></span><br><span class="line"><span class="number">3</span> ENSG00000064666        CNN2              <span class="number">19</span>        <span class="number">1026586</span>      <span class="number">1039068</span></span><br><span class="line"><span class="number">4</span> ENSG00000071794        HLTF               <span class="number">3</span>      <span class="number">149030127</span>    <span class="number">149086554</span></span><br><span class="line"><span class="number">5</span> ENSG00000075624        ACTB               <span class="number">7</span>        <span class="number">5526409</span>      <span class="number">5563902</span></span><br><span class="line"><span class="number">6</span> ENSG00000077549       CAPZB               <span class="number">1</span>       <span class="number">19338775</span>     <span class="number">19485539</span></span><br><span class="line">    band</span><br><span class="line"><span class="number">1</span>  q14.1</span><br><span class="line"><span class="number">2</span>  p25.3</span><br><span class="line"><span class="number">3</span>  p13.3</span><br><span class="line"><span class="number">4</span>    q24</span><br><span class="line"><span class="number">5</span>  p22.1</span><br><span class="line"><span class="number">6</span> p36.13</span><br><span class="line"><span class="comment">#增加一列ensembl_gene_id便于与注释hg_symbols合并</span></span><br><span class="line">&gt; diff_gene_deseq2$ensembl_gene_id &lt;- rownames(diff_gene_deseq2)</span><br><span class="line">&gt; head(diff_gene_deseq2)</span><br><span class="line">log2 fold change (MLE): condition control vs treat </span><br><span class="line">Wald test p-value: condition control vs treat </span><br><span class="line">DataFrame with <span class="number">6</span> rows and <span class="number">7</span> columns</span><br><span class="line">                 baseMean log2FoldChange     lfcSE      stat      pvalue</span><br><span class="line">                &lt;numeric&gt;      &lt;numeric&gt; &lt;numeric&gt; &lt;numeric&gt;   &lt;numeric&gt;</span><br><span class="line">ENSG00000178691   <span class="number">531.592</span>       <span class="number">2.899835</span>  <span class="number">0.236065</span>  <span class="number">12.28407</span> <span class="number">1.10308e-34</span></span><br><span class="line">ENSG00000135535  <span class="number">1195.269</span>       <span class="number">1.236055</span>  <span class="number">0.197024</span>   <span class="number">6.27364</span> <span class="number">3.52700e-10</span></span><br><span class="line">ENSG00000196504  <span class="number">1798.248</span>       <span class="number">1.124007</span>  <span class="number">0.202337</span>   <span class="number">5.55513</span> <span class="number">2.77404e-08</span></span><br><span class="line">ENSG00000141425  <span class="number">1290.172</span>       <span class="number">0.970386</span>  <span class="number">0.179053</span>   <span class="number">5.41955</span> <span class="number">5.97506e-08</span></span><br><span class="line">ENSG00000164172   <span class="number">256.882</span>       <span class="number">1.281828</span>  <span class="number">0.242745</span>   <span class="number">5.28056</span> <span class="number">1.28788e-07</span></span><br><span class="line">ENSG00000173905   <span class="number">551.603</span>       <span class="number">1.180928</span>  <span class="number">0.225624</span>   <span class="number">5.23404</span> <span class="number">1.65840e-07</span></span><br><span class="line">                       padj ensembl_gene_id</span><br><span class="line">                  &lt;numeric&gt;     &lt;character&gt;</span><br><span class="line">ENSG00000178691 <span class="number">9.16436e-31</span> ENSG00000178691</span><br><span class="line">ENSG00000135535 <span class="number">1.46512e-06</span> ENSG00000135535</span><br><span class="line">ENSG00000196504 <span class="number">7.68224e-05</span> ENSG00000196504</span><br><span class="line">ENSG00000141425 <span class="number">1.24102e-04</span> ENSG00000141425</span><br><span class="line">ENSG00000164172 <span class="number">2.13994e-04</span> ENSG00000164172</span><br><span class="line">ENSG00000173905 <span class="number">2.29634e-04</span> ENSG00000173905</span><br><span class="line">&gt; diff_name &lt;- merge(diff_gene_deseq2,hg_symbols,by=<span class="string">&quot;ensembl_gene_id&quot;</span>)<span class="comment">#报错应先把diff_gene_deseq2转化为dataframe再合并</span></span><br><span class="line">Error <span class="keyword">in</span> as(merge(as(x, <span class="string">&quot;data.frame&quot;</span>), y, <span class="keyword">...</span>), class(x)) : </span><br><span class="line">  no method or default <span class="keyword">for</span> coercing “data.frame” to “DESeqResults”</span><br><span class="line">&gt; diff_name &lt;- merge(as.data.frame(diff_gene_deseq2),hg_symbols,by=<span class="string">&quot;ensembl_gene_id&quot;</span>)<span class="comment">#合并</span></span><br><span class="line">&gt; head(diff_name)</span><br><span class="line">  ensembl_gene_id  baseMean log2FoldChange     lfcSE      stat</span><br><span class="line"><span class="number">1</span> ENSG00000039319  <span class="number">522.7108</span>      <span class="number">0.9650973</span> <span class="number">0.2447603</span>  <span class="number">3.943030</span></span><br><span class="line"><span class="number">2</span> ENSG00000054598 <span class="number">1253.0761</span>      <span class="number">0.7833167</span> <span class="number">0.1776648</span>  <span class="number">4.408959</span></span><br><span class="line"><span class="number">3</span> ENSG00000064666  <span class="number">233.3811</span>     -<span class="number">1.0576105</span> <span class="number">0.2623787</span> -<span class="number">4.030855</span></span><br><span class="line"><span class="number">4</span> ENSG00000071794 <span class="number">1030.8820</span>      <span class="number">0.9222084</span> <span class="number">0.2203282</span>  <span class="number">4.185612</span></span><br><span class="line"><span class="number">5</span> ENSG00000075624 <span class="number">7955.8749</span>     -<span class="number">0.6617466</span> <span class="number">0.1679916</span> -<span class="number">3.939165</span></span><br><span class="line"><span class="number">6</span> ENSG00000077549  <span class="number">598.6919</span>      <span class="number">0.8949043</span> <span class="number">0.2002158</span>  <span class="number">4.469698</span></span><br><span class="line">        pvalue        padj hgnc_symbol chromosome_name start_position</span><br><span class="line"><span class="number">1</span> <span class="number">8.045870e-05</span> <span class="number">0.028304572</span>     ZFYVE16               <span class="number">5</span>       <span class="number">80408013</span></span><br><span class="line"><span class="number">2</span> <span class="number">1.038687e-05</span> <span class="number">0.005393382</span>       FOXC1               <span class="number">6</span>        <span class="number">1609915</span></span><br><span class="line"><span class="number">3</span> <span class="number">5.557431e-05</span> <span class="number">0.020986881</span>        CNN2              <span class="number">19</span>        <span class="number">1026586</span></span><br><span class="line"><span class="number">4</span> <span class="number">2.843993e-05</span> <span class="number">0.012501549</span>        HLTF               <span class="number">3</span>      <span class="number">149030127</span></span><br><span class="line"><span class="number">5</span> <span class="number">8.176573e-05</span> <span class="number">0.028304572</span>        ACTB               <span class="number">7</span>        <span class="number">5526409</span></span><br><span class="line"><span class="number">6</span> <span class="number">7.833019e-06</span> <span class="number">0.004419020</span>       CAPZB               <span class="number">1</span>       <span class="number">19338775</span></span><br><span class="line">  end_position   band</span><br><span class="line"><span class="number">1</span>     <span class="number">80483379</span>  q14.1</span><br><span class="line"><span class="number">2</span>      <span class="number">1613897</span>  p25.3</span><br><span class="line"><span class="number">3</span>      <span class="number">1039068</span>  p13.3</span><br><span class="line"><span class="number">4</span>    <span class="number">149086554</span>    q24</span><br><span class="line"><span class="number">5</span>      <span class="number">5563902</span>  p22.1</span><br><span class="line"><span class="number">6</span>     <span class="number">19485539</span> p36.13</span><br></pre></td></tr></table></figure>
+
+
+
+<h1 id="引用"><a href="#引用" class="headerlink" title="引用"></a>引用</h1><p>1.<a target="_blank" rel="noopener" href="https://www.jianshu.com/p/4d0812195b65">第二次RNA-seq实战总结(3)-用DESeq2进行基因表达差异分析</a></p>
+<p>2.<a target="_blank" rel="noopener" href="https://www.jianshu.com/p/82787ddada38">RNA-seq练习 第三部分（DEseq2筛选差异表达基因,可视化）</a></p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2020/10/10/%E5%88%86%E5%AD%90%E5%AF%B9%E6%8E%A5/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="https://ss0.bdstatic.com/70cFvHSh_Q1YnxGkpoWK1HF6hhy/it/u=404501654,960623944&fm=26&gp=0.jpg">
+      <meta itemprop="name" content="Zou">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="zero">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2020/10/10/%E5%88%86%E5%AD%90%E5%AF%B9%E6%8E%A5/" class="post-title-link" itemprop="url">分子对接</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2020-10-10 16:13:00" itemprop="dateCreated datePublished" datetime="2020-10-10T16:13:00+08:00">2020-10-10</time>
+            </span>
+
+          
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/2020/10/10/%E5%88%86%E5%AD%90%E5%AF%B9%E6%8E%A5/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2020/10/10/%E5%88%86%E5%AD%90%E5%AF%B9%E6%8E%A5/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+            <span class="post-meta-item" title="本文字数">
+              <span class="post-meta-item-icon">
+                <i class="far fa-file-word"></i>
+              </span>
+              <span>0</span>
+            </span>
+            <span class="post-meta-item" title="阅读时长">
+              <span class="post-meta-item-icon">
+                <i class="far fa-clock"></i>
+              </span>
+              <span>1 分钟</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
     <link itemprop="mainEntityOfPage" href="http://example.com/2020/10/09/%E8%BD%AC%E5%BD%95%E7%BB%844/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -321,7 +522,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-10-09 19:07:10" itemprop="dateModified" datetime="2020-10-09T19:07:10+08:00">2020-10-09</time>
+                <time title="修改时间：2020-10-10 11:06:00" itemprop="dateModified" datetime="2020-10-10T11:06:00+08:00">2020-10-10</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -1352,7 +1553,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">7</span>
+          <span class="site-state-item-count">9</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -1669,12 +1870,12 @@ if(canvas.getContext){
     <span class="post-meta-item-icon">
       <i class="fa fa-chart-area"></i>
     </span>
-    <span title="站点总字数">33k</span>
+    <span title="站点总字数">41k</span>
     <span class="post-meta-divider">|</span>
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="站点阅读时长">30 分钟</span>
+    <span title="站点阅读时长">37 分钟</span>
 </div>
   <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
   </div>
