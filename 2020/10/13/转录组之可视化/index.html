@@ -1,0 +1,858 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="google-site-verification" content="sJ4ClziWGfZj4sSky9RQA_JbT7FoBV63Y5AlxqvUCQ4" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.2.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+  <link rel="stylesheet" href="/lib/pace/pace-theme-center-atom.min.css">
+  <script src="/lib/pace/pace.min.js"></script>
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"example.com","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":null},"back2top":{"enable":false,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":null,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="一.探索样本间关系1.样本相关性分析123456789101112131415161718192021222324252627&gt; head(dds)class: DESeqDataSet dim: 6 4 metadata(1): versionassays(1): countsrownames(6): ENSG00000000003 ENSG00000000005 ...  ENSG000">
+<meta property="og:type" content="article">
+<meta property="og:title" content="转录组之可视化">
+<meta property="og:url" content="http://example.com/2020/10/13/%E8%BD%AC%E5%BD%95%E7%BB%84%E4%B9%8B%E5%8F%AF%E8%A7%86%E5%8C%96/index.html">
+<meta property="og:site_name" content="zero">
+<meta property="og:description" content="一.探索样本间关系1.样本相关性分析123456789101112131415161718192021222324252627&gt; head(dds)class: DESeqDataSet dim: 6 4 metadata(1): versionassays(1): countsrownames(6): ENSG00000000003 ENSG00000000005 ...  ENSG000">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://example.com/2020/10/13/%E8%BD%AC%E5%BD%95%E7%BB%84%E4%B9%8B%E5%8F%AF%E8%A7%86%E5%8C%96/plot_zoom_png6">
+<meta property="og:image" content="http://example.com/2020/10/13/%E8%BD%AC%E5%BD%95%E7%BB%84%E4%B9%8B%E5%8F%AF%E8%A7%86%E5%8C%96/plot_zoom_png7">
+<meta property="og:image" content="http://example.com/2020/10/13/%E8%BD%AC%E5%BD%95%E7%BB%84%E4%B9%8B%E5%8F%AF%E8%A7%86%E5%8C%96/plot_zoom_png3">
+<meta property="og:image" content="http://example.com/2020/10/13/%E8%BD%AC%E5%BD%95%E7%BB%84%E4%B9%8B%E5%8F%AF%E8%A7%86%E5%8C%96/plot_zoom_png4">
+<meta property="og:image" content="http://example.com/2020/10/13/%E8%BD%AC%E5%BD%95%E7%BB%84%E4%B9%8B%E5%8F%AF%E8%A7%86%E5%8C%96/plot_zoom_png2">
+<meta property="og:image" content="http://example.com/2020/10/13/%E8%BD%AC%E5%BD%95%E7%BB%84%E4%B9%8B%E5%8F%AF%E8%A7%86%E5%8C%96/plot_zoom_png8">
+<meta property="article:published_time" content="2020-10-13T12:26:21.000Z">
+<meta property="article:modified_time" content="2020-10-14T16:48:12.909Z">
+<meta property="article:author" content="Zou">
+<meta property="article:tag" content="-转录组">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://example.com/2020/10/13/%E8%BD%AC%E5%BD%95%E7%BB%84%E4%B9%8B%E5%8F%AF%E8%A7%86%E5%8C%96/plot_zoom_png6">
+
+<link rel="canonical" href="http://example.com/2020/10/13/%E8%BD%AC%E5%BD%95%E7%BB%84%E4%B9%8B%E5%8F%AF%E8%A7%86%E5%8C%96/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+<link rel="stylesheet" type="text/css" href="/css/injector.css" />
+  <title>转录组之可视化 | zero</title>
+  
+    <script async src="https://www.googletagmanager.com/gtag/js?id=179475982-1"></script>
+    <script>
+      if (CONFIG.hostname === location.hostname) {
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', '179475982-1');
+      }
+    </script>
+
+
+  <script>
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?6464895b8e8b5662096ffbf3aa270de5";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+<link rel="alternate" href="/atom.xml" title="zero" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+	
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">zero</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2020/10/13/%E8%BD%AC%E5%BD%95%E7%BB%84%E4%B9%8B%E5%8F%AF%E8%A7%86%E5%8C%96/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="https://ss0.bdstatic.com/70cFvHSh_Q1YnxGkpoWK1HF6hhy/it/u=404501654,960623944&fm=26&gp=0.jpg">
+      <meta itemprop="name" content="Zou">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="zero">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          转录组之可视化
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2020-10-13 20:26:21" itemprop="dateCreated datePublished" datetime="2020-10-13T20:26:21+08:00">2020-10-13</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2020-10-15 00:48:12" itemprop="dateModified" datetime="2020-10-15T00:48:12+08:00">2020-10-15</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E8%BD%AC%E5%BD%95%E7%BB%84/" itemprop="url" rel="index"><span itemprop="name">转录组</span></a>
+                </span>
+            </span>
+
+          
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/2020/10/13/%E8%BD%AC%E5%BD%95%E7%BB%84%E4%B9%8B%E5%8F%AF%E8%A7%86%E5%8C%96/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2020/10/13/%E8%BD%AC%E5%BD%95%E7%BB%84%E4%B9%8B%E5%8F%AF%E8%A7%86%E5%8C%96/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+            <span class="post-meta-item" title="本文字数">
+              <span class="post-meta-item-icon">
+                <i class="far fa-file-word"></i>
+              </span>
+              <span>7.3k</span>
+            </span>
+            <span class="post-meta-item" title="阅读时长">
+              <span class="post-meta-item-icon">
+                <i class="far fa-clock"></i>
+              </span>
+              <span>7 分钟</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h1 id="一-探索样本间关系"><a href="#一-探索样本间关系" class="headerlink" title="一.探索样本间关系"></a>一.探索样本间关系</h1><h2 id="1-样本相关性分析"><a href="#1-样本相关性分析" class="headerlink" title="1.样本相关性分析"></a>1.样本相关性分析</h2><figure class="highlight r"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line">&gt; head(dds)</span><br><span class="line">class: DESeqDataSet </span><br><span class="line">dim: <span class="number">6</span> <span class="number">4</span> </span><br><span class="line">metadata(<span class="number">1</span>): version</span><br><span class="line">assays(<span class="number">1</span>): counts</span><br><span class="line">rownames(<span class="number">6</span>): ENSG00000000003 ENSG00000000005 <span class="keyword">...</span></span><br><span class="line">  ENSG00000000460 ENSG00000000938</span><br><span class="line">rowData names(<span class="number">0</span>):</span><br><span class="line">colnames(<span class="number">4</span>): control1 control2 treat1 treat2</span><br><span class="line">colData names(<span class="number">1</span>): condition</span><br><span class="line">&gt; as_dds&lt;-assay(dds)<span class="comment">#assay函数从未标准化的deseq2格式矩阵dds中获取原始表达量矩阵；通过DESeqDataSetFromMatrix构建的dds矩阵不会改变其表达量大小，dds与raw_count的数值一样</span></span><br><span class="line">&gt; head(as_dds)</span><br><span class="line">                control1 control2 treat1 treat2</span><br><span class="line">ENSG00000000003      <span class="number">796</span>      <span class="number">349</span>    <span class="number">780</span>    <span class="number">937</span></span><br><span class="line">ENSG00000000005        <span class="number">0</span>        <span class="number">0</span>      <span class="number">0</span>      <span class="number">1</span></span><br><span class="line">ENSG00000000419      <span class="number">389</span>      <span class="number">174</span>    <span class="number">403</span>    <span class="number">503</span></span><br><span class="line">ENSG00000000457      <span class="number">288</span>      <span class="number">108</span>    <span class="number">218</span>    <span class="number">283</span></span><br><span class="line">ENSG00000000460      <span class="number">506</span>      <span class="number">208</span>    <span class="number">451</span>    <span class="number">543</span></span><br><span class="line">ENSG00000000938        <span class="number">0</span>        <span class="number">0</span>      <span class="number">0</span>      <span class="number">0</span></span><br><span class="line">&gt; sample_cor &lt;- cor(as_dds,method = <span class="string">&#x27;pearson&#x27;</span>)</span><br><span class="line">&gt; head(sample_cor)</span><br><span class="line">          control1  control2    treat1    treat2</span><br><span class="line">control1 <span class="number">1.0000000</span> <span class="number">0.9952493</span> <span class="number">0.9397933</span> <span class="number">0.9937118</span></span><br><span class="line">control2 <span class="number">0.9952493</span> <span class="number">1.0000000</span> <span class="number">0.9090246</span> <span class="number">0.9824907</span></span><br><span class="line">treat1   <span class="number">0.9397933</span> <span class="number">0.9090246</span> <span class="number">1.0000000</span> <span class="number">0.9657993</span></span><br><span class="line">treat2   <span class="number">0.9937118</span> <span class="number">0.9824907</span> <span class="number">0.9657993</span> <span class="number">1.0000000</span></span><br><span class="line">pheatmap(sample_cor)</span><br></pre></td></tr></table></figure>
+
+<img src="/2020/10/13/%E8%BD%AC%E5%BD%95%E7%BB%84%E4%B9%8B%E5%8F%AF%E8%A7%86%E5%8C%96/plot_zoom_png6" class>
+
+<h2 id="2-样本聚类分析"><a href="#2-样本聚类分析" class="headerlink" title="2.样本聚类分析"></a>2.样本聚类分析</h2><figure class="highlight r"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">distance&lt;-dist(t(as_dds)<span class="comment">#dist计算的是行间的距离，计算距离前要先转置，将行名变为样本名。</span></span><br><span class="line">sample_hc &lt;- hclust(distance)</span><br><span class="line">plot(sample_hc)</span><br></pre></td></tr></table></figure>
+
+<img src="/2020/10/13/%E8%BD%AC%E5%BD%95%E7%BB%84%E4%B9%8B%E5%8F%AF%E8%A7%86%E5%8C%96/plot_zoom_png7" class>
+
+
+
+<h1 id="二-PCA分析"><a href="#二-PCA分析" class="headerlink" title="二.PCA分析"></a>二.PCA分析</h1><p>进行PCA之前是要进行归一化的，因为在降维映射的过程中， 存在映射误差， 所有在对高维特征降维之前， 需要做特征归一化（feature normalization）, 这个归一化操作包括： （1） feature scaling (让所有的特征拥有相似的尺度， 要不然一个特征特别小， 一个特征特别大会影响降维的效果) （2） zero mean normalization (零均值归一化)。<br> 但是在DESeq2包中实际上已经有了归一化的方法，rlog和vst，在使用的需要根据样本量的多少来选择方法。样本量少于30的话，选择rlog，多于30的话，建议选择vst。样本量多于30的时候，用了rlog，出现以下提示：</p>
+<figure class="highlight r"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">rlog() may take a few minutes with <span class="number">30</span> or more samples,</span><br><span class="line">vst() is a much faster transformation</span><br></pre></td></tr></table></figure>
+
+<p>官方就会建议样本量大于30的时候用vst.</p>
+<p><strong>intgroup：分组</strong></p>
+<p>官方解释：interesting groups: a character vector of names in colData(x) to use for grouping。也就是在构建dds的时候的分组，实际上这个分组最后影响的是PCA图中的颜色，但是并不影响PCA图中各个样本的位置。换句话说，PCA降维的是时候并不会考虑这个分组。</p>
+<figure class="highlight r"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#归一化，因为样本量未超过30，因此用rlog</span></span><br><span class="line">vsd &lt;- vst(dds, blind = <span class="literal">FALSE</span>)<span class="comment">#dds是用 DESeqDataSetFromMatrix导入生成的矩阵，不是deseq2标准化后的</span></span><br><span class="line">pcaData &lt;- plotPCA(vsd, intgroup=<span class="string">&quot;condition&quot;</span>, returnData=<span class="literal">TRUE</span>)<span class="comment">#如果不加returnData=TRUE就会直接画图，returnData可以返回主成分分析数据,进而使用其他方法画图</span></span><br><span class="line">&gt; pcaData</span><br><span class="line">                 PC1        PC2   group condition     name</span><br><span class="line">control1 -<span class="number">4.09219210</span>  <span class="number">0.3231349</span> control   control control1</span><br><span class="line">control2 -<span class="number">5.60305114</span>  <span class="number">0.8966271</span> control   control control2</span><br><span class="line">treat1    <span class="number">9.77130695</span>  <span class="number">0.6350322</span>   treat     treat   treat1</span><br><span class="line">treat2   -<span class="number">0.07606371</span> -<span class="number">1.8547942</span>   treat     treat   treat2</span><br><span class="line">percentVar &lt;- round(<span class="number">100</span> * attr(pcaData, <span class="string">&quot;percentVar&quot;</span>))</span><br><span class="line"><span class="comment">#使用ggplot2画图</span></span><br><span class="line">ggplot(pcaData, aes(PC1, PC2, color=condition)) +</span><br><span class="line">  geom_point(size=<span class="number">3</span>) +</span><br><span class="line">  xlab(paste0(<span class="string">&quot;PC1: &quot;</span>,percentVar[<span class="number">1</span>],<span class="string">&quot;% variance&quot;</span>)) +</span><br><span class="line">  ylab(paste0(<span class="string">&quot;PC2: &quot;</span>,percentVar[<span class="number">2</span>],<span class="string">&quot;% variance&quot;</span>)) + </span><br><span class="line">  coord_fixed()</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<img src="/2020/10/13/%E8%BD%AC%E5%BD%95%E7%BB%84%E4%B9%8B%E5%8F%AF%E8%A7%86%E5%8C%96/plot_zoom_png3" class>
+
+<h1 id="二-火山图"><a href="#二-火山图" class="headerlink" title="二.火山图"></a>二.火山图</h1><p>火山图能反应组间基因表达情况，通常分成3组：up-regulated, down-regulated 和 nonsignificant。（理论上来说应该用padj，但是这个例子用padj画图不好看）</p>
+<h2 id="1-利用EnhancedVolcano包"><a href="#1-利用EnhancedVolcano包" class="headerlink" title="1.利用EnhancedVolcano包"></a>1.利用EnhancedVolcano包</h2><figure class="highlight r"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">volcanoplot&lt;-EnhancedVolcano(res,</span><br><span class="line">                             lab = rownames(res),</span><br><span class="line">                             x = <span class="string">&#x27;log2FoldChange&#x27;</span>,</span><br><span class="line">                             y = <span class="string">&#x27;pvalue&#x27;</span>,</span><br><span class="line">                             xlim = c(-<span class="number">5</span>,<span class="number">5</span>),</span><br><span class="line">                             ylim = c(<span class="number">0</span>,<span class="number">10</span>),</span><br><span class="line">                             pCutoff = <span class="number">10e-5</span>,</span><br><span class="line">                             FCcutoff = <span class="number">1</span>,</span><br><span class="line">                             col=c(<span class="string">&#x27;black&#x27;</span>, <span class="string">&#x27;blue&#x27;</span>, <span class="string">&#x27;green&#x27;</span>, <span class="string">&#x27;red3&#x27;</span>),</span><br><span class="line">                             colAlpha = <span class="number">1</span>,</span><br><span class="line">                             title = <span class="string">&#x27;control vs treat&#x27;</span>)</span><br><span class="line">ggsave(<span class="string">&quot;volcanoplot.png&quot;</span>,volcanolot)</span><br></pre></td></tr></table></figure>
+
+<img src="/2020/10/13/%E8%BD%AC%E5%BD%95%E7%BB%84%E4%B9%8B%E5%8F%AF%E8%A7%86%E5%8C%96/plot_zoom_png4" class> 
+
+<h2 id="2-利用ggplot2画图"><a href="#2-利用ggplot2画图" class="headerlink" title="2.利用ggplot2画图"></a>2.利用ggplot2画图</h2><figure class="highlight r"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># Gather Log-fold change and FDR-corrected pvalues from DESeq2 results</span></span><br><span class="line"><span class="comment">## - Change pvalues to -log10 (1.3 = 0.05)</span></span><br><span class="line">data &lt;- data.frame(gene = row.names(res),</span><br><span class="line">                   pvalue= res$pvalue, </span><br><span class="line">                   log2FoldChange = res$log2FoldChange) </span><br><span class="line"></span><br><span class="line"><span class="comment"># Remove any rows that have NA as an entry</span></span><br><span class="line">data &lt;- na.omit(data)</span><br><span class="line"></span><br><span class="line"><span class="comment"># Color the points which are up or down</span></span><br><span class="line"><span class="comment">## If fold-change &gt; 0 and pvalue &gt; 1.3 (Increased significant)</span></span><br><span class="line"><span class="comment">## If fold-change &lt; 0 and pvalue &gt; 1.3 (Decreased significant)</span></span><br><span class="line">data &lt;- mutate(data, color = case_when(data$log2FoldChange &gt; <span class="number">0</span> &amp; data$pvalue&lt;<span class="number">0.05</span> ~ <span class="string">&quot;Increased&quot;</span>,</span><br><span class="line">                                       data$log2FoldChange &lt; <span class="number">0</span> &amp; data$pvalue&lt; <span class="number">0.05</span>~ <span class="string">&quot;Decreased&quot;</span>,</span><br><span class="line">                                       data$pvalue&gt;<span class="number">0.05</span> ~ <span class="string">&quot;nonsignificant&quot;</span>))</span><br><span class="line"></span><br><span class="line">my_palette &lt;- c(<span class="string">&#x27;#E64B35FF&#x27;</span>, <span class="string">&#x27;#4DBBD5FF&#x27;</span>,<span class="string">&#x27;#999999&#x27;</span>)</span><br><span class="line"><span class="keyword">library</span>(ggplot2)</span><br><span class="line">ggplot(data = data, aes(x = log2FoldChange, y = -log10(pvalue))) +</span><br><span class="line">  geom_point(aes(color =color, size = abs(log2FoldChange))) +</span><br><span class="line">  geom_hline(yintercept = -log10(<span class="number">0.05</span>), linetype = <span class="string">&#x27;dashed&#x27;</span>) +</span><br><span class="line">  geom_vline(xintercept = c(-<span class="number">1</span>, <span class="number">1</span>), linetype = <span class="string">&#x27;dashed&#x27;</span>) + </span><br><span class="line">  scale_color_manual(values = my_palette) + </span><br><span class="line">  scale_size(range = c(<span class="number">0.1</span>, <span class="number">3</span>)) +</span><br><span class="line">  xlim(-<span class="number">5</span>,<span class="number">5</span>)+ylim(<span class="number">0</span>,<span class="number">10</span>)+</span><br><span class="line">  theme_bw()</span><br></pre></td></tr></table></figure>
+
+<img src="/2020/10/13/%E8%BD%AC%E5%BD%95%E7%BB%84%E4%B9%8B%E5%8F%AF%E8%A7%86%E5%8C%96/plot_zoom_png2" class>  
+
+<h1 id="3-热图（挑取差异表达前30的基因画图）"><a href="#3-热图（挑取差异表达前30的基因画图）" class="headerlink" title="3.热图（挑取差异表达前30的基因画图）"></a>3.热图（挑取差异表达前30的基因画图）</h1><figure class="highlight r"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#提取差异最大的前30个基因做热图</span></span><br><span class="line">&gt; top_30_gene &lt;-arrange(diff_name,desc(abs(log2FoldChange)))[<span class="number">1</span>:<span class="number">30</span>,]<span class="comment">#desc(abs(log2FoldChange))按log2FoldChange绝对值从大到小排列，并选取前30行</span></span><br><span class="line">&gt; head(top_30_gene)</span><br><span class="line">  ensembl_gene_id baseMean log2FoldChange     lfcSE      stat</span><br><span class="line"><span class="number">1</span> ENSG00000178691 <span class="number">531.5924</span>       <span class="number">2.899835</span> <span class="number">0.2360647</span> <span class="number">12.284069</span></span><br><span class="line"><span class="number">2</span> ENSG00000172239 <span class="number">238.1623</span>       <span class="number">1.311505</span> <span class="number">0.2546097</span>  <span class="number">5.151041</span></span><br><span class="line"><span class="number">3</span> ENSG00000164172 <span class="number">256.8816</span>       <span class="number">1.281828</span> <span class="number">0.2427446</span>  <span class="number">5.280562</span></span><br><span class="line"><span class="number">4</span> ENSG00000187772 <span class="number">730.2692</span>       <span class="number">1.256584</span> <span class="number">0.2550770</span>  <span class="number">4.926295</span></span><br><span class="line"><span class="number">5</span> ENSG00000163376 <span class="number">165.2589</span>       <span class="number">1.248009</span> <span class="number">0.3180561</span>  <span class="number">3.923863</span></span><br><span class="line"><span class="number">6</span> ENSG00000128512 <span class="number">181.1727</span>       <span class="number">1.236845</span> <span class="number">0.2955839</span>  <span class="number">4.184413</span></span><br><span class="line">        pvalue         padj hgnc_symbol chromosome_name</span><br><span class="line"><span class="number">1</span> <span class="number">1.103076e-34</span> <span class="number">9.164356e-31</span>       SUZ12              <span class="number">17</span></span><br><span class="line"><span class="number">2</span> <span class="number">2.590440e-07</span> <span class="number">3.074482e-04</span>       PAIP1               <span class="number">5</span></span><br><span class="line"><span class="number">3</span> <span class="number">1.287882e-07</span> <span class="number">2.139944e-04</span>       MOCS2               <span class="number">5</span></span><br><span class="line"><span class="number">4</span> <span class="number">8.380340e-07</span> <span class="number">8.702983e-04</span>      LIN28B               <span class="number">6</span></span><br><span class="line"><span class="number">5</span> <span class="number">8.714023e-05</span> <span class="number">2.895844e-02</span>      KBTBD8               <span class="number">3</span></span><br><span class="line"><span class="number">6</span> <span class="number">2.859045e-05</span> <span class="number">1.250155e-02</span>       DOCK4               <span class="number">7</span></span><br><span class="line">  start_position end_position  band</span><br><span class="line"><span class="number">1</span>       <span class="number">31937007</span>     <span class="number">32001038</span> q11.2</span><br><span class="line"><span class="number">2</span>       <span class="number">43526267</span>     <span class="number">43557758</span>   p12</span><br><span class="line"><span class="number">3</span>       <span class="number">53095679</span>     <span class="number">53110063</span> q11.2</span><br><span class="line"><span class="number">4</span>      <span class="number">104936616</span>    <span class="number">105083332</span> q16.3</span><br><span class="line"><span class="number">5</span>       <span class="number">66998307</span>     <span class="number">67011210</span> p14.1</span><br><span class="line"><span class="number">6</span>      <span class="number">111726110</span>    <span class="number">112206407</span> q31.1</span><br><span class="line">&gt; head(as_dds)</span><br><span class="line">                control1 control2 treat1 treat2</span><br><span class="line">ENSG00000000003      <span class="number">796</span>      <span class="number">349</span>    <span class="number">780</span>    <span class="number">937</span></span><br><span class="line">ENSG00000000005        <span class="number">0</span>        <span class="number">0</span>      <span class="number">0</span>      <span class="number">1</span></span><br><span class="line">ENSG00000000419      <span class="number">389</span>      <span class="number">174</span>    <span class="number">403</span>    <span class="number">503</span></span><br><span class="line">ENSG00000000457      <span class="number">288</span>      <span class="number">108</span>    <span class="number">218</span>    <span class="number">283</span></span><br><span class="line">ENSG00000000460      <span class="number">506</span>      <span class="number">208</span>    <span class="number">451</span>    <span class="number">543</span></span><br><span class="line">ENSG00000000938        <span class="number">0</span>        <span class="number">0</span>      <span class="number">0</span>      <span class="number">0</span></span><br><span class="line">&gt; as_dds2 &lt;- rownames_to_column(as_dds,var=<span class="string">&#x27;ensembl_gene_id&#x27;</span>)<span class="comment">#根据报错，需将as_dds转换为data.frame才可以</span></span><br><span class="line">Error <span class="keyword">in</span> rownames_to_column(as_dds, var = <span class="string">&quot;ensembl_gene_id&quot;</span>) : </span><br><span class="line">  is.data.frame(df) is not <span class="literal">TRUE</span></span><br><span class="line">&gt; as_dds2 &lt;- rownames_to_column(as.data.frame(as_dds),var=<span class="string">&#x27;ensembl_gene_id&#x27;</span>)<span class="comment">#将行名转为列名，方便合并</span></span><br><span class="line">&gt; head(as_dds2)</span><br><span class="line">  ensembl_gene_id control1 control2 treat1 treat2</span><br><span class="line"><span class="number">1</span> ENSG00000000003      <span class="number">796</span>      <span class="number">349</span>    <span class="number">780</span>    <span class="number">937</span></span><br><span class="line"><span class="number">2</span> ENSG00000000005        <span class="number">0</span>        <span class="number">0</span>      <span class="number">0</span>      <span class="number">1</span></span><br><span class="line"><span class="number">3</span> ENSG00000000419      <span class="number">389</span>      <span class="number">174</span>    <span class="number">403</span>    <span class="number">503</span></span><br><span class="line"><span class="number">4</span> ENSG00000000457      <span class="number">288</span>      <span class="number">108</span>    <span class="number">218</span>    <span class="number">283</span></span><br><span class="line"><span class="number">5</span> ENSG00000000460      <span class="number">506</span>      <span class="number">208</span>    <span class="number">451</span>    <span class="number">543</span></span><br><span class="line"><span class="number">6</span> ENSG00000000938        <span class="number">0</span>        <span class="number">0</span>      <span class="number">0</span>      <span class="number">0</span></span><br><span class="line">&gt; top_30_gene &lt;- left_join(top_30_gene,as_dds2,by=<span class="string">&#x27;ensembl_gene_id&#x27;</span>)<span class="comment">#左端合并，按ensembl_gene_id列</span></span><br><span class="line">&gt; head(top_30_gene)</span><br><span class="line">  ensembl_gene_id baseMean log2FoldChange     lfcSE      stat</span><br><span class="line"><span class="number">1</span> ENSG00000178691 <span class="number">531.5924</span>       <span class="number">2.899835</span> <span class="number">0.2360647</span> <span class="number">12.284069</span></span><br><span class="line"><span class="number">2</span> ENSG00000172239 <span class="number">238.1623</span>       <span class="number">1.311505</span> <span class="number">0.2546097</span>  <span class="number">5.151041</span></span><br><span class="line"><span class="number">3</span> ENSG00000164172 <span class="number">256.8816</span>       <span class="number">1.281828</span> <span class="number">0.2427446</span>  <span class="number">5.280562</span></span><br><span class="line"><span class="number">4</span> ENSG00000187772 <span class="number">730.2692</span>       <span class="number">1.256584</span> <span class="number">0.2550770</span>  <span class="number">4.926295</span></span><br><span class="line"><span class="number">5</span> ENSG00000163376 <span class="number">165.2589</span>       <span class="number">1.248009</span> <span class="number">0.3180561</span>  <span class="number">3.923863</span></span><br><span class="line"><span class="number">6</span> ENSG00000128512 <span class="number">181.1727</span>       <span class="number">1.236845</span> <span class="number">0.2955839</span>  <span class="number">4.184413</span></span><br><span class="line">        pvalue         padj hgnc_symbol chromosome_name</span><br><span class="line"><span class="number">1</span> <span class="number">1.103076e-34</span> <span class="number">9.164356e-31</span>       SUZ12              <span class="number">17</span></span><br><span class="line"><span class="number">2</span> <span class="number">2.590440e-07</span> <span class="number">3.074482e-04</span>       PAIP1               <span class="number">5</span></span><br><span class="line"><span class="number">3</span> <span class="number">1.287882e-07</span> <span class="number">2.139944e-04</span>       MOCS2               <span class="number">5</span></span><br><span class="line"><span class="number">4</span> <span class="number">8.380340e-07</span> <span class="number">8.702983e-04</span>      LIN28B               <span class="number">6</span></span><br><span class="line"><span class="number">5</span> <span class="number">8.714023e-05</span> <span class="number">2.895844e-02</span>      KBTBD8               <span class="number">3</span></span><br><span class="line"><span class="number">6</span> <span class="number">2.859045e-05</span> <span class="number">1.250155e-02</span>       DOCK4               <span class="number">7</span></span><br><span class="line">  start_position end_position  band control1 control2 treat1 treat2</span><br><span class="line"><span class="number">1</span>       <span class="number">31937007</span>     <span class="number">32001038</span> q11.2     <span class="number">1080</span>      <span class="number">494</span>    <span class="number">118</span>    <span class="number">218</span></span><br><span class="line"><span class="number">2</span>       <span class="number">43526267</span>     <span class="number">43557758</span>   p12      <span class="number">348</span>      <span class="number">198</span>    <span class="number">165</span>    <span class="number">193</span></span><br><span class="line"><span class="number">3</span>       <span class="number">53095679</span>     <span class="number">53110063</span> q11.2      <span class="number">417</span>      <span class="number">193</span>    <span class="number">161</span>    <span class="number">236</span></span><br><span class="line"><span class="number">4</span>      <span class="number">104936616</span>    <span class="number">105083332</span> q16.3     <span class="number">1162</span>      <span class="number">553</span>    <span class="number">365</span>    <span class="number">799</span></span><br><span class="line"><span class="number">5</span>       <span class="number">66998307</span>     <span class="number">67011210</span> p14.1      <span class="number">245</span>      <span class="number">133</span>     <span class="number">83</span>    <span class="number">180</span></span><br><span class="line"><span class="number">6</span>      <span class="number">111726110</span>    <span class="number">112206407</span> q31.1      <span class="number">278</span>      <span class="number">141</span>     <span class="number">98</span>    <span class="number">191</span></span><br><span class="line">&gt; pheatmap_data &lt;- select(top_30_gene,<span class="string">&#x27;hgnc_symbol&#x27;</span>,<span class="string">&#x27;control1&#x27;</span>,<span class="string">&#x27;control2&#x27;</span>,<span class="string">&#x27;treat1&#x27;</span>,<span class="string">&#x27;treat2&#x27;</span>)<span class="comment">#用select选取&#x27;hgnc_symbol&#x27;,&#x27;control1&#x27;,&#x27;control2&#x27;,&#x27;treat1&#x27;,&#x27;treat2&#x27;五列组成一个新的data.frame</span></span><br><span class="line">&gt; head(pheatmap_data)</span><br><span class="line">  hgnc_symbol control1 control2 treat1 treat2</span><br><span class="line"><span class="number">1</span>       SUZ12     <span class="number">1080</span>      <span class="number">494</span>    <span class="number">118</span>    <span class="number">218</span></span><br><span class="line"><span class="number">2</span>       PAIP1      <span class="number">348</span>      <span class="number">198</span>    <span class="number">165</span>    <span class="number">193</span></span><br><span class="line"><span class="number">3</span>       MOCS2      <span class="number">417</span>      <span class="number">193</span>    <span class="number">161</span>    <span class="number">236</span></span><br><span class="line"><span class="number">4</span>      LIN28B     <span class="number">1162</span>      <span class="number">553</span>    <span class="number">365</span>    <span class="number">799</span></span><br><span class="line"><span class="number">5</span>      KBTBD8      <span class="number">245</span>      <span class="number">133</span>     <span class="number">83</span>    <span class="number">180</span></span><br><span class="line"><span class="number">6</span>       DOCK4      <span class="number">278</span>      <span class="number">141</span>     <span class="number">98</span>    <span class="number">191</span></span><br><span class="line">&gt; pheatmap_data &lt;- column_to_rownames(pheatmap_data,var=<span class="string">&#x27;hgnc_symbol&#x27;</span>)<span class="comment">#热图需要矩阵，要把hgnc_symbol转换为行名</span></span><br><span class="line">&gt; head(pheatmap_data)</span><br><span class="line">       control1 control2 treat1 treat2</span><br><span class="line">SUZ12      <span class="number">1080</span>      <span class="number">494</span>    <span class="number">118</span>    <span class="number">218</span></span><br><span class="line">PAIP1       <span class="number">348</span>      <span class="number">198</span>    <span class="number">165</span>    <span class="number">193</span></span><br><span class="line">MOCS2       <span class="number">417</span>      <span class="number">193</span>    <span class="number">161</span>    <span class="number">236</span></span><br><span class="line">LIN28B     <span class="number">1162</span>      <span class="number">553</span>    <span class="number">365</span>    <span class="number">799</span></span><br><span class="line">KBTBD8      <span class="number">245</span>      <span class="number">133</span>     <span class="number">83</span>    <span class="number">180</span></span><br><span class="line">DOCK4       <span class="number">278</span>      <span class="number">141</span>     <span class="number">98</span>    <span class="number">191</span></span><br></pre></td></tr></table></figure>
+
+<img src="/2020/10/13/%E8%BD%AC%E5%BD%95%E7%BB%84%E4%B9%8B%E5%8F%AF%E8%A7%86%E5%8C%96/plot_zoom_png8" class>  
+    </div>
+
+    
+    
+    
+        <div class="reward-container">
+  <div>客官打个赏咯.</div>
+  <button onclick="var qr = document.getElementById('qr'); qr.style.display = (qr.style.display === 'none') ? 'block' : 'none';">
+    打赏
+  </button>
+  <div id="qr" style="display: none;">
+      
+      <div style="display: inline-block;">
+        <img src="/images/wechatpay.png" alt="Zou 微信支付">
+        <p>微信支付</p>
+      </div>
+      
+      <div style="display: inline-block;">
+        <img src="/images/alipay.png" alt="Zou 支付宝">
+        <p>支付宝</p>
+      </div>
+
+  </div>
+</div>
+
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/%E8%BD%AC%E5%BD%95%E7%BB%84/" rel="tag"># -转录组</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2020/10/12/%E8%BD%AC%E5%BD%95%E7%BB%845/" rel="prev" title="DESeq2筛选差异表达基因并注释">
+      <i class="fa fa-chevron-left"></i> DESeq2筛选差异表达基因并注释
+    </a></div>
+      <div class="post-nav-item"></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+    <div class="comments" id="valine-comments"></div>
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E4%B8%80-%E6%8E%A2%E7%B4%A2%E6%A0%B7%E6%9C%AC%E9%97%B4%E5%85%B3%E7%B3%BB"><span class="nav-number">1.</span> <span class="nav-text">一.探索样本间关系</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-%E6%A0%B7%E6%9C%AC%E7%9B%B8%E5%85%B3%E6%80%A7%E5%88%86%E6%9E%90"><span class="nav-number">1.1.</span> <span class="nav-text">1.样本相关性分析</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-%E6%A0%B7%E6%9C%AC%E8%81%9A%E7%B1%BB%E5%88%86%E6%9E%90"><span class="nav-number">1.2.</span> <span class="nav-text">2.样本聚类分析</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E4%BA%8C-PCA%E5%88%86%E6%9E%90"><span class="nav-number">2.</span> <span class="nav-text">二.PCA分析</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E4%BA%8C-%E7%81%AB%E5%B1%B1%E5%9B%BE"><span class="nav-number">3.</span> <span class="nav-text">二.火山图</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-%E5%88%A9%E7%94%A8EnhancedVolcano%E5%8C%85"><span class="nav-number">3.1.</span> <span class="nav-text">1.利用EnhancedVolcano包</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-%E5%88%A9%E7%94%A8ggplot2%E7%94%BB%E5%9B%BE"><span class="nav-number">3.2.</span> <span class="nav-text">2.利用ggplot2画图</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#3-%E7%83%AD%E5%9B%BE%EF%BC%88%E6%8C%91%E5%8F%96%E5%B7%AE%E5%BC%82%E8%A1%A8%E8%BE%BE%E5%89%8D30%E7%9A%84%E5%9F%BA%E5%9B%A0%E7%94%BB%E5%9B%BE%EF%BC%89"><span class="nav-number">4.</span> <span class="nav-text">3.热图（挑取差异表达前30的基因画图）</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Zou"
+      src="https://ss0.bdstatic.com/70cFvHSh_Q1YnxGkpoWK1HF6hhy/it/u=404501654,960623944&fm=26&gp=0.jpg">
+  <p class="site-author-name" itemprop="name">Zou</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">10</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">2</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">2</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/zou-yawen" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;zou-yawen" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+  </div>
+
+
+
+      </div>
+	  <div style="">
+  <canvas id="canvas" style="width:60%;">当前浏览器不支持canvas，请更换浏览器后再试</canvas>
+</div>
+<script>
+(function(){
+
+   var digit=
+    [
+        [
+            [0,0,1,1,1,0,0],
+            [0,1,1,0,1,1,0],
+            [1,1,0,0,0,1,1],
+            [1,1,0,0,0,1,1],
+            [1,1,0,0,0,1,1],
+            [1,1,0,0,0,1,1],
+            [1,1,0,0,0,1,1],
+            [1,1,0,0,0,1,1],
+            [0,1,1,0,1,1,0],
+            [0,0,1,1,1,0,0]
+        ],//0
+        [
+            [0,0,0,1,1,0,0],
+            [0,1,1,1,1,0,0],
+            [0,0,0,1,1,0,0],
+            [0,0,0,1,1,0,0],
+            [0,0,0,1,1,0,0],
+            [0,0,0,1,1,0,0],
+            [0,0,0,1,1,0,0],
+            [0,0,0,1,1,0,0],
+            [0,0,0,1,1,0,0],
+            [1,1,1,1,1,1,1]
+        ],//1
+        [
+            [0,1,1,1,1,1,0],
+            [1,1,0,0,0,1,1],
+            [0,0,0,0,0,1,1],
+            [0,0,0,0,1,1,0],
+            [0,0,0,1,1,0,0],
+            [0,0,1,1,0,0,0],
+            [0,1,1,0,0,0,0],
+            [1,1,0,0,0,0,0],
+            [1,1,0,0,0,1,1],
+            [1,1,1,1,1,1,1]
+        ],//2
+        [
+            [1,1,1,1,1,1,1],
+            [0,0,0,0,0,1,1],
+            [0,0,0,0,1,1,0],
+            [0,0,0,1,1,0,0],
+            [0,0,1,1,1,0,0],
+            [0,0,0,0,1,1,0],
+            [0,0,0,0,0,1,1],
+            [0,0,0,0,0,1,1],
+            [1,1,0,0,0,1,1],
+            [0,1,1,1,1,1,0]
+        ],//3
+        [
+            [0,0,0,0,1,1,0],
+            [0,0,0,1,1,1,0],
+            [0,0,1,1,1,1,0],
+            [0,1,1,0,1,1,0],
+            [1,1,0,0,1,1,0],
+            [1,1,1,1,1,1,1],
+            [0,0,0,0,1,1,0],
+            [0,0,0,0,1,1,0],
+            [0,0,0,0,1,1,0],
+            [0,0,0,1,1,1,1]
+        ],//4
+        [
+            [1,1,1,1,1,1,1],
+            [1,1,0,0,0,0,0],
+            [1,1,0,0,0,0,0],
+            [1,1,1,1,1,1,0],
+            [0,0,0,0,0,1,1],
+            [0,0,0,0,0,1,1],
+            [0,0,0,0,0,1,1],
+            [0,0,0,0,0,1,1],
+            [1,1,0,0,0,1,1],
+            [0,1,1,1,1,1,0]
+        ],//5
+        [
+            [0,0,0,0,1,1,0],
+            [0,0,1,1,0,0,0],
+            [0,1,1,0,0,0,0],
+            [1,1,0,0,0,0,0],
+            [1,1,0,1,1,1,0],
+            [1,1,0,0,0,1,1],
+            [1,1,0,0,0,1,1],
+            [1,1,0,0,0,1,1],
+            [1,1,0,0,0,1,1],
+            [0,1,1,1,1,1,0]
+        ],//6
+        [
+            [1,1,1,1,1,1,1],
+            [1,1,0,0,0,1,1],
+            [0,0,0,0,1,1,0],
+            [0,0,0,0,1,1,0],
+            [0,0,0,1,1,0,0],
+            [0,0,0,1,1,0,0],
+            [0,0,1,1,0,0,0],
+            [0,0,1,1,0,0,0],
+            [0,0,1,1,0,0,0],
+            [0,0,1,1,0,0,0]
+        ],//7
+        [
+            [0,1,1,1,1,1,0],
+            [1,1,0,0,0,1,1],
+            [1,1,0,0,0,1,1],
+            [1,1,0,0,0,1,1],
+            [0,1,1,1,1,1,0],
+            [1,1,0,0,0,1,1],
+            [1,1,0,0,0,1,1],
+            [1,1,0,0,0,1,1],
+            [1,1,0,0,0,1,1],
+            [0,1,1,1,1,1,0]
+        ],//8
+        [
+            [0,1,1,1,1,1,0],
+            [1,1,0,0,0,1,1],
+            [1,1,0,0,0,1,1],
+            [1,1,0,0,0,1,1],
+            [0,1,1,1,0,1,1],
+            [0,0,0,0,0,1,1],
+            [0,0,0,0,0,1,1],
+            [0,0,0,0,1,1,0],
+            [0,0,0,1,1,0,0],
+            [0,1,1,0,0,0,0]
+        ],//9
+        [
+            [0,0,0,0,0,0,0],
+            [0,0,1,1,1,0,0],
+            [0,0,1,1,1,0,0],
+            [0,0,1,1,1,0,0],
+            [0,0,0,0,0,0,0],
+            [0,0,0,0,0,0,0],
+            [0,0,1,1,1,0,0],
+            [0,0,1,1,1,0,0],
+            [0,0,1,1,1,0,0],
+            [0,0,0,0,0,0,0]
+        ]//:
+    ];
+
+var canvas = document.getElementById('canvas');
+
+if(canvas.getContext){
+    var cxt = canvas.getContext('2d');
+    //声明canvas的宽高
+    var H = 100,W = 700;
+    canvas.height = H;
+    canvas.width = W;
+    cxt.fillStyle = '#f00';
+    cxt.fillRect(10,10,50,50);
+
+    //存储时间数据
+    var data = [];
+    //存储运动的小球
+    var balls = [];
+    //设置粒子半径
+    var R = canvas.height/20-1;
+    (function(){
+        var temp = /(\d)(\d):(\d)(\d):(\d)(\d)/.exec(new Date());
+        //存储时间数字，由十位小时、个位小时、冒号、十位分钟、个位分钟、冒号、十位秒钟、个位秒钟这7个数字组成
+        data.push(temp[1],temp[2],10,temp[3],temp[4],10,temp[5],temp[6]);
+    })();
+
+    /*生成点阵数字*/
+    function renderDigit(index,num){
+        for(var i = 0; i < digit[num].length; i++){
+            for(var j = 0; j < digit[num][i].length; j++){
+                if(digit[num][i][j] == 1){
+                    cxt.beginPath();
+                    cxt.arc(14*(R+2)*index + j*2*(R+1)+(R+1),i*2*(R+1)+(R+1),R,0,2*Math.PI);
+                    cxt.closePath();
+                    cxt.fill();
+                }
+            }
+        }
+    }
+
+    /*更新时钟*/
+    function updateDigitTime(){
+        var changeNumArray = [];
+        var temp = /(\d)(\d):(\d)(\d):(\d)(\d)/.exec(new Date());
+        var NewData = [];
+        NewData.push(temp[1],temp[2],10,temp[3],temp[4],10,temp[5],temp[6]);
+        for(var i = data.length-1; i >=0 ; i--){
+            //时间发生变化
+            if(NewData[i] !== data[i]){
+                //将变化的数字值和在data数组中的索引存储在changeNumArray数组中
+                changeNumArray.push(i+'_'+(Number(data[i])+1)%10);
+            }
+        }
+        //增加小球
+        for(var i = 0; i< changeNumArray.length; i++){
+            addBalls.apply(this,changeNumArray[i].split('_'));
+        }
+        data = NewData.concat();
+    }
+
+    /*更新小球状态*/
+    function updateBalls(){
+        for(var i = 0; i < balls.length; i++){
+            balls[i].stepY += balls[i].disY;
+            balls[i].x += balls[i].stepX;
+            balls[i].y += balls[i].stepY;
+            if(balls[i].x > W + R || balls[i].y > H + R){
+                balls.splice(i,1);
+                i--;
+            }
+        }
+    }
+
+    /*增加要运动的小球*/
+    function addBalls(index,num){
+        var numArray = [1,2,3];
+        var colorArray =  ["#3BE","#09C","#A6C","#93C","#9C0","#690","#FB3","#F80","#F44","#C00"];
+        for(var i = 0; i < digit[num].length; i++){
+            for(var j = 0; j < digit[num][i].length; j++){
+                if(digit[num][i][j] == 1){
+                    var ball = {
+                        x:14*(R+2)*index + j*2*(R+1)+(R+1),
+                        y:i*2*(R+1)+(R+1),
+                        stepX:Math.floor(Math.random() * 4 -2),
+                        stepY:-2*numArray[Math.floor(Math.random()*numArray.length)],
+                        color:colorArray[Math.floor(Math.random()*colorArray.length)],
+                        disY:1
+                    };
+                    balls.push(ball);
+                }
+            }
+        }
+    }
+
+    /*渲染*/
+    function render(){
+        //重置画布宽度，达到清空画布的效果
+        canvas.height = 100;
+        //渲染时钟
+        for(var i = 0; i < data.length; i++){
+            renderDigit(i,data[i]);
+        }
+        //渲染小球
+        for(var i = 0; i < balls.length; i++){
+            cxt.beginPath();
+            cxt.arc(balls[i].x,balls[i].y,R,0,2*Math.PI);
+            cxt.fillStyle = balls[i].color;
+            cxt.closePath();
+            cxt.fill();
+        }
+    }
+
+    clearInterval(oTimer);
+    var oTimer = setInterval(function(){
+        //更新时钟
+        updateDigitTime();
+        //更新小球状态
+        updateBalls();
+        //渲染
+        render();
+    },50);
+}
+
+})();
+</script>
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Zou</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-area"></i>
+    </span>
+    <span title="站点总字数">49k</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    <span title="站点阅读时长">44 分钟</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
+  </div>
+
+  <div>
+  <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  本站总访问量 <span id="busuanzi_value_site_pv"></span> 次&nbsp&nbsp&nbsp
+  本站访客数<span id="busuanzi_value_site_uv"></span>人次
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  
+  <script color='0,0,255' opacity='0.5' zIndex='-1' count='99' src="/lib/canvas-nest/canvas-nest.min.js"></script>
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+
+<script>
+NexT.utils.loadComments(document.querySelector('#valine-comments'), () => {
+  NexT.utils.getScript('//unpkg.com/valine/dist/Valine.min.js', () => {
+    var GUEST = ['nick', 'mail', 'link'];
+    var guest = 'nick,mail,link';
+    guest = guest.split(',').filter(item => {
+      return GUEST.includes(item);
+    });
+    new Valine({
+      el         : '#valine-comments',
+      verify     : false,
+      notify     : false,
+      appId      : 'y4GHkTMDe6wgDNM2HBBmdCiE-gzGzoHsz',
+      appKey     : 'xCP8RGkrjsLOs5VQOifjzVnA',
+      placeholder: "Just go go",
+      avatar     : 'mm',
+      meta       : guest,
+      pageSize   : '10' || 10,
+      visitor    : false,
+      lang       : '' || 'zh-cn',
+      path       : location.pathname,
+      recordIP   : false,
+      serverURLs : ''
+    });
+  }, window.Valine);
+});
+</script>
+<div class="moon-menu">
+  <div class="moon-menu-items">
+    
+    <div class="moon-menu-item" onclick="back2bottom()">
+      <i class='fa fa-chevron-down'></i>    </div>
+    
+    <div class="moon-menu-item" onclick="back2top()">
+      <i class='fa fa-chevron-up'></i>    </div>
+    
+  </div>
+  <div class="moon-menu-button">
+    <svg class="moon-menu-bg">
+      <circle class="moon-menu-cricle" cx="50%" cy="50%" r="44%"></circle>
+      <circle class="moon-menu-border" cx="50%" cy="50%" r="48%"></circle>
+    </svg>
+    <div class="moon-menu-content">
+      <div class="moon-menu-icon"><i class='fas fa-ellipsis-v'></i></div>
+      <div class="moon-menu-text"></div>
+    </div>
+  </div>
+</div><script src="/js/injector.js"></script>
+  
+  
+    <script src="/js/cursor/love.min.js"></script>
+  
+
+</body>
+</html>
