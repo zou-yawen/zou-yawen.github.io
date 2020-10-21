@@ -47,7 +47,7 @@
 <meta property="og:image" content="http://example.com/2020/10/21/GEO/plot_zoom_png11">
 <meta property="og:image" content="http://example.com/2020/10/21/GEO/plot_zoom_png12">
 <meta property="article:published_time" content="2020-10-21T03:12:18.000Z">
-<meta property="article:modified_time" content="2020-10-21T09:04:52.969Z">
+<meta property="article:modified_time" content="2020-10-21T09:07:00.949Z">
 <meta property="article:author" content="Zou">
 <meta property="article:tag" content="-GEO">
 <meta name="twitter:card" content="summary">
@@ -220,7 +220,7 @@
               <span class="post-meta-item-text">发表于</span>
               
 
-              <time title="创建时间：2020-10-21 11:12:18 / 修改时间：17:04:52" itemprop="dateCreated datePublished" datetime="2020-10-21T11:12:18+08:00">2020-10-21</time>
+              <time title="创建时间：2020-10-21 11:12:18 / 修改时间：17:07:00" itemprop="dateCreated datePublished" datetime="2020-10-21T11:12:18+08:00">2020-10-21</time>
             </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -270,6 +270,8 @@
 
       
         <h1 id="一-数据的获取"><a href="#一-数据的获取" class="headerlink" title="一.数据的获取"></a>一.数据的获取</h1><p>GEO数据库全称Gene Expression Omnibus database，是由美国国立生物技术信息中心NCBI创建并维护的基因表达数据库。它创建于2000年，收录了世界各国研究机构提交的高通量基因表达数据，也就是说只要是目前已经发表的论文，论文中涉及到的基因表达检测的数据都可以通过这个数据库中找到。包含了芯片和二代测序的数据。刚接触GEO肯定会发现GPL，GSM，GSE，GDS等甚至还有SRA这些标志。</p>
+<a id="more"></a>
+
 <ul>
 <li>GPL就是platform，就是说实验是用什么做的，如果是芯片数据GPL一般用来将probe转换成gene ID。</li>
 <li>GSE就是series，可以理解成是一组实验包含一些control和case的样本</li>
@@ -277,8 +279,6 @@
 <li>GDS，是GEO工作人员根据一定的研究目的归类的dataset。</li>
 <li>SRA就是sequence read archive,记录的是二代测序的read以及比对情况，可以通过SRA数据自己从头进行下游分析。</li>
 </ul>
-<a id="more"></a>
-
 <h2 id="1-通过GEOquery下载"><a href="#1-通过GEOquery下载" class="headerlink" title="1.通过GEOquery下载"></a>1.通过GEOquery下载</h2><figure class="highlight r"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">gse49515&lt;-getGEO(<span class="string">&#x27;gse49515&#x27;</span>,AnnotGPL = <span class="literal">F</span>,getGPL = <span class="literal">F</span>)</span><br><span class="line">gene_exp &lt;- as.data.frame(exprs(gset[[<span class="number">1</span>]]))<span class="comment">#获取表达矩阵</span></span><br><span class="line">&gt; gene_exp[<span class="number">1</span>:<span class="number">3</span>,<span class="number">1</span>:<span class="number">3</span>]</span><br><span class="line">          GSM1200291 GSM1200292 GSM1200293</span><br><span class="line">1007_s_at    <span class="number">6.06616</span>    <span class="number">6.08172</span>    <span class="number">5.63387</span></span><br><span class="line">1053_at      <span class="number">7.19067</span>    <span class="number">7.49107</span>    <span class="number">7.52000</span></span><br><span class="line">117_at       <span class="number">9.01752</span>    <span class="number">8.13871</span>    <span class="number">8.27904</span></span><br><span class="line">&gt; table(is.na(gene_exp))<span class="comment">#判断表达矩阵中是否na值，没有就不需要去除，若有的话则na.omit(gene_exp）</span></span><br><span class="line">  <span class="literal">FALSE</span> </span><br><span class="line"><span class="number">1421550</span> </span><br><span class="line">sample_Info &lt;- pData(gset[[<span class="number">1</span>]])<span class="comment">#获取样本信息表</span></span><br><span class="line"></span><br><span class="line">gpl570&lt;-getGEO(<span class="string">&#x27;GPL570&#x27;</span>)<span class="comment">#获取探针信息进行ID转换</span></span><br></pre></td></tr></table></figure>
 
 <h2 id="2-NCBI上下载"><a href="#2-NCBI上下载" class="headerlink" title="2.NCBI上下载"></a>2.NCBI上下载</h2><p>GEO下载页面布局如图所示</p>

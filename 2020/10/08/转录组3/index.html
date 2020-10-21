@@ -23,12 +23,12 @@
     var CONFIG = {"hostname":"example.com","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":null},"back2top":{"enable":false,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":null,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
   </script>
 
-  <meta name="description" content="一.比对（hisat2） 1.构建索引 a.使用hisat2-build 命令自行构建（耗时长，不推荐） 1hisat2-build -p 4 hg19.fa genome  hg19.fa为ucsc下载的基因组解压合并后的文件 -p 线程数 genome 生成的index前缀名 b.hisat2官网下载hg19索引（推荐） 网址：http:&#x2F;&#x2F;daehwankimlab.github.io&#x2F;hi">
+  <meta name="description" content="一.比对（hisat2） 1.构建索引 a.使用hisat2-build 命令自行构建（耗时长，不推荐） 1hisat2-build -p 4 hg19.fa genome  hg19.fa为ucsc下载的基因组解压合并后的文件 -p 线程数 genome 生成的index前缀名">
 <meta property="og:type" content="article">
 <meta property="og:title" content="RNA-seq第三部分（比对，比对质控,HTseq-count计数）">
 <meta property="og:url" content="http://example.com/2020/10/08/%E8%BD%AC%E5%BD%95%E7%BB%843/index.html">
 <meta property="og:site_name" content="zero">
-<meta property="og:description" content="一.比对（hisat2） 1.构建索引 a.使用hisat2-build 命令自行构建（耗时长，不推荐） 1hisat2-build -p 4 hg19.fa genome  hg19.fa为ucsc下载的基因组解压合并后的文件 -p 线程数 genome 生成的index前缀名 b.hisat2官网下载hg19索引（推荐） 网址：http:&#x2F;&#x2F;daehwankimlab.github.io&#x2F;hi">
+<meta property="og:description" content="一.比对（hisat2） 1.构建索引 a.使用hisat2-build 命令自行构建（耗时长，不推荐） 1hisat2-build -p 4 hg19.fa genome  hg19.fa为ucsc下载的基因组解压合并后的文件 -p 线程数 genome 生成的index前缀名">
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="http://example.com/2020/10/08/%E8%BD%AC%E5%BD%95%E7%BB%843/QQ%E6%88%AA%E5%9B%BE20201008102942.png">
 <meta property="og:image" content="http://example.com/2020/10/08/%E8%BD%AC%E5%BD%95%E7%BB%843/QQ%E6%88%AA%E5%9B%BE20201008112841.png">
@@ -37,7 +37,7 @@
 <meta property="og:image" content="http://example.com/2020/10/08/%E8%BD%AC%E5%BD%95%E7%BB%843/QQ%E6%88%AA%E5%9B%BE20201009185818.png">
 <meta property="og:image" content="http://example.com/2020/10/08/%E8%BD%AC%E5%BD%95%E7%BB%843/QQ%E6%88%AA%E5%9B%BE20201009190312.png">
 <meta property="article:published_time" content="2020-10-07T23:24:33.000Z">
-<meta property="article:modified_time" content="2020-10-10T03:06:00.642Z">
+<meta property="article:modified_time" content="2020-10-21T09:09:07.861Z">
 <meta property="article:author" content="Zou">
 <meta property="article:tag" content="-转录组">
 <meta name="twitter:card" content="summary">
@@ -216,7 +216,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-10-10 11:06:00" itemprop="dateModified" datetime="2020-10-10T11:06:00+08:00">2020-10-10</time>
+                <time title="修改时间：2020-10-21 17:09:07" itemprop="dateModified" datetime="2020-10-21T17:09:07+08:00">2020-10-21</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -273,6 +273,8 @@
 <p>hg19.fa为ucsc下载的基因组解压合并后的文件</p>
 <p>-p 线程数</p>
 <p>genome 生成的index前缀名</p>
+<a id="more"></a>
+
 <p>b.hisat2官网下载hg19索引（推荐）</p>
 <p>网址：<a target="_blank" rel="noopener" href="http://daehwankimlab.github.io/hisat2/download/#h-sapiens">http://daehwankimlab.github.io/hisat2/download/#h-sapiens</a></p>
 <p>选择相应版本的index,这里选择hg19</p>

@@ -23,16 +23,16 @@
     var CONFIG = {"hostname":"example.com","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":null},"back2top":{"enable":false,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":null,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
   </script>
 
-  <meta name="description" content="一.DESeq2筛选差异表达基因a.使用DESeq2的两点要求：  DEseq2要求输入数据是由整数组成的矩阵。 DESeq2要求矩阵是没有标准化的。  b.DESeq2进行差异表达分析    DESeq2包分析差异表达基因简单来说只有三步：构建dds矩阵，标准化，以及进行差异分析。 1.构建dds矩阵表达矩阵：\即上述代码中的countData，就是我们前面通过read count计算后并融合生">
+  <meta name="description" content="一.DESeq2筛选差异表达基因a.使用DESeq2的两点要求：  DEseq2要求输入数据是由整数组成的矩阵。 DESeq2要求矩阵是没有标准化的。  b.DESeq2进行差异表达分析    DESeq2包分析差异表达基因简单来说只有三步：构建dds矩阵，标准化，以及进行差异分析。">
 <meta property="og:type" content="article">
 <meta property="og:title" content="DESeq2筛选差异表达基因并注释">
 <meta property="og:url" content="http://example.com/2020/10/12/%E8%BD%AC%E5%BD%95%E7%BB%845/index.html">
 <meta property="og:site_name" content="zero">
-<meta property="og:description" content="一.DESeq2筛选差异表达基因a.使用DESeq2的两点要求：  DEseq2要求输入数据是由整数组成的矩阵。 DESeq2要求矩阵是没有标准化的。  b.DESeq2进行差异表达分析    DESeq2包分析差异表达基因简单来说只有三步：构建dds矩阵，标准化，以及进行差异分析。 1.构建dds矩阵表达矩阵：\即上述代码中的countData，就是我们前面通过read count计算后并融合生">
+<meta property="og:description" content="一.DESeq2筛选差异表达基因a.使用DESeq2的两点要求：  DEseq2要求输入数据是由整数组成的矩阵。 DESeq2要求矩阵是没有标准化的。  b.DESeq2进行差异表达分析    DESeq2包分析差异表达基因简单来说只有三步：构建dds矩阵，标准化，以及进行差异分析。">
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="http://example.com/2020/10/12/%E8%BD%AC%E5%BD%95%E7%BB%845/18922188-6aae835d145a8908.webp">
 <meta property="article:published_time" content="2020-10-12T11:31:56.000Z">
-<meta property="article:modified_time" content="2020-10-12T14:15:33.271Z">
+<meta property="article:modified_time" content="2020-10-21T09:09:51.147Z">
 <meta property="article:author" content="Zou">
 <meta property="article:tag" content="-转录组">
 <meta name="twitter:card" content="summary">
@@ -203,10 +203,16 @@
                 <i class="far fa-calendar"></i>
               </span>
               <span class="post-meta-item-text">发表于</span>
-              
 
-              <time title="创建时间：2020-10-12 19:31:56 / 修改时间：22:15:33" itemprop="dateCreated datePublished" datetime="2020-10-12T19:31:56+08:00">2020-10-12</time>
+              <time title="创建时间：2020-10-12 19:31:56" itemprop="dateCreated datePublished" datetime="2020-10-12T19:31:56+08:00">2020-10-12</time>
             </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2020-10-21 17:09:51" itemprop="dateModified" datetime="2020-10-21T17:09:51+08:00">2020-10-21</time>
+              </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
                 <i class="far fa-folder"></i>
@@ -261,6 +267,8 @@
 </ol>
 <p>b.DESeq2进行差异表达分析</p>
 <p>   DESeq2包分析差异表达基因简单来说只有三步：构建dds矩阵，标准化，以及进行差异分析。</p>
+<a id="more"></a>
+
 <h2 id="1-构建dds矩阵"><a href="#1-构建dds矩阵" class="headerlink" title="1.构建dds矩阵"></a>1.构建dds矩阵</h2><p><strong><em>表达矩阵：\</em></strong>即上述代码中的countData，就是我们前面通过read count计算后并融合生成的矩阵，行为各个基因，列为各个样品，中间为计算reads或者fragment得到的整数。</p>
 <p><strong><em>样品信息矩阵：\</em></strong>即上述代码中的colData，它的类型是一个dataframe（数据框），第一列是样品名称，第二列是样品的处理情况（对照还是处理等），即condition，condition的类型是一个factor。</p>
 <p><strong><em>差异比较矩阵：\</em></strong> 即上述代码中的design。 差异比较矩阵就是告诉差异分析函数是要从要分析哪些变量间的差异，简单说就是说明哪些是对照哪些是处理。</p>
