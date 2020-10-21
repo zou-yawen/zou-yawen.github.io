@@ -1,6 +1,111 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title>GEO</title>
+    <url>/2020/10/21/GEO/</url>
+    <content><![CDATA[<h1 id="一-数据的获取"><a href="#一-数据的获取" class="headerlink" title="一.数据的获取"></a>一.数据的获取</h1><p>GEO数据库全称Gene Expression Omnibus database，是由美国国立生物技术信息中心NCBI创建并维护的基因表达数据库。它创建于2000年，收录了世界各国研究机构提交的高通量基因表达数据，也就是说只要是目前已经发表的论文，论文中涉及到的基因表达检测的数据都可以通过这个数据库中找到。包含了芯片和二代测序的数据。刚接触GEO肯定会发现GPL，GSM，GSE，GDS等甚至还有SRA这些标志。</p>
+<ul>
+<li>GPL就是platform，就是说实验是用什么做的，如果是芯片数据GPL一般用来将probe转换成gene ID。</li>
+<li>GSE就是series，可以理解成是一组实验包含一些control和case的样本</li>
+<li>GSM就是sample，样本号</li>
+<li>GDS，是GEO工作人员根据一定的研究目的归类的dataset。</li>
+<li>SRA就是sequence read archive,记录的是二代测序的read以及比对情况，可以通过SRA数据自己从头进行下游分析。</li>
+</ul>
+<h2 id="1-通过GEOquery下载"><a href="#1-通过GEOquery下载" class="headerlink" title="1.通过GEOquery下载"></a>1.通过GEOquery下载</h2><figure class="highlight r"><table><tr><td class="code"><pre><span class="line">gse49515&lt;-getGEO(<span class="string">&#x27;gse49515&#x27;</span>,AnnotGPL = <span class="literal">F</span>,getGPL = <span class="literal">F</span>)</span><br><span class="line">gene_exp &lt;- as.data.frame(exprs(gset[[<span class="number">1</span>]]))<span class="comment">#获取表达矩阵</span></span><br><span class="line">&gt; gene_exp[<span class="number">1</span>:<span class="number">3</span>,<span class="number">1</span>:<span class="number">3</span>]</span><br><span class="line">          GSM1200291 GSM1200292 GSM1200293</span><br><span class="line">1007_s_at    <span class="number">6.06616</span>    <span class="number">6.08172</span>    <span class="number">5.63387</span></span><br><span class="line">1053_at      <span class="number">7.19067</span>    <span class="number">7.49107</span>    <span class="number">7.52000</span></span><br><span class="line">117_at       <span class="number">9.01752</span>    <span class="number">8.13871</span>    <span class="number">8.27904</span></span><br><span class="line">&gt; table(is.na(gene_exp))<span class="comment">#判断表达矩阵中是否na值，没有就不需要去除，若有的话则na.omit(gene_exp）</span></span><br><span class="line">  <span class="literal">FALSE</span> </span><br><span class="line"><span class="number">1421550</span> </span><br><span class="line">sample_Info &lt;- pData(gset[[<span class="number">1</span>]])<span class="comment">#获取样本信息表</span></span><br><span class="line"></span><br><span class="line">gpl570&lt;-getGEO(<span class="string">&#x27;GPL570&#x27;</span>)<span class="comment">#获取探针信息进行ID转换</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="2-NCBI上下载"><a href="#2-NCBI上下载" class="headerlink" title="2.NCBI上下载"></a>2.NCBI上下载</h2><p>GEO下载页面布局如图所示</p>
+<img src="/2020/10/21/GEO/v2-aee0e72da36b452cdcf0834289b3baee_1440w.jpg" class>
+
+<p>GEO数据类型：</p>
+<p>说明：</p>
+<p>数据类型描述数据解释（解压后可用notepad++打开）</p>
+<p>SOFTSOFT formatted family file(s)一个压缩包一个文件；平台信息芯片中探针与基因的对应关系注释文件；样品单独的表达量</p>
+<p>MINiMLMINiML formatted family file(s)一个压缩包多个文件分开放；平台信息芯片中探针与基因的对应关系注释文件；单个样品表达量文件</p>
+<p>TXTSeries Matrix File(s)所有样品表达矩阵数据文件</p>
+<p>TAR (of CEL, EXP)GSE3541_RAW.tar芯片原始数据（cel）文件</p>
+<p>下载网址：<a href="https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi">https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi</a></p>
+<p>表达矩阵我们按下图下载</p>
+<img src="/2020/10/21/GEO/QQ%E6%88%AA%E5%9B%BE20201021123331.png" class>
+
+<img src="/2020/10/21/GEO/QQ%E6%88%AA%E5%9B%BE20201021123508.png" class>
+
+<p>芯片平台探针信息</p>
+<img src="/2020/10/21/GEO/QQ%E6%88%AA%E5%9B%BE20201021123643.png" class>
+
+<img src="/2020/10/21/GEO/QQ%E6%88%AA%E5%9B%BE20201021123722.png" class>
+
+<figure class="highlight r"><table><tr><td class="code"><pre><span class="line"></span><br><span class="line">gene_exp&lt;-read.delim(<span class="string">&#x27;~/GEO/GSE49515_series_matrix.txt&#x27;</span>,comment.char = <span class="string">&#x27;!&#x27;</span>,stringsAsFactors = <span class="literal">F</span>)</span><br><span class="line">gene_info &lt;-read.delim(<span class="string">&#x27;~/Downloads/GPL570-55999.txt&#x27;</span>,comment.char = <span class="string">&#x27;#&#x27;</span>,stringsAsFactors = <span class="literal">F</span>)</span><br></pre></td></tr></table></figure>
+
+<h1 id="二-数据分析"><a href="#二-数据分析" class="headerlink" title="二.数据分析"></a>二.数据分析</h1><h2 id="1-ID转换"><a href="#1-ID转换" class="headerlink" title="1.ID转换"></a>1.ID转换</h2><p>目前得到的表达矩阵,行名就是一个个probe，列名是样本。需要将probe的ID转换成gene，转换也很简单GPL文件给我们提供了这个信息，核心就是一个merge函数，一般转换成gene名。</p>
+<figure class="highlight r"><table><tr><td class="code"><pre><span class="line"><span class="comment">#读取芯片平台探针信息，并选取需要的列‘ID’,&#x27;Gene Symbol&#x27;。</span></span><br><span class="line">gene_info &lt;- read_delim(<span class="string">&quot;GPL570-55999.txt&quot;</span>, </span><br><span class="line">                        <span class="string">&quot;\t&quot;</span>, escape_double = <span class="literal">FALSE</span>, comment = <span class="string">&quot;#&quot;</span>, </span><br><span class="line">                        trim_ws = <span class="literal">TRUE</span>) %&gt;%</span><br><span class="line">  dplyr::select(ID, Gene_Symbol = <span class="string">&#x27;Gene Symbol&#x27;</span>)</span><br><span class="line">&gt; head(gene_info,<span class="number">4</span>)</span><br><span class="line"><span class="comment"># A tibble: 4 x 2</span></span><br><span class="line">  ID        Gene_Symbol     </span><br><span class="line">  &lt;chr&gt;     &lt;chr&gt;           </span><br><span class="line"><span class="number">1</span> 1007_s_at DDR1 /// MIR4640</span><br><span class="line"><span class="number">2</span> 1053_at   RFC2            </span><br><span class="line"><span class="number">3</span> 117_at    HSPA6           </span><br><span class="line"><span class="number">4</span> 121_at    PAX8 </span><br><span class="line">&gt; gene_exp[<span class="number">1</span>:<span class="number">3</span>,<span class="number">1</span>:<span class="number">3</span>]</span><br><span class="line">          GSM1200291 GSM1200292 GSM1200293</span><br><span class="line">1007_s_at    <span class="number">6.06616</span>    <span class="number">6.08172</span>    <span class="number">5.63387</span></span><br><span class="line">1053_at      <span class="number">7.19067</span>    <span class="number">7.49107</span>    <span class="number">7.52000</span></span><br><span class="line">117_at       <span class="number">9.01752</span>    <span class="number">8.13871</span>    <span class="number">8.27904</span></span><br><span class="line">gene_exp &lt;- rownames_to_column(gene_exp,var=<span class="string">&quot;ID&quot;</span>)<span class="comment">#将行名转化为列名方便合并</span></span><br><span class="line">&gt; gene_exp[<span class="number">1</span>:<span class="number">3</span>,<span class="number">1</span>:<span class="number">3</span>]</span><br><span class="line">         ID GSM1200291 GSM1200292</span><br><span class="line"><span class="number">1</span> 1007_s_at    <span class="number">6.06616</span>    <span class="number">6.08172</span></span><br><span class="line"><span class="number">2</span>   1053_at    <span class="number">7.19067</span>    <span class="number">7.49107</span></span><br><span class="line"><span class="number">3</span>    117_at    <span class="number">9.01752</span>    <span class="number">8.13871</span></span><br><span class="line">expr_id_symbol &lt;- merge(gene_exp,gene_info,by=<span class="string">&#x27;ID&#x27;</span>)<span class="comment">#合并表达矩阵和基因信息表</span></span><br></pre></td></tr></table></figure>
+
+ <figure class="highlight r"><table><tr><td class="code"><pre><span class="line"><span class="comment">#表明有合并后的列表中有NA值，应该是gene_info里的</span></span><br><span class="line">&gt; table(is.na(expr_id_symbol))</span><br><span class="line">  <span class="literal">FALSE</span>    <span class="literal">TRUE</span> </span><br><span class="line"><span class="number">1522007</span>    <span class="number">8893</span> </span><br><span class="line">pos &lt;- which(is.na(expr_id_symbol$Gene_Symbol))<span class="comment">#找出NA值的行号</span></span><br><span class="line">expr_id_symbol &lt;- expr_id_symbol[-pos,]<span class="comment">#去除NA值所在的行，保留剩下的行</span></span><br><span class="line">&gt; table(is.na(expr_id_symbol))<span class="comment">#表明所有NA值都已经去除了</span></span><br><span class="line">  <span class="literal">FALSE</span> </span><br><span class="line"><span class="number">1281896</span> </span><br></pre></td></tr></table></figure>
+
+<figure class="highlight r"><table><tr><td class="code"><pre><span class="line"><span class="comment">#一个探针对应多个基因的情况下取第一个个基因</span></span><br><span class="line">symbol&lt;-lapply(expr_id_symbol$Gene_Symbol,</span><br><span class="line">               FUN = <span class="keyword">function</span>(x)&#123;strsplit(x,<span class="string">&#x27;///&#x27;</span>)[[<span class="number">1</span>]][<span class="number">1</span>]&#125;)</span><br><span class="line">expr_id_symbol$Gene_Symbol &lt;- as.character(symbol)<span class="comment">#得到的唯一的symbol替换原来的Gene_Symbol列</span></span><br></pre></td></tr></table></figure>
+
+<figure class="highlight r"><table><tr><td class="code"><pre><span class="line"><span class="comment">#多个探针对应一个基因的情况下，取平均值</span></span><br><span class="line"><span class="keyword">library</span>(dplyr)</span><br><span class="line">data4 &lt;- expr_id_symbol[,<span class="number">2</span>:<span class="number">28</span>] %&gt;% <span class="comment">#数据从第二列开始，第一列是ID，最后一列是Gene_Symbol</span></span><br><span class="line">  arrange(Gene_Symbol) %&gt;% <span class="comment">#按Gene_Symbol排序</span></span><br><span class="line">  group_by(Gene_Symbol) %&gt;% <span class="comment">#Gene_Symbol分组</span></span><br><span class="line">  summarise_all(mean)</span><br><span class="line"><span class="comment">#将Gene_Symbol列变为行名</span></span><br><span class="line">data4 &lt;- column_to_rownames(data4,var = <span class="string">&#x27;Gene_Symbol&#x27;</span>)</span><br><span class="line">&gt; nrow(gene_exp)</span><br><span class="line">[<span class="number">1</span>] <span class="number">54675</span></span><br><span class="line">&gt; nrow(data4)</span><br><span class="line">[<span class="number">1</span>] <span class="number">23348</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="2-数据分布"><a href="#2-数据分布" class="headerlink" title="2.数据分布"></a>2.数据分布</h2><h3 id="1-ggplot2绘制"><a href="#1-ggplot2绘制" class="headerlink" title="1.ggplot2绘制"></a>1.ggplot2绘制</h3><figure class="highlight r"><table><tr><td class="code"><pre><span class="line"><span class="keyword">library</span>(reshape2)</span><br><span class="line"><span class="keyword">library</span>(ggplot2)</span><br><span class="line"><span class="comment">#将表达矩阵拉直再加入分组信息</span></span><br><span class="line">expr_li&lt;-melt(data4)<span class="comment">#宽列表转化为长列表，ggplot2要求</span></span><br><span class="line">&gt; head(expr_li)</span><br><span class="line">    variable     value</span><br><span class="line"><span class="number">1</span> GSM1200291  <span class="number">1.727950</span></span><br><span class="line"><span class="number">2</span> GSM1200291  <span class="number">4.248380</span></span><br><span class="line"><span class="number">3</span> GSM1200291  <span class="number">2.745500</span></span><br><span class="line"><span class="number">4</span> GSM1200291  <span class="number">2.167750</span></span><br><span class="line"><span class="number">5</span> GSM1200291 <span class="number">10.649900</span></span><br><span class="line"><span class="number">6</span> GSM1200291  <span class="number">2.614425</span></span><br><span class="line">colnames(expr_li)&lt;-c(<span class="string">&#x27;sample&#x27;</span>,<span class="string">&#x27;value&#x27;</span>)<span class="comment">#调整列名</span></span><br><span class="line">group&lt;-c(rep(<span class="string">&#x27;GastricCancer&#x27;</span>,<span class="number">3</span>),rep(<span class="string">&#x27;HCC&#x27;</span>,<span class="number">10</span>),rep(<span class="string">&#x27;Normal&#x27;</span>,<span class="number">10</span>),rep(<span class="string">&#x27;PancreaticCancer&#x27;</span>,<span class="number">3</span>))</span><br><span class="line">expr_li$group&lt;-c(rep(group,each=nrow(data4)))</span><br><span class="line">p&lt;-ggplot(expr_li,aes(x=sample,y=value,fill=group))</span><br><span class="line">p+geom_boxplot()+theme(axis.text.x = element_text(angle=<span class="number">45</span>,vjust=<span class="number">0.5</span>))+theme(legend.position = <span class="string">&#x27;top&#x27;</span>)</span><br></pre></td></tr></table></figure>
+
+<img src="/2020/10/21/GEO/plot_zoom_png" class>
+
+<h3 id="2-基础函数绘制"><a href="#2-基础函数绘制" class="headerlink" title="2.基础函数绘制"></a>2.基础函数绘制</h3><h4 id="1-标准化前"><a href="#1-标准化前" class="headerlink" title="1.标准化前"></a>1.标准化前</h4><figure class="highlight r"><table><tr><td class="code"><pre><span class="line"><span class="comment">#标准化前</span></span><br><span class="line">boxplot(data4,outline=<span class="literal">FALSE</span>,las=<span class="number">2</span>)</span><br></pre></td></tr></table></figure>
+
+<img src="/2020/10/21/GEO/plot_zoom_png2" class>
+
+<h4 id="2-标准化后"><a href="#2-标准化后" class="headerlink" title="2.标准化后"></a>2.标准化后</h4><figure class="highlight r"><table><tr><td class="code"><pre><span class="line"><span class="comment">#标准化数据</span></span><br><span class="line">data4_nor &lt;- normalizeBetweenArrays(data4)</span><br><span class="line">boxplot(data4_nor,outline=<span class="literal">FALSE</span>,las=<span class="number">2</span>)</span><br></pre></td></tr></table></figure>
+
+<img src="/2020/10/21/GEO/plot_zoom_png4" class>
+
+<h1 id="3-limma差异表达分析"><a href="#3-limma差异表达分析" class="headerlink" title="3.limma差异表达分析"></a>3.limma差异表达分析</h1><figure class="highlight r"><table><tr><td class="code"><pre><span class="line"><span class="comment">#差异表达分析</span></span><br><span class="line"><span class="keyword">library</span>(limma)</span><br><span class="line"><span class="comment">#实验设计矩阵</span></span><br><span class="line">design&lt;-model.matrix(~<span class="number">0</span>+factor(group))</span><br><span class="line">colnames(design)&lt;-levels(factor(group))</span><br><span class="line">rownames(design)&lt;-colnames(data4)</span><br><span class="line"><span class="comment">#分组矩阵</span></span><br><span class="line">con&lt;-makeContrasts(paste(<span class="string">&#x27;HCC&#x27;</span>,<span class="string">&#x27;Normal&#x27;</span>,sep=<span class="string">&#x27;-&#x27;</span>),levels = design)</span><br><span class="line"><span class="comment">#线性拟合，其实就是一个回归</span></span><br><span class="line">fit&lt;-lmFit(data4,design)</span><br><span class="line"></span><br><span class="line">fit2&lt;-contrasts.fit(fit,con)</span><br><span class="line"><span class="comment">#假设检验</span></span><br><span class="line">fit3&lt;-eBayes(fit2)</span><br><span class="line">tmpout&lt;-topTable(fit3,coef = <span class="number">1</span>,n=<span class="literal">Inf</span>)</span><br><span class="line"><span class="comment">#去除掉NA值</span></span><br><span class="line">nrDEG&lt;-na.omit(tmpout)</span><br></pre></td></tr></table></figure>
+
+<h1 id="4-火山图绘制"><a href="#4-火山图绘制" class="headerlink" title="4.火山图绘制"></a>4.火山图绘制</h1><figure class="highlight r"><table><tr><td class="code"><pre><span class="line">res &lt;- nrDEG</span><br><span class="line">data &lt;- data.frame(gene = row.names(res),</span><br><span class="line">                   pvalue= res$adj.P.Val, </span><br><span class="line">                   log2FoldChange = res$logFC) </span><br><span class="line"></span><br><span class="line">data &lt;- na.omit(data)</span><br><span class="line"></span><br><span class="line">data &lt;- mutate(data, color = case_when(data$log2FoldChange &gt; <span class="number">1</span> &amp; data$pvalue&lt;<span class="number">0.05</span> ~ <span class="string">&quot;Increased&quot;</span>,</span><br><span class="line">                                       data$log2FoldChange &lt; <span class="number">1</span> &amp; data$pvalue&lt; <span class="number">0.05</span>~ <span class="string">&quot;Decreased&quot;</span>,</span><br><span class="line">                                       data$pvalue&gt;<span class="number">0.05</span> ~ <span class="string">&quot;nonsignificant&quot;</span>))</span><br><span class="line">my_palette &lt;- c(<span class="string">&#x27;#E64B35FF&#x27;</span>, <span class="string">&#x27;#4DBBD5FF&#x27;</span>,<span class="string">&#x27;#999999&#x27;</span>)</span><br><span class="line"><span class="keyword">library</span>(ggplot2)</span><br><span class="line">ggplot(data = data, aes(x = log2FoldChange, y = -log10(pvalue))) +</span><br><span class="line">  geom_point(aes(color =color, size = abs(log2FoldChange))) +</span><br><span class="line">  geom_hline(yintercept = -log10(<span class="number">0.05</span>), linetype = <span class="string">&#x27;dashed&#x27;</span>) +</span><br><span class="line">  geom_vline(xintercept = c(-<span class="number">1</span>, <span class="number">1</span>), linetype = <span class="string">&#x27;dashed&#x27;</span>) + </span><br><span class="line">  scale_color_manual(values = my_palette) + </span><br><span class="line">  scale_size(range = c(<span class="number">0.1</span>, <span class="number">3</span>)) +</span><br><span class="line">  xlim(-<span class="number">5</span>,<span class="number">5</span>)+ylim(<span class="number">0</span>,<span class="number">10</span>)+</span><br><span class="line">  theme_bw()</span><br></pre></td></tr></table></figure>
+
+<img src="/2020/10/21/GEO/plot_zoom_png5" class>
+
+<h1 id="5-热图"><a href="#5-热图" class="headerlink" title="5.热图"></a>5.热图</h1><figure class="highlight r"><table><tr><td class="code"><pre><span class="line"><span class="comment">#画热图</span></span><br><span class="line"><span class="comment">#挑选前abs(logFC)从大到小前50的基因,再按adj.P.Val排序</span></span><br><span class="line">top_50_gene &lt;-arrange(nrDEG,desc(abs(logFC)),adj.P.Val)[<span class="number">1</span>:<span class="number">50</span>,]</span><br><span class="line"><span class="comment">#通过左端合并获取top50基因在样本的表达数据</span></span><br><span class="line">top_50_gene &lt;- left_join(rownames_to_column(top_50_gene,var=<span class="string">&#x27;ID&#x27;</span>),</span><br><span class="line">                                             rownames_to_column(data4,var = <span class="string">&#x27;ID&#x27;</span>),by=<span class="string">&#x27;ID&#x27;</span>)</span><br><span class="line"><span class="comment">#去除nrDEG中的其他列，只留下样本列</span></span><br><span class="line">top_50_gene &lt;- top_50_gene[,-c(<span class="number">2</span>:<span class="number">7</span>)]%&gt;%column_to_rownames(var = <span class="string">&#x27;ID&#x27;</span>)</span><br><span class="line">ncol(top_50_gene)</span><br><span class="line"><span class="comment">#因该top50gene是指定&#x27;HCC&#x27;,&#x27;Normal&#x27;;画热图时选取这些样本的列</span></span><br><span class="line">top_50_gene &lt;- top_50_gene[,<span class="number">4</span>:<span class="number">23</span>]</span><br><span class="line"><span class="comment">#热图列注释</span></span><br><span class="line">anno &lt;- as.data.frame(group[<span class="number">4</span>:<span class="number">23</span>])</span><br><span class="line">rownames(anno)=colnames(top_50_gene)</span><br><span class="line">pheatmap::pheatmap(top_50_gene,scale =<span class="string">&#x27;row&#x27;</span>,annotation_col = anno,show_rownames = <span class="literal">FALSE</span>)</span><br></pre></td></tr></table></figure>
+
+<img src="/2020/10/21/GEO/plot_zoom_png6" class>
+
+<h1 id="6-GO和KEGG富集"><a href="#6-GO和KEGG富集" class="headerlink" title="6.GO和KEGG富集"></a>6.GO和KEGG富集</h1><h2 id="1-go富集"><a href="#1-go富集" class="headerlink" title="1.go富集"></a>1.go富集</h2><figure class="highlight r"><table><tr><td class="code"><pre><span class="line"><span class="keyword">library</span>(<span class="string">&#x27;org.Hs.eg.db&#x27;</span>)</span><br><span class="line"><span class="keyword">library</span>(<span class="string">&#x27;clusterProfiler&#x27;</span>)</span><br><span class="line">all_gene&lt;-filter(data,color!=<span class="string">&#x27;nonsignificant&#x27;</span>)<span class="comment">#去除差异不明显的基因</span></span><br><span class="line">gene_list &lt;- all_gene$gene</span><br><span class="line">gene.df &lt;- bitr(gene_list,fromType = <span class="string">&quot;SYMBOL&quot;</span>,</span><br><span class="line">                toType = c(<span class="string">&#x27;ENSEMBL&#x27;</span>,<span class="string">&#x27;ENTREZID&#x27;</span>),</span><br><span class="line">                OrgDb = org.Hs.eg.db)</span><br><span class="line">ego_cc &lt;- enrichGO(gene=gene.df$ENSEMBL,</span><br><span class="line">                   OrgDb = org.Hs.eg.db,</span><br><span class="line">                   keyType = <span class="string">&#x27;ENSEMBL&#x27;</span>,</span><br><span class="line">                   ont = <span class="string">&#x27;CC&#x27;</span>,</span><br><span class="line">                   pAdjustMethod = <span class="string">&#x27;BH&#x27;</span>,</span><br><span class="line">                   pvalueCutoff = <span class="number">0.01</span>,</span><br><span class="line">                   qvalueCutoff = <span class="number">0.05</span>)</span><br><span class="line">barplot(ego_cc,showCategory=<span class="number">10</span>,title = <span class="string">&#x27;The GO_CC ecnrichment analysis of all DEGS&#x27;</span>)+</span><br><span class="line">  scale_size(range = c(<span class="number">2</span>,<span class="number">12</span>))+scale_x_discrete(labels=<span class="keyword">function</span>(ego_cc) str_wrap(ego_cc,width = <span class="number">25</span>))</span><br></pre></td></tr></table></figure>
+
+<img src="/2020/10/21/GEO/plot_zoom_png7" class>
+
+<h2 id="2-kegg富集"><a href="#2-kegg富集" class="headerlink" title="2.kegg富集"></a>2.kegg富集</h2><figure class="highlight r"><table><tr><td class="code"><pre><span class="line">enrich_kegg &lt;- enrichKEGG(gene = gene.df$ENTREZID,</span><br><span class="line">                          organism = <span class="string">&#x27;hsa&#x27;</span>,</span><br><span class="line">                          pvalueCutoff = <span class="number">0.01</span>)<span class="comment">#一般应设置0.01或者0.05；这个例子设置0.05富集不到kegg通路</span></span><br><span class="line">head(enrich_kegg)</span><br><span class="line">barplot(enrich_kegg,showCategory=<span class="number">18</span>,title = <span class="string">&#x27;The KEGG ecnrichment analysis of all DEGS&#x27;</span>)+</span><br><span class="line">  scale_size(range = c(<span class="number">2</span>,<span class="number">12</span>))+scale_x_discrete(labels=<span class="keyword">function</span>(enrich_kegg) str_wrap(enrich_kegg,width = <span class="number">25</span>))</span><br></pre></td></tr></table></figure>
+
+<img src="/2020/10/21/GEO/plot_zoom_png8" class>
+
+<h1 id="7-代谢通路图"><a href="#7-代谢通路图" class="headerlink" title="7.代谢通路图"></a>7.代谢通路图</h1><figure class="highlight r"><table><tr><td class="code"><pre><span class="line">head(gene.df)</span><br><span class="line">&gt; head(gene.df)</span><br><span class="line">    SYMBOL         ENSEMBL ENTREZID</span><br><span class="line"><span class="number">1</span>  SLC35B4 ENSG00000205060    <span class="number">84912</span></span><br><span class="line"><span class="number">2</span>    TRA2B ENSG00000136527     <span class="number">6434</span></span><br><span class="line"><span class="number">3</span>     PLK2 ENSG00000145632    <span class="number">10769</span></span><br><span class="line"><span class="number">4</span>   ZC3HC1 ENSG00000091732    <span class="number">51530</span></span><br><span class="line"><span class="number">5</span> ATP6V1B2 ENSG00000147416      <span class="number">526</span></span><br><span class="line"><span class="number">7</span>    CRYGS ENSG00000213139     <span class="number">1427</span></span><br><span class="line">head(nrDEG)</span><br><span class="line">&gt; head(nrDEG,<span class="number">2</span>)</span><br><span class="line">            logFC  AveExpr         t      P.Value</span><br><span class="line">SLC35B4  <span class="number">1.011183</span> <span class="number">6.577433</span>  <span class="number">18.05021</span> <span class="number">4.091992e-15</span></span><br><span class="line">TRA2B   -<span class="number">0.844217</span> <span class="number">9.327073</span> -<span class="number">13.30636</span> <span class="number">2.568722e-12</span></span><br><span class="line">           adj.P.Val        B</span><br><span class="line">SLC35B4 <span class="number">9.553984e-11</span> <span class="number">23.67163</span></span><br><span class="line">TRA2B   <span class="number">2.998727e-08</span> <span class="number">17.99524</span></span><br><span class="line">nrDEG &lt;- rownames_to_column(nrDEG,var=<span class="string">&#x27;SYMBOL&#x27;</span>)</span><br><span class="line">path_gene &lt;- merge(gene.df,nrDEG,by=<span class="string">&#x27;SYMBOL&#x27;</span>)%&gt;%select(<span class="string">&#x27;ENTREZID&#x27;</span>,<span class="string">&#x27;logFC&#x27;</span>)</span><br><span class="line">head(path_gene)</span><br><span class="line">pathview(path_gene[,<span class="number">1</span>],species = <span class="string">&#x27;hsa&#x27;</span>,pathway.id = <span class="string">&quot;05168&quot;</span>)<span class="comment">#这个ID是从KEGG富集的通路图中第一个通路，然后去KEGG官网查ID</span></span><br></pre></td></tr></table></figure>
+
+<img src="/2020/10/21/GEO/hsa05168.pathview.png" class>
+
+<h1 id="8-PCA主成分分析"><a href="#8-PCA主成分分析" class="headerlink" title="8.PCA主成分分析"></a>8.PCA主成分分析</h1><h2 id="1-数据准备"><a href="#1-数据准备" class="headerlink" title="1.数据准备"></a>1.数据准备</h2><figure class="highlight r"><table><tr><td class="code"><pre><span class="line">&gt; <span class="keyword">library</span>(PCAtools)</span><br><span class="line">&gt; sample_Info &lt;- pData(gset[[<span class="number">1</span>]])%&gt;%select(geo_accession,title)</span><br><span class="line">&gt; head(sample_Info,<span class="number">2</span>)</span><br><span class="line">           geo_accession                        title</span><br><span class="line">GSM1200291    GSM1200291 Gastric Cancer PBMC Sample <span class="number">1</span></span><br><span class="line">GSM1200292    GSM1200292 Gastric Cancer PBMC Sample <span class="number">2</span></span><br><span class="line">&gt; group&lt;-c(rep(<span class="string">&#x27;GastricCancer&#x27;</span>,<span class="number">3</span>),rep(<span class="string">&#x27;HCC&#x27;</span>,<span class="number">10</span>),rep(<span class="string">&#x27;Normal&#x27;</span>,<span class="number">10</span>),rep(<span class="string">&#x27;PancreaticCancer&#x27;</span>,<span class="number">3</span>))</span><br><span class="line">&gt; head(group)</span><br><span class="line">[<span class="number">1</span>] <span class="string">&quot;GastricCancer&quot;</span> <span class="string">&quot;GastricCancer&quot;</span> <span class="string">&quot;GastricCancer&quot;</span> <span class="string">&quot;HCC&quot;</span>           <span class="string">&quot;HCC&quot;</span>          </span><br><span class="line">[<span class="number">6</span>] <span class="string">&quot;HCC&quot;</span>          </span><br><span class="line">&gt; sample_info2 &lt;- mutate(sample_Info,group=group)%&gt;%column_to_rownames(var=<span class="string">&#x27;geo_accession&#x27;</span>)<span class="comment">#样本名转换为行名</span></span><br><span class="line">&gt; head(sample_info2,<span class="number">2</span>)</span><br><span class="line">                                  title         group</span><br><span class="line">GSM1200291 Gastric Cancer PBMC Sample <span class="number">1</span> GastricCancer</span><br><span class="line">GSM1200292 Gastric Cancer PBMC Sample <span class="number">2</span> GastricCancer</span><br><span class="line">&gt; head(data4,<span class="number">2</span>)</span><br><span class="line">         GSM1200291 GSM1200292 GSM1200293 GSM1200294 GSM1200295 GSM1200296 GSM1200297</span><br><span class="line">A1BG        <span class="number">1.72795</span>    <span class="number">1.81743</span>    <span class="number">1.67529</span>    <span class="number">1.38177</span>    <span class="number">1.76341</span>    <span class="number">1.97542</span>    <span class="number">1.96151</span></span><br><span class="line">A1BG-AS1    <span class="number">4.24838</span>    <span class="number">3.50769</span>    <span class="number">3.55429</span>    <span class="number">3.46720</span>    <span class="number">3.54705</span>    <span class="number">3.58128</span>    <span class="number">3.47917</span></span><br><span class="line">         GSM1200298 GSM1200299 GSM1200300 GSM1200301 GSM1200302 GSM1200303 GSM1200304</span><br><span class="line">A1BG        <span class="number">1.74726</span>    <span class="number">1.80558</span>    <span class="number">1.76479</span>    <span class="number">1.74251</span>    <span class="number">1.81299</span>    <span class="number">1.77776</span>    <span class="number">1.82972</span></span><br><span class="line">A1BG-AS1    <span class="number">3.48404</span>    <span class="number">3.59214</span>    <span class="number">3.98491</span>    <span class="number">2.68899</span>    <span class="number">3.64721</span>    <span class="number">3.59368</span>    <span class="number">3.62686</span></span><br><span class="line">         GSM1200305 GSM1200306 GSM1200307 GSM1200308 GSM1200309 GSM1200310 GSM1200311</span><br><span class="line">A1BG        <span class="number">1.71970</span>    <span class="number">1.88509</span>    <span class="number">1.73987</span>    <span class="number">1.85889</span>    <span class="number">2.05378</span>    <span class="number">1.78240</span>    <span class="number">1.78599</span></span><br><span class="line">A1BG-AS1    <span class="number">3.66756</span>    <span class="number">3.51368</span>    <span class="number">3.60384</span>    <span class="number">3.59204</span>    <span class="number">3.60900</span>    <span class="number">3.58077</span>    <span class="number">3.55626</span></span><br><span class="line">         GSM1200312 GSM1200313 GSM1200314 GSM1200315 GSM1200316</span><br><span class="line">A1BG        <span class="number">2.13868</span>     <span class="number">1.7948</span>    <span class="number">1.97225</span>    <span class="number">1.63177</span>    <span class="number">1.97266</span></span><br><span class="line">A1BG-AS1    <span class="number">3.63223</span>     <span class="number">3.5382</span>    <span class="number">3.78817</span>    <span class="number">3.47991</span>    <span class="number">3.50805</span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<h2 id="2-PCA分析"><a href="#2-PCA分析" class="headerlink" title="2.PCA分析"></a>2.PCA分析</h2><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&gt; pca &lt;- pca(data4,metadata &#x3D; sample_info2)#data4的列名须与metadata的行名一致</span><br><span class="line">&gt; #提取loading信息</span><br><span class="line">&gt; pca_loadings &lt;- pca$loadings</span><br><span class="line">&gt; pca_loadings[1:2,1:4]</span><br><span class="line">                   PC1           PC2           PC3          PC4</span><br><span class="line">A1BG      5.655176e-05 -0.0024044512 -0.0004510986  0.002296557</span><br><span class="line">A1BG-AS1 -3.321379e-03 -0.0007576866  0.0031158285 -0.003570854</span><br><span class="line">&gt; #提取rotated信息</span><br><span class="line">&gt; pca_rotated &lt;- pca$rotated</span><br><span class="line">&gt; pca_rotated[1:2,1:4]</span><br><span class="line">                   PC1       PC2      PC3         PC4</span><br><span class="line">GSM1200291 -208.501028  33.22847 -2.99058   0.2273477</span><br><span class="line">GSM1200292   -9.333901 -38.77063 30.95839 -10.1408383</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<h2 id="3-可视化"><a href="#3-可视化" class="headerlink" title="3.可视化"></a>3.可视化</h2><figure class="highlight r"><table><tr><td class="code"><pre><span class="line">screeplot(pca)</span><br></pre></td></tr></table></figure>
+
+<img src="/2020/10/21/GEO/plot_zoom_png10" class>
+
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">biplot(pca,</span><br><span class="line">       x&#x3D;&#39;PC1&#39;,</span><br><span class="line">       y&#x3D;&#39;PC2&#39;,</span><br><span class="line">       colby &#x3D; &#39;group&#39;,</span><br><span class="line">       legendPosition &#x3D; &#39;right&#39;,</span><br><span class="line">       lab&#x3D;NULL)</span><br></pre></td></tr></table></figure>
+
+<img src="/2020/10/21/GEO/plot_zoom_png11" class>
+
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">plotloadings(pca)</span><br></pre></td></tr></table></figure>
+
+<img src="/2020/10/21/GEO/plot_zoom_png12" class>
+
+<h1 id="引用"><a href="#引用" class="headerlink" title="引用"></a>引用</h1><p>1.<a href="https://mp.weixin.qq.com/s?src=11&timestamp=1603250087&ver=2657&signature=IBQKSoziiLIe*q8X*wk-OLStV6X3W*MmrLCXNIeui*-erIqtJkkEpIGT3IDPf1z7z3H6UrBWG5S6jZ31xcAypFwflodTwKROZ-C67Hstr4KtSHowFO*kmfW5TTvKTPOj&new=1">又来问GEO差异表达？（1）</a></p>
+<p>2.<a href="https://zhuanlan.zhihu.com/p/132559646">GEO 数据介绍及在线下载</a></p>
+]]></content>
+      <categories>
+        <category>GEO</category>
+      </categories>
+      <tags>
+        <tag>-GEO</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>一代测序</title>
     <url>/2020/10/05/%E4%B8%80%E4%BB%A3%E6%B5%8B%E5%BA%8F/</url>
     <content><![CDATA[<p>从1977年第一代DNA测序技术（Sanger法）发展至今三十多年时间，测序技术已取得了相当大的发展，从第一代到第三代，测序读长从长到短，再从短到长。虽然就当前形势看来第二代短读长测序技术在全球测序市场上仍然占有着绝对的优势位置，但第三测序技术也已在这一两年的时间中快速发展着。pacbio的三代测序技术高保真模式下的准确度已经能够和illumina二代测序技术的准确度相媲美，NanoPore开发的便携式测序仪随着其准确度不断的提高未来将会颠覆测序市场。测序仪的每一次变革，也都对基因组研究，疾病医疗研究，药物研发，育种等领域产生巨大的推动作用。</p>
@@ -79,6 +184,113 @@
 <h1 id="引用"><a href="#引用" class="headerlink" title="引用"></a>引用</h1><p>1.<a href="https://blog.csdn.net/weixin_30614109/article/details/96585876">纳米孔测序技术介绍</a></p>
 <p>2.<a href="https://blog.csdn.net/ugfdfgg/article/details/83536063">三代基因组测序技术原理简介</a></p>
 <p>3.<a href="https://www.jianshu.com/p/15dd0baca47c">三代测序入门</a></p>
+]]></content>
+      <categories>
+        <category>测序原理</category>
+      </categories>
+      <tags>
+        <tag>-测序原理</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>二代测序</title>
+    <url>/2020/10/04/%E4%BA%8C%E4%BB%A3%E6%B5%8B%E5%BA%8F/</url>
+    <content><![CDATA[<p>第二代测序（Next-generation sequencing，NGS）又称为高通量测序，其开创性的引入了可逆终止末端，从而实现边合成边测序，在DNA复制过程中通过捕捉新添加的碱基所携带的特殊标记来确定DNA序列。</p>
+<p>二代测序有两个重要特点：1．<strong>高通量</strong>，二代测序能一次并行对几十、几百万条DNA分子进行测序；2．<strong>读长短</strong>，测序过程随着读长增长，基因簇复制的协同性降低，会导致测序质量下降，二代测序的读长不超过500bp。因此基因组、宏基因组需要被打断成小片段再测序，测序完毕后再拼接。</p>
+<p>总的说来，第一代测序技术的主要特点是测序读长可达1000bp，准确性高达99.999%，但其测序成本高，通量低等方面的缺点，严重影响了其真正大规模的应用。经过不断的技术开发和改进，以Roche公司的454技术、illumina公司的Solexa，Hiseq技术和ABI公司的Solid技术为标记的第二代测序技术诞生了。第二代测序技术大大降低了测序成本的同时，还大幅提高了测序速度，并且保持了高准确性，以前完成一个人类基因组的测序需要3年时间，而使用二代测序技术则仅仅需要1周，但在序列读长方面比起第一代测序技术则要短很多。目前主流的二代测序平台是illumina，下文主要介绍illumina平台的测序原理。</p>
+<p><strong>Single-Read</strong>测序(Single-read)首先将DNA样本进行片段化处理形成200-500bp的片段，**<em>引物序列连接到DNA片段的一端**</em>，然后末端加上接头，将片段固定在flow cell上生成DNA簇，上机测序单端读取序列。该方式建库简单，操作步骤少，常用于小基因组、转录组、宏基因组测序。</p>
+<p><strong>Paired-end</strong>文库制备是指在构建待测DNA文库时在**<em>两端的接头上都加上测序引物结合位点**</em>，在第一轮测序完成后，去除第一轮测序的模板链，用对读测序模块(Paired-End Module)引导互补链在原位置再生和扩增，以达到第二轮测序所用的模板量，进行第二轮互补链的合成测序。</p>
+<p><img src="https://ss0.bdstatic.com/70cFvHSh_Q1YnxGkpoWK1HF6hhy/it/u=1022250266,1017686506&fm=26&gp=0.jpg" alt="hiseq3000"></p>
+<h2 id="第一步：-构建DNA文库"><a href="#第一步：-构建DNA文库" class="headerlink" title="第一步： 构建DNA文库"></a>第一步： 构建DNA文库</h2><p>利用超声波把待测的DNA样本打断成小片段，目前除了组装之外和一些其他的特殊要求之外，主要是打断成200-500bp长的序列片段，并在这些小片段的两端添加上不同的接头，构建出单链DNA文库。</p>
+<p>1．末端修饰。打断的片段是随机断裂，其末端可能是不平的。因此，建库第一步是补齐不平的末端。补平之后，需要在3’端加A碱基</p>
+<img src="/2020/10/04/%E4%BA%8C%E4%BB%A3%E6%B5%8B%E5%BA%8F/7eef8f255f0e7cd185253634.jpg" class>
+
+<img src="/2020/10/04/%E4%BA%8C%E4%BB%A3%E6%B5%8B%E5%BA%8F/7eef8f255f0e7cd185253634(1).jpg" class>
+
+<p>2．添加接头。经过末端修饰后的DNA片段3’末端具有突出的A尾，而接头具有突出的T尾，可以使用连接酶将接头添加到DNA片段两端，形成“Y”形接头。</p>
+<img src="/2020/10/04/%E4%BA%8C%E4%BB%A3%E6%B5%8B%E5%BA%8F/7eef8f255f0e7cd185253634(2).jpg" class>
+
+<p>3．PCR扩增。添加了接头的DNA片段，可通过与接头互补的引物来扩增，富集文库</p>
+<img src="/2020/10/04/%E4%BA%8C%E4%BB%A3%E6%B5%8B%E5%BA%8F/7eef8f255f0e7cd185253634(3).jpg" class>
+
+<p><img src="https://pic3.zhimg.com/80/v2-815463cd17ad105115f6c8440c43ea66_1440w.jpg"></p>
+<p><strong>左边的是直接在fragment DNA的两端直接加上full Y-adapter</strong>, adapter中已经包括了和P5/P7 oligo互补的序列, index, 以及Read1/Read2的测序引物。</p>
+<p><strong>右边的那种是先在fragment DNA的两端加上PE adapter</strong>, 然后再引入和P5/P7 oligo互补配对的序列以及index序列。</p>
+<p><strong>一句话总结，这两种不同的indexing strategy的差别在于引入index序列的时机和方式不一样。</strong></p>
+<p>其实右边的图并不是画的特别形象，具体的的可以参看下面这张图</p>
+<p><img src="https://pic1.zhimg.com/80/v2-0abfd5500a3559cb71003b6ca4322b50_1440w.jpg"></p>
+<p>在这里我们能够清楚地看到，这种接头添加过程中，fragment DNA两端是<strong>先连上PE adapter</strong>, 然后再通过PCR引入的<strong>region complementary to P5/P7 sequence</strong>, <strong>index</strong>, and <strong>sequencing biding sites</strong>.</p>
+<p>1)P5和P7是不同的，它们分别和flowcell上的接头互补和相同。</p>
+<p>2)index1和index2也是不同的，与P5相连的是index2，与P7相连的是index1</p>
+<p>关于index，也叫barcodes，因为一个lane可以同时测多个样品，为了避免混淆样品的read products，每种样品的DNA由一种index修饰，这样测序得到的reads都是具有index标记的，在测序结果中，依据之前标签与样品的对应关系，就可以获得对应样品的数据。而这里的<strong>index1和index2是为了区分paired-end测序得到的双端reads</strong>。</p>
+<img src="/2020/10/04/%E4%BA%8C%E4%BB%A3%E6%B5%8B%E5%BA%8F/20180102102643081" class>
+
+
+
+<h2 id="第二步：桥式PCR"><a href="#第二步：桥式PCR" class="headerlink" title="第二步：桥式PCR"></a>第二步：桥式PCR</h2><p>Flowcell是用于吸附流动DNA片段的槽道，当文库建好后，这些文库中的DNA在通过flowcell的时候会随机附着在flowcell表面的lane上。每个Flowcell有8个lane，每个lane的表面都附有很多接头，这些接头能和建库过程中加在DNA片段两端的接头相互配对（这就是为什么flowcell能吸附建库后的DNA的原因），并能支持DNA在其表面进行桥式PCR的扩增。</p>
+<img src="/2020/10/04/%E4%BA%8C%E4%BB%A3%E6%B5%8B%E5%BA%8F/2018100911424515(1).jpg" class>
+
+<p>1.Flowcell上随机分布了两种不同的寡核苷酸序列，分别<strong>与P5互补（即P5’），与P7一致（即P7）</strong>。</p>
+<img src="/2020/10/04/%E4%BA%8C%E4%BB%A3%E6%B5%8B%E5%BA%8F/20180102103623636.jpg" class>
+
+<p>2.待测sequence通过P5与folwcell上的P5’序列杂交互补，以待测sequence为模板进行互补链（即reverse strand）的延伸，互补链的两端为P5’和P7’。</p>
+<img src="/2020/10/04/%E4%BA%8C%E4%BB%A3%E6%B5%8B%E5%BA%8F/20180102104221274.jpg" class>
+
+<img src="/2020/10/04/%E4%BA%8C%E4%BB%A3%E6%B5%8B%E5%BA%8F/20180102103954806.jpg" class>
+
+<p>3.通过聚合酶生成杂交片段的互补片段，然后加入NaOH碱溶液后，双链分子变性，原始模板链（左边的链）被流动池中的液体洗去</p>
+<img src="/2020/10/04/%E4%BA%8C%E4%BB%A3%E6%B5%8B%E5%BA%8F/20180102104507815.jpg" class>
+
+<p>4.加入中性液体用于中和碱溶液，Reverse strand的P7’与Flowcell上的P7杂交互补，进行链的合成，聚合酶参与下，生成互补链，最终形成双链桥,这就是我们所熟知的<strong>桥式PCR</strong></p>
+<img src="/2020/10/04/%E4%BA%8C%E4%BB%A3%E6%B5%8B%E5%BA%8F/%E6%A1%A5%E5%BC%8FPCR.PNG" class>
+
+<p>5.接下来合成的双链被解链，再分别与Flowcell上的接头杂交互补，延伸，解链，杂交，延伸，解链…如此重复35个循环</p>
+<img src="/2020/10/04/%E4%BA%8C%E4%BB%A3%E6%B5%8B%E5%BA%8F/%E6%A1%A5%E5%BC%8FPCR2.PNG" class>
+
+<p>6.桥式PCR完成后，使用NAOH将双链解链，并利用甲酰胺基嘧啶糖苷酶（Fpg）对8-氧鸟嘌呤糖苷（8-oxo-G）的选择性切断作用，选择性地将P5’与链的连接切断，<strong>留下与Flowcell上P7连接的链</strong>，也就是Forward strand。同时游离的3’端被阻断，防止不必要的DNA延伸</p>
+<img src="/2020/10/04/%E4%BA%8C%E4%BB%A3%E6%B5%8B%E5%BA%8F/20180102110455607.jpg" class>
+
+<h2 id="第三步：测序"><a href="#第三步：测序" class="headerlink" title="第三步：测序"></a>第三步：测序</h2><p>首先，在Flowcell中加入荧光标记的dNTP和酶，由引物起始开始合成子链。但是dNTP存在 3’端叠氮基会阻碍子链延伸，这使得每个循环只能测得一个碱基。合成完一个碱基后， Flowcell 通入液体洗掉多余的dNTP和酶，使用显微镜的激光扫描特征荧光信号。</p>
+<ol>
+<li><p>测序引物（sequencing primer）结合到靠近P5的测序引物结合位点1（sequencing primer binding site 1）上，在系统中加入四种dNTP和DNA聚合酶。这里的dNTP有两个特点：它是有荧光基团标记的，每种碱基标记的荧光基团不一样；它的3’末端连了一个叠氮基，这个叠氮基能够阻断后面的碱基与它相连</p>
+<img src="/2020/10/04/%E4%BA%8C%E4%BB%A3%E6%B5%8B%E5%BA%8F/20180102110709747.jpg" class>
+
+<p>因此在聚合酶的作用下，与Forward strand相应位置碱基配对的dNTP就会结合到新合成的链上，而由于叠氮基的存在，后面的dNTP无法继续连接。这时用水将剩余的dNTP和酶给冲掉，将Flowcell进行扫描，扫描出来的荧光对应的碱基的配对碱基即是该链该位置的碱基。同时在这个Flowcell上有成千上万个cluster也在进行同样的反应，因此一个循环就能同时检测多个样本（这也是高通量的核心所在）。这个循环完成后，加入化学试剂把叠氮基和标记的荧光基团切掉，进行下一个循环（碱基的连接、检测与切除）。如此重复直至所有链的碱基序列被检测出，也就是Forward read 序列。</p>
+<img src="/2020/10/04/%E4%BA%8C%E4%BB%A3%E6%B5%8B%E5%BA%8F/20180102110801150.jpg" class>
+
+</li>
+</ol>
+<p>2.Index测序：所有循环结束后，read products 被洗掉，index1 primer与链上index primer1 结合位点杂交配对，进行index1的合成及检测</p>
+<img src="/2020/10/04/%E4%BA%8C%E4%BB%A3%E6%B5%8B%E5%BA%8F/20180102111207627.jpg" class>
+
+<p>3.Index1测序完成后，洗脱测序产物。此时机器已通过荧光得到了index1的序列</p>
+<img src="/2020/10/04/%E4%BA%8C%E4%BB%A3%E6%B5%8B%E5%BA%8F/20180102111345135.jpg" class>
+
+<p>4.Index2测序：Forward strand顶端的P5序列与Flowcell上的P5’杂交配对，进行index2测序。测序完成后洗脱产物</p>
+<img src="/2020/10/04/%E4%BA%8C%E4%BB%A3%E6%B5%8B%E5%BA%8F/20180102121740290.jpg" class>
+
+<img src="/2020/10/04/%E4%BA%8C%E4%BB%A3%E6%B5%8B%E5%BA%8F/20180102121753750.jpg" class>
+
+<p><strong>Paried-end sequencing（即对Reverse strand测序）</strong></p>
+<p>Paired-end测序已经是现在的主流，它提高了测序长度的同时，又可以为结构变异分析提供新方法。要完成双末端测序，首先要将模板链3’去保护，模板折叠，index片段引入</p>
+<p>1.洗脱index2测序产物后，以Flowcell上的P5’为引物，Forward strand为模板进行桥式扩增，得到双链</p>
+<img src="/2020/10/04/%E4%BA%8C%E4%BB%A3%E6%B5%8B%E5%BA%8F/20180102122603418.jpg" class>
+
+<p>2.NAOH使双链变性为单链，并洗去已经测序完成的Forward strand</p>
+<img src="/2020/10/04/%E4%BA%8C%E4%BB%A3%E6%B5%8B%E5%BA%8F/20180102122804843.jpg" class>
+
+<img src="/2020/10/04/%E4%BA%8C%E4%BB%A3%E6%B5%8B%E5%BA%8F/20180102122822016.jpg" class>
+
+<p>3.类似的，readprimer2结合到靠近P7’的read primer binding site 2开始对Reverse strand的测序。测序完成后即可得到Reverse read序列。</p>
+<img src="/2020/10/04/%E4%BA%8C%E4%BB%A3%E6%B5%8B%E5%BA%8F/20180102123012562.jpg" class>
+
+<p>荧光发射波长与信号强度一起决定了碱基的读出，所有的DNA片段的一个碱基会被同时读取。在大规模并行的过程中，机器读取的图像类似下面这样</p>
+<p><img src="https://imgconvert.csdnimg.cn/aHR0cDovL2JhaW1vYy56aXB0b3AudG9wL2Jsb2cvMjAxODEyMjcvcDZoU3JVY2NNbE9hLnBuZw?x-oss-process=image/format,png"></p>
+<p>加入化学试剂将叠氮基团与荧光基团切除，然后 Flowcell 再通入荧光标记的dNTP和酶，由引物起始开始合成一个碱基。不断重复这个过程，完成第一次读取</p>
+<h2 id="引用"><a href="#引用" class="headerlink" title="引用"></a>引用</h2><p>1.<a href="https://zhuanlan.zhihu.com/p/35278810">测序之前篇： NGS测序中，接头是如何添加上的，以及如何去接头</a></p>
+<p>2.<a href="https://blog.csdn.net/u011262253/article/details/102525491">二代测序原理（Illumina）</a></p>
+<p>3.<a href="https://wenku.baidu.com/view/6aa1c0e1a55177232f60ddccda38376bae1fe042.html">二代测序文库构建</a></p>
+<p>4.<a href="https://blog.csdn.net/sixu_9days/article/details/78948914">illumina SBS测序详解</a></p>
 ]]></content>
       <categories>
         <category>测序原理</category>
@@ -345,113 +557,6 @@
       </tags>
   </entry>
   <entry>
-    <title>二代测序</title>
-    <url>/2020/10/04/%E4%BA%8C%E4%BB%A3%E6%B5%8B%E5%BA%8F/</url>
-    <content><![CDATA[<p>第二代测序（Next-generation sequencing，NGS）又称为高通量测序，其开创性的引入了可逆终止末端，从而实现边合成边测序，在DNA复制过程中通过捕捉新添加的碱基所携带的特殊标记来确定DNA序列。</p>
-<p>二代测序有两个重要特点：1．<strong>高通量</strong>，二代测序能一次并行对几十、几百万条DNA分子进行测序；2．<strong>读长短</strong>，测序过程随着读长增长，基因簇复制的协同性降低，会导致测序质量下降，二代测序的读长不超过500bp。因此基因组、宏基因组需要被打断成小片段再测序，测序完毕后再拼接。</p>
-<p>总的说来，第一代测序技术的主要特点是测序读长可达1000bp，准确性高达99.999%，但其测序成本高，通量低等方面的缺点，严重影响了其真正大规模的应用。经过不断的技术开发和改进，以Roche公司的454技术、illumina公司的Solexa，Hiseq技术和ABI公司的Solid技术为标记的第二代测序技术诞生了。第二代测序技术大大降低了测序成本的同时，还大幅提高了测序速度，并且保持了高准确性，以前完成一个人类基因组的测序需要3年时间，而使用二代测序技术则仅仅需要1周，但在序列读长方面比起第一代测序技术则要短很多。目前主流的二代测序平台是illumina，下文主要介绍illumina平台的测序原理。</p>
-<p><strong>Single-Read</strong>测序(Single-read)首先将DNA样本进行片段化处理形成200-500bp的片段，**<em>引物序列连接到DNA片段的一端**</em>，然后末端加上接头，将片段固定在flow cell上生成DNA簇，上机测序单端读取序列。该方式建库简单，操作步骤少，常用于小基因组、转录组、宏基因组测序。</p>
-<p><strong>Paired-end</strong>文库制备是指在构建待测DNA文库时在**<em>两端的接头上都加上测序引物结合位点**</em>，在第一轮测序完成后，去除第一轮测序的模板链，用对读测序模块(Paired-End Module)引导互补链在原位置再生和扩增，以达到第二轮测序所用的模板量，进行第二轮互补链的合成测序。</p>
-<p><img src="https://ss0.bdstatic.com/70cFvHSh_Q1YnxGkpoWK1HF6hhy/it/u=1022250266,1017686506&fm=26&gp=0.jpg" alt="hiseq3000"></p>
-<h2 id="第一步：-构建DNA文库"><a href="#第一步：-构建DNA文库" class="headerlink" title="第一步： 构建DNA文库"></a>第一步： 构建DNA文库</h2><p>利用超声波把待测的DNA样本打断成小片段，目前除了组装之外和一些其他的特殊要求之外，主要是打断成200-500bp长的序列片段，并在这些小片段的两端添加上不同的接头，构建出单链DNA文库。</p>
-<p>1．末端修饰。打断的片段是随机断裂，其末端可能是不平的。因此，建库第一步是补齐不平的末端。补平之后，需要在3’端加A碱基</p>
-<img src="/2020/10/04/%E4%BA%8C%E4%BB%A3%E6%B5%8B%E5%BA%8F/7eef8f255f0e7cd185253634.jpg" class>
-
-<img src="/2020/10/04/%E4%BA%8C%E4%BB%A3%E6%B5%8B%E5%BA%8F/7eef8f255f0e7cd185253634(1).jpg" class>
-
-<p>2．添加接头。经过末端修饰后的DNA片段3’末端具有突出的A尾，而接头具有突出的T尾，可以使用连接酶将接头添加到DNA片段两端，形成“Y”形接头。</p>
-<img src="/2020/10/04/%E4%BA%8C%E4%BB%A3%E6%B5%8B%E5%BA%8F/7eef8f255f0e7cd185253634(2).jpg" class>
-
-<p>3．PCR扩增。添加了接头的DNA片段，可通过与接头互补的引物来扩增，富集文库</p>
-<img src="/2020/10/04/%E4%BA%8C%E4%BB%A3%E6%B5%8B%E5%BA%8F/7eef8f255f0e7cd185253634(3).jpg" class>
-
-<p><img src="https://pic3.zhimg.com/80/v2-815463cd17ad105115f6c8440c43ea66_1440w.jpg"></p>
-<p><strong>左边的是直接在fragment DNA的两端直接加上full Y-adapter</strong>, adapter中已经包括了和P5/P7 oligo互补的序列, index, 以及Read1/Read2的测序引物。</p>
-<p><strong>右边的那种是先在fragment DNA的两端加上PE adapter</strong>, 然后再引入和P5/P7 oligo互补配对的序列以及index序列。</p>
-<p><strong>一句话总结，这两种不同的indexing strategy的差别在于引入index序列的时机和方式不一样。</strong></p>
-<p>其实右边的图并不是画的特别形象，具体的的可以参看下面这张图</p>
-<p><img src="https://pic1.zhimg.com/80/v2-0abfd5500a3559cb71003b6ca4322b50_1440w.jpg"></p>
-<p>在这里我们能够清楚地看到，这种接头添加过程中，fragment DNA两端是<strong>先连上PE adapter</strong>, 然后再通过PCR引入的<strong>region complementary to P5/P7 sequence</strong>, <strong>index</strong>, and <strong>sequencing biding sites</strong>.</p>
-<p>1)P5和P7是不同的，它们分别和flowcell上的接头互补和相同。</p>
-<p>2)index1和index2也是不同的，与P5相连的是index2，与P7相连的是index1</p>
-<p>关于index，也叫barcodes，因为一个lane可以同时测多个样品，为了避免混淆样品的read products，每种样品的DNA由一种index修饰，这样测序得到的reads都是具有index标记的，在测序结果中，依据之前标签与样品的对应关系，就可以获得对应样品的数据。而这里的<strong>index1和index2是为了区分paired-end测序得到的双端reads</strong>。</p>
-<img src="/2020/10/04/%E4%BA%8C%E4%BB%A3%E6%B5%8B%E5%BA%8F/20180102102643081" class>
-
-
-
-<h2 id="第二步：桥式PCR"><a href="#第二步：桥式PCR" class="headerlink" title="第二步：桥式PCR"></a>第二步：桥式PCR</h2><p>Flowcell是用于吸附流动DNA片段的槽道，当文库建好后，这些文库中的DNA在通过flowcell的时候会随机附着在flowcell表面的lane上。每个Flowcell有8个lane，每个lane的表面都附有很多接头，这些接头能和建库过程中加在DNA片段两端的接头相互配对（这就是为什么flowcell能吸附建库后的DNA的原因），并能支持DNA在其表面进行桥式PCR的扩增。</p>
-<img src="/2020/10/04/%E4%BA%8C%E4%BB%A3%E6%B5%8B%E5%BA%8F/2018100911424515(1).jpg" class>
-
-<p>1.Flowcell上随机分布了两种不同的寡核苷酸序列，分别<strong>与P5互补（即P5’），与P7一致（即P7）</strong>。</p>
-<img src="/2020/10/04/%E4%BA%8C%E4%BB%A3%E6%B5%8B%E5%BA%8F/20180102103623636.jpg" class>
-
-<p>2.待测sequence通过P5与folwcell上的P5’序列杂交互补，以待测sequence为模板进行互补链（即reverse strand）的延伸，互补链的两端为P5’和P7’。</p>
-<img src="/2020/10/04/%E4%BA%8C%E4%BB%A3%E6%B5%8B%E5%BA%8F/20180102104221274.jpg" class>
-
-<img src="/2020/10/04/%E4%BA%8C%E4%BB%A3%E6%B5%8B%E5%BA%8F/20180102103954806.jpg" class>
-
-<p>3.通过聚合酶生成杂交片段的互补片段，然后加入NaOH碱溶液后，双链分子变性，原始模板链（左边的链）被流动池中的液体洗去</p>
-<img src="/2020/10/04/%E4%BA%8C%E4%BB%A3%E6%B5%8B%E5%BA%8F/20180102104507815.jpg" class>
-
-<p>4.加入中性液体用于中和碱溶液，Reverse strand的P7’与Flowcell上的P7杂交互补，进行链的合成，聚合酶参与下，生成互补链，最终形成双链桥,这就是我们所熟知的<strong>桥式PCR</strong></p>
-<img src="/2020/10/04/%E4%BA%8C%E4%BB%A3%E6%B5%8B%E5%BA%8F/%E6%A1%A5%E5%BC%8FPCR.PNG" class>
-
-<p>5.接下来合成的双链被解链，再分别与Flowcell上的接头杂交互补，延伸，解链，杂交，延伸，解链…如此重复35个循环</p>
-<img src="/2020/10/04/%E4%BA%8C%E4%BB%A3%E6%B5%8B%E5%BA%8F/%E6%A1%A5%E5%BC%8FPCR2.PNG" class>
-
-<p>6.桥式PCR完成后，使用NAOH将双链解链，并利用甲酰胺基嘧啶糖苷酶（Fpg）对8-氧鸟嘌呤糖苷（8-oxo-G）的选择性切断作用，选择性地将P5’与链的连接切断，<strong>留下与Flowcell上P7连接的链</strong>，也就是Forward strand。同时游离的3’端被阻断，防止不必要的DNA延伸</p>
-<img src="/2020/10/04/%E4%BA%8C%E4%BB%A3%E6%B5%8B%E5%BA%8F/20180102110455607.jpg" class>
-
-<h2 id="第三步：测序"><a href="#第三步：测序" class="headerlink" title="第三步：测序"></a>第三步：测序</h2><p>首先，在Flowcell中加入荧光标记的dNTP和酶，由引物起始开始合成子链。但是dNTP存在 3’端叠氮基会阻碍子链延伸，这使得每个循环只能测得一个碱基。合成完一个碱基后， Flowcell 通入液体洗掉多余的dNTP和酶，使用显微镜的激光扫描特征荧光信号。</p>
-<ol>
-<li><p>测序引物（sequencing primer）结合到靠近P5的测序引物结合位点1（sequencing primer binding site 1）上，在系统中加入四种dNTP和DNA聚合酶。这里的dNTP有两个特点：它是有荧光基团标记的，每种碱基标记的荧光基团不一样；它的3’末端连了一个叠氮基，这个叠氮基能够阻断后面的碱基与它相连</p>
-<img src="/2020/10/04/%E4%BA%8C%E4%BB%A3%E6%B5%8B%E5%BA%8F/20180102110709747.jpg" class>
-
-<p>因此在聚合酶的作用下，与Forward strand相应位置碱基配对的dNTP就会结合到新合成的链上，而由于叠氮基的存在，后面的dNTP无法继续连接。这时用水将剩余的dNTP和酶给冲掉，将Flowcell进行扫描，扫描出来的荧光对应的碱基的配对碱基即是该链该位置的碱基。同时在这个Flowcell上有成千上万个cluster也在进行同样的反应，因此一个循环就能同时检测多个样本（这也是高通量的核心所在）。这个循环完成后，加入化学试剂把叠氮基和标记的荧光基团切掉，进行下一个循环（碱基的连接、检测与切除）。如此重复直至所有链的碱基序列被检测出，也就是Forward read 序列。</p>
-<img src="/2020/10/04/%E4%BA%8C%E4%BB%A3%E6%B5%8B%E5%BA%8F/20180102110801150.jpg" class>
-
-</li>
-</ol>
-<p>2.Index测序：所有循环结束后，read products 被洗掉，index1 primer与链上index primer1 结合位点杂交配对，进行index1的合成及检测</p>
-<img src="/2020/10/04/%E4%BA%8C%E4%BB%A3%E6%B5%8B%E5%BA%8F/20180102111207627.jpg" class>
-
-<p>3.Index1测序完成后，洗脱测序产物。此时机器已通过荧光得到了index1的序列</p>
-<img src="/2020/10/04/%E4%BA%8C%E4%BB%A3%E6%B5%8B%E5%BA%8F/20180102111345135.jpg" class>
-
-<p>4.Index2测序：Forward strand顶端的P5序列与Flowcell上的P5’杂交配对，进行index2测序。测序完成后洗脱产物</p>
-<img src="/2020/10/04/%E4%BA%8C%E4%BB%A3%E6%B5%8B%E5%BA%8F/20180102121740290.jpg" class>
-
-<img src="/2020/10/04/%E4%BA%8C%E4%BB%A3%E6%B5%8B%E5%BA%8F/20180102121753750.jpg" class>
-
-<p><strong>Paried-end sequencing（即对Reverse strand测序）</strong></p>
-<p>Paired-end测序已经是现在的主流，它提高了测序长度的同时，又可以为结构变异分析提供新方法。要完成双末端测序，首先要将模板链3’去保护，模板折叠，index片段引入</p>
-<p>1.洗脱index2测序产物后，以Flowcell上的P5’为引物，Forward strand为模板进行桥式扩增，得到双链</p>
-<img src="/2020/10/04/%E4%BA%8C%E4%BB%A3%E6%B5%8B%E5%BA%8F/20180102122603418.jpg" class>
-
-<p>2.NAOH使双链变性为单链，并洗去已经测序完成的Forward strand</p>
-<img src="/2020/10/04/%E4%BA%8C%E4%BB%A3%E6%B5%8B%E5%BA%8F/20180102122804843.jpg" class>
-
-<img src="/2020/10/04/%E4%BA%8C%E4%BB%A3%E6%B5%8B%E5%BA%8F/20180102122822016.jpg" class>
-
-<p>3.类似的，readprimer2结合到靠近P7’的read primer binding site 2开始对Reverse strand的测序。测序完成后即可得到Reverse read序列。</p>
-<img src="/2020/10/04/%E4%BA%8C%E4%BB%A3%E6%B5%8B%E5%BA%8F/20180102123012562.jpg" class>
-
-<p>荧光发射波长与信号强度一起决定了碱基的读出，所有的DNA片段的一个碱基会被同时读取。在大规模并行的过程中，机器读取的图像类似下面这样</p>
-<p><img src="https://imgconvert.csdnimg.cn/aHR0cDovL2JhaW1vYy56aXB0b3AudG9wL2Jsb2cvMjAxODEyMjcvcDZoU3JVY2NNbE9hLnBuZw?x-oss-process=image/format,png"></p>
-<p>加入化学试剂将叠氮基团与荧光基团切除，然后 Flowcell 再通入荧光标记的dNTP和酶，由引物起始开始合成一个碱基。不断重复这个过程，完成第一次读取</p>
-<h2 id="引用"><a href="#引用" class="headerlink" title="引用"></a>引用</h2><p>1.<a href="https://zhuanlan.zhihu.com/p/35278810">测序之前篇： NGS测序中，接头是如何添加上的，以及如何去接头</a></p>
-<p>2.<a href="https://blog.csdn.net/u011262253/article/details/102525491">二代测序原理（Illumina）</a></p>
-<p>3.<a href="https://wenku.baidu.com/view/6aa1c0e1a55177232f60ddccda38376bae1fe042.html">二代测序文库构建</a></p>
-<p>4.<a href="https://blog.csdn.net/sixu_9days/article/details/78948914">illumina SBS测序详解</a></p>
-]]></content>
-      <categories>
-        <category>测序原理</category>
-      </categories>
-      <tags>
-        <tag>-测序原理</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>RNA-seq第三部分（比对，比对质控,HTseq-count计数）</title>
     <url>/2020/10/08/%E8%BD%AC%E5%BD%95%E7%BB%843/</url>
     <content><![CDATA[<p>一.比对（hisat2）</p>
@@ -639,107 +744,6 @@
       </categories>
       <tags>
         <tag>-转录组</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>GEO</title>
-    <url>/2020/10/21/GEO/</url>
-    <content><![CDATA[<h1 id="一-数据的获取"><a href="#一-数据的获取" class="headerlink" title="一.数据的获取"></a>一.数据的获取</h1><p>GEO数据库全称Gene Expression Omnibus database，是由美国国立生物技术信息中心NCBI创建并维护的基因表达数据库。它创建于2000年，收录了世界各国研究机构提交的高通量基因表达数据，也就是说只要是目前已经发表的论文，论文中涉及到的基因表达检测的数据都可以通过这个数据库中找到。包含了芯片和二代测序的数据。刚接触GEO肯定会发现GPL，GSM，GSE，GDS等甚至还有SRA这些标志。</p>
-<ul>
-<li>GPL就是platform，就是说实验是用什么做的，如果是芯片数据GPL一般用来将probe转换成gene ID。</li>
-<li>GSE就是series，可以理解成是一组实验包含一些control和case的样本</li>
-<li>GSM就是sample，样本号</li>
-<li>GDS，是GEO工作人员根据一定的研究目的归类的dataset。</li>
-<li>SRA就是sequence read archive,记录的是二代测序的read以及比对情况，可以通过SRA数据自己从头进行下游分析。</li>
-</ul>
-<h2 id="1-通过GEOquery下载"><a href="#1-通过GEOquery下载" class="headerlink" title="1.通过GEOquery下载"></a>1.通过GEOquery下载</h2><figure class="highlight r"><table><tr><td class="code"><pre><span class="line">gse49515&lt;-getGEO(<span class="string">&#x27;gse49515&#x27;</span>,AnnotGPL = <span class="literal">F</span>,getGPL = <span class="literal">F</span>)</span><br><span class="line">gene_exp &lt;- as.data.frame(exprs(gset[[<span class="number">1</span>]]))<span class="comment">#获取表达矩阵</span></span><br><span class="line">&gt; gene_exp[<span class="number">1</span>:<span class="number">3</span>,<span class="number">1</span>:<span class="number">3</span>]</span><br><span class="line">          GSM1200291 GSM1200292 GSM1200293</span><br><span class="line">1007_s_at    <span class="number">6.06616</span>    <span class="number">6.08172</span>    <span class="number">5.63387</span></span><br><span class="line">1053_at      <span class="number">7.19067</span>    <span class="number">7.49107</span>    <span class="number">7.52000</span></span><br><span class="line">117_at       <span class="number">9.01752</span>    <span class="number">8.13871</span>    <span class="number">8.27904</span></span><br><span class="line">&gt; table(is.na(gene_exp))<span class="comment">#判断表达矩阵中是否na值，没有就不需要去除，若有的话则na.omit(gene_exp）</span></span><br><span class="line">  <span class="literal">FALSE</span> </span><br><span class="line"><span class="number">1421550</span> </span><br><span class="line">sample_Info &lt;- pData(gset[[<span class="number">1</span>]])<span class="comment">#获取样本信息表</span></span><br><span class="line"></span><br><span class="line">gpl570&lt;-getGEO(<span class="string">&#x27;GPL570&#x27;</span>)<span class="comment">#获取探针信息进行ID转换</span></span><br></pre></td></tr></table></figure>
-
-<h2 id="2-NCBI上下载"><a href="#2-NCBI上下载" class="headerlink" title="2.NCBI上下载"></a>2.NCBI上下载</h2><p>GEO下载页面布局如图所示</p>
-<img src="/2020/10/21/GEO/v2-aee0e72da36b452cdcf0834289b3baee_1440w.jpg" class>
-
-<p>GEO数据类型：</p>
-<p>说明：</p>
-<p>数据类型描述数据解释（解压后可用notepad++打开）</p>
-<p>SOFTSOFT formatted family file(s)一个压缩包一个文件；平台信息芯片中探针与基因的对应关系注释文件；样品单独的表达量</p>
-<p>MINiMLMINiML formatted family file(s)一个压缩包多个文件分开放；平台信息芯片中探针与基因的对应关系注释文件；单个样品表达量文件</p>
-<p>TXTSeries Matrix File(s)所有样品表达矩阵数据文件</p>
-<p>TAR (of CEL, EXP)GSE3541_RAW.tar芯片原始数据（cel）文件</p>
-<p>下载网址：<a href="https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi">https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi</a></p>
-<p>表达矩阵我们按下图下载</p>
-<img src="/2020/10/21/GEO/QQ%E6%88%AA%E5%9B%BE20201021123331.png" class>
-
-<img src="/2020/10/21/GEO/QQ%E6%88%AA%E5%9B%BE20201021123508.png" class>
-
-<p>芯片平台探针信息</p>
-<img src="/2020/10/21/GEO/QQ%E6%88%AA%E5%9B%BE20201021123643.png" class>
-
-<img src="/2020/10/21/GEO/QQ%E6%88%AA%E5%9B%BE20201021123722.png" class>
-
-<figure class="highlight r"><table><tr><td class="code"><pre><span class="line"></span><br><span class="line">gene_exp&lt;-read.delim(<span class="string">&#x27;~/GEO/GSE49515_series_matrix.txt&#x27;</span>,comment.char = <span class="string">&#x27;!&#x27;</span>,stringsAsFactors = <span class="literal">F</span>)</span><br><span class="line">gene_info &lt;-read.delim(<span class="string">&#x27;~/Downloads/GPL570-55999.txt&#x27;</span>,comment.char = <span class="string">&#x27;#&#x27;</span>,stringsAsFactors = <span class="literal">F</span>)</span><br></pre></td></tr></table></figure>
-
-<h1 id="二-数据分析"><a href="#二-数据分析" class="headerlink" title="二.数据分析"></a>二.数据分析</h1><h2 id="1-ID转换"><a href="#1-ID转换" class="headerlink" title="1.ID转换"></a>1.ID转换</h2><p>目前得到的表达矩阵,行名就是一个个probe，列名是样本。需要将probe的ID转换成gene，转换也很简单GPL文件给我们提供了这个信息，核心就是一个merge函数，一般转换成gene名。</p>
-<figure class="highlight r"><table><tr><td class="code"><pre><span class="line"><span class="comment">#读取芯片平台探针信息，并选取需要的列‘ID’,&#x27;Gene Symbol&#x27;。</span></span><br><span class="line">gene_info &lt;- read_delim(<span class="string">&quot;GPL570-55999.txt&quot;</span>, </span><br><span class="line">                        <span class="string">&quot;\t&quot;</span>, escape_double = <span class="literal">FALSE</span>, comment = <span class="string">&quot;#&quot;</span>, </span><br><span class="line">                        trim_ws = <span class="literal">TRUE</span>) %&gt;%</span><br><span class="line">  dplyr::select(ID, Gene_Symbol = <span class="string">&#x27;Gene Symbol&#x27;</span>)</span><br><span class="line">&gt; head(gene_info,<span class="number">4</span>)</span><br><span class="line"><span class="comment"># A tibble: 4 x 2</span></span><br><span class="line">  ID        Gene_Symbol     </span><br><span class="line">  &lt;chr&gt;     &lt;chr&gt;           </span><br><span class="line"><span class="number">1</span> 1007_s_at DDR1 /// MIR4640</span><br><span class="line"><span class="number">2</span> 1053_at   RFC2            </span><br><span class="line"><span class="number">3</span> 117_at    HSPA6           </span><br><span class="line"><span class="number">4</span> 121_at    PAX8 </span><br><span class="line">&gt; gene_exp[<span class="number">1</span>:<span class="number">3</span>,<span class="number">1</span>:<span class="number">3</span>]</span><br><span class="line">          GSM1200291 GSM1200292 GSM1200293</span><br><span class="line">1007_s_at    <span class="number">6.06616</span>    <span class="number">6.08172</span>    <span class="number">5.63387</span></span><br><span class="line">1053_at      <span class="number">7.19067</span>    <span class="number">7.49107</span>    <span class="number">7.52000</span></span><br><span class="line">117_at       <span class="number">9.01752</span>    <span class="number">8.13871</span>    <span class="number">8.27904</span></span><br><span class="line">gene_exp &lt;- rownames_to_column(gene_exp,var=<span class="string">&quot;ID&quot;</span>)<span class="comment">#将行名转化为列名方便合并</span></span><br><span class="line">&gt; gene_exp[<span class="number">1</span>:<span class="number">3</span>,<span class="number">1</span>:<span class="number">3</span>]</span><br><span class="line">         ID GSM1200291 GSM1200292</span><br><span class="line"><span class="number">1</span> 1007_s_at    <span class="number">6.06616</span>    <span class="number">6.08172</span></span><br><span class="line"><span class="number">2</span>   1053_at    <span class="number">7.19067</span>    <span class="number">7.49107</span></span><br><span class="line"><span class="number">3</span>    117_at    <span class="number">9.01752</span>    <span class="number">8.13871</span></span><br><span class="line">expr_id_symbol &lt;- merge(gene_exp,gene_info,by=<span class="string">&#x27;ID&#x27;</span>)<span class="comment">#合并表达矩阵和基因信息表</span></span><br></pre></td></tr></table></figure>
-
- <figure class="highlight r"><table><tr><td class="code"><pre><span class="line"><span class="comment">#表明有合并后的列表中有NA值，应该是gene_info里的</span></span><br><span class="line">&gt; table(is.na(expr_id_symbol))</span><br><span class="line">  <span class="literal">FALSE</span>    <span class="literal">TRUE</span> </span><br><span class="line"><span class="number">1522007</span>    <span class="number">8893</span> </span><br><span class="line">pos &lt;- which(is.na(expr_id_symbol$Gene_Symbol))<span class="comment">#找出NA值的行号</span></span><br><span class="line">expr_id_symbol &lt;- expr_id_symbol[-pos,]<span class="comment">#去除NA值所在的行，保留剩下的行</span></span><br><span class="line">&gt; table(is.na(expr_id_symbol))<span class="comment">#表明所有NA值都已经去除了</span></span><br><span class="line">  <span class="literal">FALSE</span> </span><br><span class="line"><span class="number">1281896</span> </span><br></pre></td></tr></table></figure>
-
-<figure class="highlight r"><table><tr><td class="code"><pre><span class="line"><span class="comment">#一个探针对应多个基因的情况下取第一个个基因</span></span><br><span class="line">symbol&lt;-lapply(expr_id_symbol$Gene_Symbol,</span><br><span class="line">               FUN = <span class="keyword">function</span>(x)&#123;strsplit(x,<span class="string">&#x27;///&#x27;</span>)[[<span class="number">1</span>]][<span class="number">1</span>]&#125;)</span><br><span class="line">expr_id_symbol$Gene_Symbol &lt;- as.character(symbol)<span class="comment">#得到的唯一的symbol替换原来的Gene_Symbol列</span></span><br></pre></td></tr></table></figure>
-
-<figure class="highlight r"><table><tr><td class="code"><pre><span class="line"><span class="comment">#多个探针对应一个基因的情况下，取平均值</span></span><br><span class="line"><span class="keyword">library</span>(dplyr)</span><br><span class="line">data4 &lt;- expr_id_symbol[,<span class="number">2</span>:<span class="number">28</span>] %&gt;% <span class="comment">#数据从第二列开始，第一列是ID，最后一列是Gene_Symbol</span></span><br><span class="line">  arrange(Gene_Symbol) %&gt;% <span class="comment">#按Gene_Symbol排序</span></span><br><span class="line">  group_by(Gene_Symbol) %&gt;% <span class="comment">#Gene_Symbol分组</span></span><br><span class="line">  summarise_all(mean)</span><br><span class="line"><span class="comment">#将Gene_Symbol列变为行名</span></span><br><span class="line">data4 &lt;- column_to_rownames(data4,var = <span class="string">&#x27;Gene_Symbol&#x27;</span>)</span><br><span class="line">&gt; nrow(gene_exp)</span><br><span class="line">[<span class="number">1</span>] <span class="number">54675</span></span><br><span class="line">&gt; nrow(data4)</span><br><span class="line">[<span class="number">1</span>] <span class="number">23348</span></span><br></pre></td></tr></table></figure>
-
-<h2 id="2-数据分布"><a href="#2-数据分布" class="headerlink" title="2.数据分布"></a>2.数据分布</h2><h3 id="1-ggplot2绘制"><a href="#1-ggplot2绘制" class="headerlink" title="1.ggplot2绘制"></a>1.ggplot2绘制</h3><figure class="highlight r"><table><tr><td class="code"><pre><span class="line"><span class="keyword">library</span>(reshape2)</span><br><span class="line"><span class="keyword">library</span>(ggplot2)</span><br><span class="line"><span class="comment">#将表达矩阵拉直再加入分组信息</span></span><br><span class="line">expr_li&lt;-melt(data4)<span class="comment">#宽列表转化为长列表，ggplot2要求</span></span><br><span class="line">&gt; head(expr_li)</span><br><span class="line">    variable     value</span><br><span class="line"><span class="number">1</span> GSM1200291  <span class="number">1.727950</span></span><br><span class="line"><span class="number">2</span> GSM1200291  <span class="number">4.248380</span></span><br><span class="line"><span class="number">3</span> GSM1200291  <span class="number">2.745500</span></span><br><span class="line"><span class="number">4</span> GSM1200291  <span class="number">2.167750</span></span><br><span class="line"><span class="number">5</span> GSM1200291 <span class="number">10.649900</span></span><br><span class="line"><span class="number">6</span> GSM1200291  <span class="number">2.614425</span></span><br><span class="line">colnames(expr_li)&lt;-c(<span class="string">&#x27;sample&#x27;</span>,<span class="string">&#x27;value&#x27;</span>)<span class="comment">#调整列名</span></span><br><span class="line">group&lt;-c(rep(<span class="string">&#x27;GastricCancer&#x27;</span>,<span class="number">3</span>),rep(<span class="string">&#x27;HCC&#x27;</span>,<span class="number">10</span>),rep(<span class="string">&#x27;Normal&#x27;</span>,<span class="number">10</span>),rep(<span class="string">&#x27;PancreaticCancer&#x27;</span>,<span class="number">3</span>))</span><br><span class="line">expr_li$group&lt;-c(rep(group,each=nrow(data4)))</span><br><span class="line">p&lt;-ggplot(expr_li,aes(x=sample,y=value,fill=group))</span><br><span class="line">p+geom_boxplot()+theme(axis.text.x = element_text(angle=<span class="number">45</span>,vjust=<span class="number">0.5</span>))+theme(legend.position = <span class="string">&#x27;top&#x27;</span>)</span><br></pre></td></tr></table></figure>
-
-<img src="/2020/10/21/GEO/plot_zoom_png" class>
-
-<h3 id="2-基础函数绘制"><a href="#2-基础函数绘制" class="headerlink" title="2.基础函数绘制"></a>2.基础函数绘制</h3><h4 id="1-标准化前"><a href="#1-标准化前" class="headerlink" title="1.标准化前"></a>1.标准化前</h4><figure class="highlight r"><table><tr><td class="code"><pre><span class="line"><span class="comment">#标准化前</span></span><br><span class="line">boxplot(data4,outline=<span class="literal">FALSE</span>,las=<span class="number">2</span>)</span><br></pre></td></tr></table></figure>
-
-<img src="/2020/10/21/GEO/plot_zoom_png2" class>
-
-<h4 id="2-标准化后"><a href="#2-标准化后" class="headerlink" title="2.标准化后"></a>2.标准化后</h4><figure class="highlight r"><table><tr><td class="code"><pre><span class="line"><span class="comment">#标准化数据</span></span><br><span class="line">data4_nor &lt;- normalizeBetweenArrays(data4)</span><br><span class="line">boxplot(data4_nor,outline=<span class="literal">FALSE</span>,las=<span class="number">2</span>)</span><br></pre></td></tr></table></figure>
-
-<img src="/2020/10/21/GEO/plot_zoom_png4" class>
-
-<h1 id="3-limma差异表达分析"><a href="#3-limma差异表达分析" class="headerlink" title="3.limma差异表达分析"></a>3.limma差异表达分析</h1><figure class="highlight r"><table><tr><td class="code"><pre><span class="line"><span class="comment">#差异表达分析</span></span><br><span class="line"><span class="keyword">library</span>(limma)</span><br><span class="line"><span class="comment">#实验设计矩阵</span></span><br><span class="line">design&lt;-model.matrix(~<span class="number">0</span>+factor(group))</span><br><span class="line">colnames(design)&lt;-levels(factor(group))</span><br><span class="line">rownames(design)&lt;-colnames(data4)</span><br><span class="line"><span class="comment">#分组矩阵</span></span><br><span class="line">con&lt;-makeContrasts(paste(<span class="string">&#x27;HCC&#x27;</span>,<span class="string">&#x27;Normal&#x27;</span>,sep=<span class="string">&#x27;-&#x27;</span>),levels = design)</span><br><span class="line"><span class="comment">#线性拟合，其实就是一个回归</span></span><br><span class="line">fit&lt;-lmFit(data4,design)</span><br><span class="line"></span><br><span class="line">fit2&lt;-contrasts.fit(fit,con)</span><br><span class="line"><span class="comment">#假设检验</span></span><br><span class="line">fit3&lt;-eBayes(fit2)</span><br><span class="line">tmpout&lt;-topTable(fit3,coef = <span class="number">1</span>,n=<span class="literal">Inf</span>)</span><br><span class="line"><span class="comment">#去除掉NA值</span></span><br><span class="line">nrDEG&lt;-na.omit(tmpout)</span><br></pre></td></tr></table></figure>
-
-<h1 id="4-火山图绘制"><a href="#4-火山图绘制" class="headerlink" title="4.火山图绘制"></a>4.火山图绘制</h1><figure class="highlight r"><table><tr><td class="code"><pre><span class="line">res &lt;- nrDEG</span><br><span class="line">data &lt;- data.frame(gene = row.names(res),</span><br><span class="line">                   pvalue= res$adj.P.Val, </span><br><span class="line">                   log2FoldChange = res$logFC) </span><br><span class="line"></span><br><span class="line">data &lt;- na.omit(data)</span><br><span class="line"></span><br><span class="line">data &lt;- mutate(data, color = case_when(data$log2FoldChange &gt; <span class="number">1</span> &amp; data$pvalue&lt;<span class="number">0.05</span> ~ <span class="string">&quot;Increased&quot;</span>,</span><br><span class="line">                                       data$log2FoldChange &lt; <span class="number">1</span> &amp; data$pvalue&lt; <span class="number">0.05</span>~ <span class="string">&quot;Decreased&quot;</span>,</span><br><span class="line">                                       data$pvalue&gt;<span class="number">0.05</span> ~ <span class="string">&quot;nonsignificant&quot;</span>))</span><br><span class="line">my_palette &lt;- c(<span class="string">&#x27;#E64B35FF&#x27;</span>, <span class="string">&#x27;#4DBBD5FF&#x27;</span>,<span class="string">&#x27;#999999&#x27;</span>)</span><br><span class="line"><span class="keyword">library</span>(ggplot2)</span><br><span class="line">ggplot(data = data, aes(x = log2FoldChange, y = -log10(pvalue))) +</span><br><span class="line">  geom_point(aes(color =color, size = abs(log2FoldChange))) +</span><br><span class="line">  geom_hline(yintercept = -log10(<span class="number">0.05</span>), linetype = <span class="string">&#x27;dashed&#x27;</span>) +</span><br><span class="line">  geom_vline(xintercept = c(-<span class="number">1</span>, <span class="number">1</span>), linetype = <span class="string">&#x27;dashed&#x27;</span>) + </span><br><span class="line">  scale_color_manual(values = my_palette) + </span><br><span class="line">  scale_size(range = c(<span class="number">0.1</span>, <span class="number">3</span>)) +</span><br><span class="line">  xlim(-<span class="number">5</span>,<span class="number">5</span>)+ylim(<span class="number">0</span>,<span class="number">10</span>)+</span><br><span class="line">  theme_bw()</span><br></pre></td></tr></table></figure>
-
-<img src="/2020/10/21/GEO/plot_zoom_png5" class>
-
-<h1 id="5-热图"><a href="#5-热图" class="headerlink" title="5.热图"></a>5.热图</h1><figure class="highlight r"><table><tr><td class="code"><pre><span class="line"><span class="comment">#画热图</span></span><br><span class="line"><span class="comment">#挑选前abs(logFC)从大到小前50的基因,再按adj.P.Val排序</span></span><br><span class="line">top_50_gene &lt;-arrange(nrDEG,desc(abs(logFC)),adj.P.Val)[<span class="number">1</span>:<span class="number">50</span>,]</span><br><span class="line"><span class="comment">#通过左端合并获取top50基因在样本的表达数据</span></span><br><span class="line">top_50_gene &lt;- left_join(rownames_to_column(top_50_gene,var=<span class="string">&#x27;ID&#x27;</span>),</span><br><span class="line">                                             rownames_to_column(data4,var = <span class="string">&#x27;ID&#x27;</span>),by=<span class="string">&#x27;ID&#x27;</span>)</span><br><span class="line"><span class="comment">#去除nrDEG中的其他列，只留下样本列</span></span><br><span class="line">top_50_gene &lt;- top_50_gene[,-c(<span class="number">2</span>:<span class="number">7</span>)]%&gt;%column_to_rownames(var = <span class="string">&#x27;ID&#x27;</span>)</span><br><span class="line">ncol(top_50_gene)</span><br><span class="line"><span class="comment">#因该top50gene是指定&#x27;HCC&#x27;,&#x27;Normal&#x27;;画热图时选取这些样本的列</span></span><br><span class="line">top_50_gene &lt;- top_50_gene[,<span class="number">4</span>:<span class="number">23</span>]</span><br><span class="line"><span class="comment">#热图列注释</span></span><br><span class="line">anno &lt;- as.data.frame(group[<span class="number">4</span>:<span class="number">23</span>])</span><br><span class="line">rownames(anno)=colnames(top_50_gene)</span><br><span class="line">pheatmap::pheatmap(top_50_gene,scale =<span class="string">&#x27;row&#x27;</span>,annotation_col = anno,show_rownames = <span class="literal">FALSE</span>)</span><br></pre></td></tr></table></figure>
-
-<img src="/2020/10/21/GEO/plot_zoom_png6" class>
-
-<h1 id="6-GO和KEGG富集"><a href="#6-GO和KEGG富集" class="headerlink" title="6.GO和KEGG富集"></a>6.GO和KEGG富集</h1><h2 id="1-go富集"><a href="#1-go富集" class="headerlink" title="1.go富集"></a>1.go富集</h2><figure class="highlight r"><table><tr><td class="code"><pre><span class="line"><span class="keyword">library</span>(<span class="string">&#x27;org.Hs.eg.db&#x27;</span>)</span><br><span class="line"><span class="keyword">library</span>(<span class="string">&#x27;clusterProfiler&#x27;</span>)</span><br><span class="line">all_gene&lt;-filter(data,color!=<span class="string">&#x27;nonsignificant&#x27;</span>)<span class="comment">#去除差异不明显的基因</span></span><br><span class="line">gene_list &lt;- all_gene$gene</span><br><span class="line">gene.df &lt;- bitr(gene_list,fromType = <span class="string">&quot;SYMBOL&quot;</span>,</span><br><span class="line">                toType = c(<span class="string">&#x27;ENSEMBL&#x27;</span>,<span class="string">&#x27;ENTREZID&#x27;</span>),</span><br><span class="line">                OrgDb = org.Hs.eg.db)</span><br><span class="line">ego_cc &lt;- enrichGO(gene=gene.df$ENSEMBL,</span><br><span class="line">                   OrgDb = org.Hs.eg.db,</span><br><span class="line">                   keyType = <span class="string">&#x27;ENSEMBL&#x27;</span>,</span><br><span class="line">                   ont = <span class="string">&#x27;CC&#x27;</span>,</span><br><span class="line">                   pAdjustMethod = <span class="string">&#x27;BH&#x27;</span>,</span><br><span class="line">                   pvalueCutoff = <span class="number">0.01</span>,</span><br><span class="line">                   qvalueCutoff = <span class="number">0.05</span>)</span><br><span class="line">barplot(ego_cc,showCategory=<span class="number">10</span>,title = <span class="string">&#x27;The GO_CC ecnrichment analysis of all DEGS&#x27;</span>)+</span><br><span class="line">  scale_size(range = c(<span class="number">2</span>,<span class="number">12</span>))+scale_x_discrete(labels=<span class="keyword">function</span>(ego_cc) str_wrap(ego_cc,width = <span class="number">25</span>))</span><br></pre></td></tr></table></figure>
-
-<img src="/2020/10/21/GEO/plot_zoom_png7" class>
-
-<h2 id="2-kegg富集"><a href="#2-kegg富集" class="headerlink" title="2.kegg富集"></a>2.kegg富集</h2><figure class="highlight r"><table><tr><td class="code"><pre><span class="line">enrich_kegg &lt;- enrichKEGG(gene = gene.df$ENTREZID,</span><br><span class="line">                          organism = <span class="string">&#x27;hsa&#x27;</span>,</span><br><span class="line">                          pvalueCutoff = <span class="number">0.01</span>)<span class="comment">#一般应设置0.01或者0.05；这个例子设置0.05富集不到kegg通路</span></span><br><span class="line">head(enrich_kegg)</span><br><span class="line">barplot(enrich_kegg,showCategory=<span class="number">18</span>,title = <span class="string">&#x27;The KEGG ecnrichment analysis of all DEGS&#x27;</span>)+</span><br><span class="line">  scale_size(range = c(<span class="number">2</span>,<span class="number">12</span>))+scale_x_discrete(labels=<span class="keyword">function</span>(enrich_kegg) str_wrap(enrich_kegg,width = <span class="number">25</span>))</span><br></pre></td></tr></table></figure>
-
-<img src="/2020/10/21/GEO/plot_zoom_png8" class>
-
-<h1 id="7-代谢通路图"><a href="#7-代谢通路图" class="headerlink" title="7.代谢通路图"></a>7.代谢通路图</h1><figure class="highlight r"><table><tr><td class="code"><pre><span class="line">head(gene.df)</span><br><span class="line">&gt; head(gene.df)</span><br><span class="line">    SYMBOL         ENSEMBL ENTREZID</span><br><span class="line"><span class="number">1</span>  SLC35B4 ENSG00000205060    <span class="number">84912</span></span><br><span class="line"><span class="number">2</span>    TRA2B ENSG00000136527     <span class="number">6434</span></span><br><span class="line"><span class="number">3</span>     PLK2 ENSG00000145632    <span class="number">10769</span></span><br><span class="line"><span class="number">4</span>   ZC3HC1 ENSG00000091732    <span class="number">51530</span></span><br><span class="line"><span class="number">5</span> ATP6V1B2 ENSG00000147416      <span class="number">526</span></span><br><span class="line"><span class="number">7</span>    CRYGS ENSG00000213139     <span class="number">1427</span></span><br><span class="line">head(nrDEG)</span><br><span class="line">&gt; head(nrDEG,<span class="number">2</span>)</span><br><span class="line">            logFC  AveExpr         t      P.Value</span><br><span class="line">SLC35B4  <span class="number">1.011183</span> <span class="number">6.577433</span>  <span class="number">18.05021</span> <span class="number">4.091992e-15</span></span><br><span class="line">TRA2B   -<span class="number">0.844217</span> <span class="number">9.327073</span> -<span class="number">13.30636</span> <span class="number">2.568722e-12</span></span><br><span class="line">           adj.P.Val        B</span><br><span class="line">SLC35B4 <span class="number">9.553984e-11</span> <span class="number">23.67163</span></span><br><span class="line">TRA2B   <span class="number">2.998727e-08</span> <span class="number">17.99524</span></span><br><span class="line">nrDEG &lt;- rownames_to_column(nrDEG,var=<span class="string">&#x27;SYMBOL&#x27;</span>)</span><br><span class="line">path_gene &lt;- merge(gene.df,nrDEG,by=<span class="string">&#x27;SYMBOL&#x27;</span>)%&gt;%select(<span class="string">&#x27;ENTREZID&#x27;</span>,<span class="string">&#x27;logFC&#x27;</span>)</span><br><span class="line">head(path_gene)</span><br><span class="line">pathview(path_gene[,<span class="number">1</span>],species = <span class="string">&#x27;hsa&#x27;</span>,pathway.id = <span class="string">&quot;05168&quot;</span>)<span class="comment">#这个ID是从KEGG富集的通路图中第一个通路，然后去KEGG官网查ID</span></span><br></pre></td></tr></table></figure>
-
-<img src="/2020/10/21/GEO/hsa05168.pathview.png" class>
-
-<h1 id="8-PCA主成分分析"><a href="#8-PCA主成分分析" class="headerlink" title="8.PCA主成分分析"></a>8.PCA主成分分析</h1><h2 id="1-数据准备"><a href="#1-数据准备" class="headerlink" title="1.数据准备"></a>1.数据准备</h2><figure class="highlight r"><table><tr><td class="code"><pre><span class="line">&gt; <span class="keyword">library</span>(PCAtools)</span><br><span class="line">&gt; sample_Info &lt;- pData(gset[[<span class="number">1</span>]])%&gt;%select(geo_accession,title)</span><br><span class="line">&gt; head(sample_Info,<span class="number">2</span>)</span><br><span class="line">           geo_accession                        title</span><br><span class="line">GSM1200291    GSM1200291 Gastric Cancer PBMC Sample <span class="number">1</span></span><br><span class="line">GSM1200292    GSM1200292 Gastric Cancer PBMC Sample <span class="number">2</span></span><br><span class="line">&gt; group&lt;-c(rep(<span class="string">&#x27;GastricCancer&#x27;</span>,<span class="number">3</span>),rep(<span class="string">&#x27;HCC&#x27;</span>,<span class="number">10</span>),rep(<span class="string">&#x27;Normal&#x27;</span>,<span class="number">10</span>),rep(<span class="string">&#x27;PancreaticCancer&#x27;</span>,<span class="number">3</span>))</span><br><span class="line">&gt; head(group)</span><br><span class="line">[<span class="number">1</span>] <span class="string">&quot;GastricCancer&quot;</span> <span class="string">&quot;GastricCancer&quot;</span> <span class="string">&quot;GastricCancer&quot;</span> <span class="string">&quot;HCC&quot;</span>           <span class="string">&quot;HCC&quot;</span>          </span><br><span class="line">[<span class="number">6</span>] <span class="string">&quot;HCC&quot;</span>          </span><br><span class="line">&gt; sample_info2 &lt;- mutate(sample_Info,group=group)%&gt;%column_to_rownames(var=<span class="string">&#x27;geo_accession&#x27;</span>)<span class="comment">#样本名转换为行名</span></span><br><span class="line">&gt; head(sample_info2,<span class="number">2</span>)</span><br><span class="line">                                  title         group</span><br><span class="line">GSM1200291 Gastric Cancer PBMC Sample <span class="number">1</span> GastricCancer</span><br><span class="line">GSM1200292 Gastric Cancer PBMC Sample <span class="number">2</span> GastricCancer</span><br><span class="line">&gt; head(data4,<span class="number">2</span>)</span><br><span class="line">         GSM1200291 GSM1200292 GSM1200293 GSM1200294 GSM1200295 GSM1200296 GSM1200297</span><br><span class="line">A1BG        <span class="number">1.72795</span>    <span class="number">1.81743</span>    <span class="number">1.67529</span>    <span class="number">1.38177</span>    <span class="number">1.76341</span>    <span class="number">1.97542</span>    <span class="number">1.96151</span></span><br><span class="line">A1BG-AS1    <span class="number">4.24838</span>    <span class="number">3.50769</span>    <span class="number">3.55429</span>    <span class="number">3.46720</span>    <span class="number">3.54705</span>    <span class="number">3.58128</span>    <span class="number">3.47917</span></span><br><span class="line">         GSM1200298 GSM1200299 GSM1200300 GSM1200301 GSM1200302 GSM1200303 GSM1200304</span><br><span class="line">A1BG        <span class="number">1.74726</span>    <span class="number">1.80558</span>    <span class="number">1.76479</span>    <span class="number">1.74251</span>    <span class="number">1.81299</span>    <span class="number">1.77776</span>    <span class="number">1.82972</span></span><br><span class="line">A1BG-AS1    <span class="number">3.48404</span>    <span class="number">3.59214</span>    <span class="number">3.98491</span>    <span class="number">2.68899</span>    <span class="number">3.64721</span>    <span class="number">3.59368</span>    <span class="number">3.62686</span></span><br><span class="line">         GSM1200305 GSM1200306 GSM1200307 GSM1200308 GSM1200309 GSM1200310 GSM1200311</span><br><span class="line">A1BG        <span class="number">1.71970</span>    <span class="number">1.88509</span>    <span class="number">1.73987</span>    <span class="number">1.85889</span>    <span class="number">2.05378</span>    <span class="number">1.78240</span>    <span class="number">1.78599</span></span><br><span class="line">A1BG-AS1    <span class="number">3.66756</span>    <span class="number">3.51368</span>    <span class="number">3.60384</span>    <span class="number">3.59204</span>    <span class="number">3.60900</span>    <span class="number">3.58077</span>    <span class="number">3.55626</span></span><br><span class="line">         GSM1200312 GSM1200313 GSM1200314 GSM1200315 GSM1200316</span><br><span class="line">A1BG        <span class="number">2.13868</span>     <span class="number">1.7948</span>    <span class="number">1.97225</span>    <span class="number">1.63177</span>    <span class="number">1.97266</span></span><br><span class="line">A1BG-AS1    <span class="number">3.63223</span>     <span class="number">3.5382</span>    <span class="number">3.78817</span>    <span class="number">3.47991</span>    <span class="number">3.50805</span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
-
-<h2 id="2-PCA分析"><a href="#2-PCA分析" class="headerlink" title="2.PCA分析"></a>2.PCA分析</h2><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&gt; pca &lt;- pca(data4,metadata &#x3D; sample_info2)#data4的列名须与metadata的行名一致</span><br><span class="line">&gt; #提取loading信息</span><br><span class="line">&gt; pca_loadings &lt;- pca$loadings</span><br><span class="line">&gt; pca_loadings[1:2,1:4]</span><br><span class="line">                   PC1           PC2           PC3          PC4</span><br><span class="line">A1BG      5.655176e-05 -0.0024044512 -0.0004510986  0.002296557</span><br><span class="line">A1BG-AS1 -3.321379e-03 -0.0007576866  0.0031158285 -0.003570854</span><br><span class="line">&gt; #提取rotated信息</span><br><span class="line">&gt; pca_rotated &lt;- pca$rotated</span><br><span class="line">&gt; pca_rotated[1:2,1:4]</span><br><span class="line">                   PC1       PC2      PC3         PC4</span><br><span class="line">GSM1200291 -208.501028  33.22847 -2.99058   0.2273477</span><br><span class="line">GSM1200292   -9.333901 -38.77063 30.95839 -10.1408383</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-
-<h2 id="3-可视化"><a href="#3-可视化" class="headerlink" title="3.可视化"></a>3.可视化</h2><figure class="highlight r"><table><tr><td class="code"><pre><span class="line">screeplot(pca)</span><br></pre></td></tr></table></figure>
-
-<img src="/2020/10/21/GEO/plot_zoom_png10" class>
-
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">biplot(pca,</span><br><span class="line">       x&#x3D;&#39;PC1&#39;,</span><br><span class="line">       y&#x3D;&#39;PC2&#39;,</span><br><span class="line">       colby &#x3D; &#39;group&#39;,</span><br><span class="line">       legendPosition &#x3D; &#39;right&#39;,</span><br><span class="line">       lab&#x3D;NULL)</span><br></pre></td></tr></table></figure>
-
-<img src="/2020/10/21/GEO/plot_zoom_png11" class>
-
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">plotloadings(pca)</span><br></pre></td></tr></table></figure>
-
-<img src="/2020/10/21/GEO/plot_zoom_png12" class>]]></content>
-      <categories>
-        <category>GEO</category>
-      </categories>
-      <tags>
-        <tag>-GEO</tag>
       </tags>
   </entry>
 </search>
