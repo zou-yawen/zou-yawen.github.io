@@ -23,61 +23,28 @@
     var CONFIG = {"hostname":"example.com","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":null},"back2top":{"enable":false,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":null,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
   </script>
 
-  <meta name="description" content="第二代测序（Next-generation sequencing，NGS）又称为高通量测序，其开创性的引入了可逆终止末端，从而实现边合成边测序，在DNA复制过程中通过捕捉新添加的碱基所携带的特殊标记来确定DNA序列。 二代测序有两个重要特点：1．高通量，二代测序能一次并行对几十、几百万条DNA分子进行测序；2．读长短，测序过程随着读长增长，基因簇复制的协同性降低，会导致测序质量下降，二代测序的读长">
-<meta property="og:type" content="article">
-<meta property="og:title" content="二代测序">
-<meta property="og:url" content="http://example.com/2020/10/04/%E4%BA%8C%E4%BB%A3%E6%B5%8B%E5%BA%8F/index.html">
+  <meta property="og:type" content="website">
+<meta property="og:title" content="zero">
+<meta property="og:url" content="http://example.com/page/2/index.html">
 <meta property="og:site_name" content="zero">
-<meta property="og:description" content="第二代测序（Next-generation sequencing，NGS）又称为高通量测序，其开创性的引入了可逆终止末端，从而实现边合成边测序，在DNA复制过程中通过捕捉新添加的碱基所携带的特殊标记来确定DNA序列。 二代测序有两个重要特点：1．高通量，二代测序能一次并行对几十、几百万条DNA分子进行测序；2．读长短，测序过程随着读长增长，基因簇复制的协同性降低，会导致测序质量下降，二代测序的读长">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="https://ss0.bdstatic.com/70cFvHSh_Q1YnxGkpoWK1HF6hhy/it/u=1022250266,1017686506&fm=26&gp=0.jpg">
-<meta property="og:image" content="http://example.com/2020/10/04/%E4%BA%8C%E4%BB%A3%E6%B5%8B%E5%BA%8F/7eef8f255f0e7cd185253634.jpg">
-<meta property="og:image" content="http://example.com/2020/10/04/%E4%BA%8C%E4%BB%A3%E6%B5%8B%E5%BA%8F/7eef8f255f0e7cd185253634(1).jpg">
-<meta property="og:image" content="http://example.com/2020/10/04/%E4%BA%8C%E4%BB%A3%E6%B5%8B%E5%BA%8F/7eef8f255f0e7cd185253634(2).jpg">
-<meta property="og:image" content="http://example.com/2020/10/04/%E4%BA%8C%E4%BB%A3%E6%B5%8B%E5%BA%8F/7eef8f255f0e7cd185253634(3).jpg">
-<meta property="og:image" content="https://pic3.zhimg.com/80/v2-815463cd17ad105115f6c8440c43ea66_1440w.jpg">
-<meta property="og:image" content="https://pic1.zhimg.com/80/v2-0abfd5500a3559cb71003b6ca4322b50_1440w.jpg">
-<meta property="og:image" content="http://example.com/2020/10/04/%E4%BA%8C%E4%BB%A3%E6%B5%8B%E5%BA%8F/20180102102643081">
-<meta property="og:image" content="http://example.com/2020/10/04/%E4%BA%8C%E4%BB%A3%E6%B5%8B%E5%BA%8F/2018100911424515(1).jpg">
-<meta property="og:image" content="http://example.com/2020/10/04/%E4%BA%8C%E4%BB%A3%E6%B5%8B%E5%BA%8F/20180102103623636.jpg">
-<meta property="og:image" content="http://example.com/2020/10/04/%E4%BA%8C%E4%BB%A3%E6%B5%8B%E5%BA%8F/20180102104221274.jpg">
-<meta property="og:image" content="http://example.com/2020/10/04/%E4%BA%8C%E4%BB%A3%E6%B5%8B%E5%BA%8F/20180102103954806.jpg">
-<meta property="og:image" content="http://example.com/2020/10/04/%E4%BA%8C%E4%BB%A3%E6%B5%8B%E5%BA%8F/20180102104507815.jpg">
-<meta property="og:image" content="http://example.com/2020/10/04/%E4%BA%8C%E4%BB%A3%E6%B5%8B%E5%BA%8F/%E6%A1%A5%E5%BC%8FPCR.PNG">
-<meta property="og:image" content="http://example.com/2020/10/04/%E4%BA%8C%E4%BB%A3%E6%B5%8B%E5%BA%8F/%E6%A1%A5%E5%BC%8FPCR2.PNG">
-<meta property="og:image" content="http://example.com/2020/10/04/%E4%BA%8C%E4%BB%A3%E6%B5%8B%E5%BA%8F/20180102110455607.jpg">
-<meta property="og:image" content="http://example.com/2020/10/04/%E4%BA%8C%E4%BB%A3%E6%B5%8B%E5%BA%8F/20180102110709747.jpg">
-<meta property="og:image" content="http://example.com/2020/10/04/%E4%BA%8C%E4%BB%A3%E6%B5%8B%E5%BA%8F/20180102110801150.jpg">
-<meta property="og:image" content="http://example.com/2020/10/04/%E4%BA%8C%E4%BB%A3%E6%B5%8B%E5%BA%8F/20180102111207627.jpg">
-<meta property="og:image" content="http://example.com/2020/10/04/%E4%BA%8C%E4%BB%A3%E6%B5%8B%E5%BA%8F/20180102111345135.jpg">
-<meta property="og:image" content="http://example.com/2020/10/04/%E4%BA%8C%E4%BB%A3%E6%B5%8B%E5%BA%8F/20180102121740290.jpg">
-<meta property="og:image" content="http://example.com/2020/10/04/%E4%BA%8C%E4%BB%A3%E6%B5%8B%E5%BA%8F/20180102121753750.jpg">
-<meta property="og:image" content="http://example.com/2020/10/04/%E4%BA%8C%E4%BB%A3%E6%B5%8B%E5%BA%8F/20180102122603418.jpg">
-<meta property="og:image" content="http://example.com/2020/10/04/%E4%BA%8C%E4%BB%A3%E6%B5%8B%E5%BA%8F/20180102122804843.jpg">
-<meta property="og:image" content="http://example.com/2020/10/04/%E4%BA%8C%E4%BB%A3%E6%B5%8B%E5%BA%8F/20180102122822016.jpg">
-<meta property="og:image" content="http://example.com/2020/10/04/%E4%BA%8C%E4%BB%A3%E6%B5%8B%E5%BA%8F/20180102123012562.jpg">
-<meta property="og:image" content="https://imgconvert.csdnimg.cn/aHR0cDovL2JhaW1vYy56aXB0b3AudG9wL2Jsb2cvMjAxODEyMjcvcDZoU3JVY2NNbE9hLnBuZw?x-oss-process=image/format,png">
-<meta property="article:published_time" content="2020-10-04T03:07:55.000Z">
-<meta property="article:modified_time" content="2020-10-05T11:18:04.551Z">
 <meta property="article:author" content="Zou">
-<meta property="article:tag" content="-测序原理">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https://ss0.bdstatic.com/70cFvHSh_Q1YnxGkpoWK1HF6hhy/it/u=1022250266,1017686506&fm=26&gp=0.jpg">
 
-<link rel="canonical" href="http://example.com/2020/10/04/%E4%BA%8C%E4%BB%A3%E6%B5%8B%E5%BA%8F/">
+<link rel="canonical" href="http://example.com/page/2/">
 
 
 <script id="page-configurations">
   // https://hexo.io/docs/variables.html
   CONFIG.page = {
     sidebar: "",
-    isHome : false,
-    isPost : true,
+    isHome : true,
+    isPost : false,
     lang   : 'zh-CN'
   };
 </script>
 <link rel="stylesheet" type="text/css" href="/css/injector.css" />
-  <title>二代测序 | zero</title>
+  <title>zero</title>
   
     <script async src="https://www.googletagmanager.com/gtag/js?id=179475982-1"></script>
     <script>
@@ -200,14 +167,13 @@
         <div class="content-wrap">
           
 
-          <div class="content post posts-expand">
+          <div class="content index posts-expand">
             
-
-    
+      
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2020/10/04/%E4%BA%8C%E4%BB%A3%E6%B5%8B%E5%BA%8F/">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2020/10/02/%E8%BD%AC%E5%BD%95%E7%BB%84/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="https://ss0.bdstatic.com/70cFvHSh_Q1YnxGkpoWK1HF6hhy/it/u=404501654,960623944&fm=26&gp=0.jpg">
@@ -219,9 +185,10 @@
       <meta itemprop="name" content="zero">
     </span>
       <header class="post-header">
-        <h1 class="post-title" itemprop="name headline">
-          二代测序
-        </h1>
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2020/10/02/%E8%BD%AC%E5%BD%95%E7%BB%84/" class="post-title-link" itemprop="url">RNA-seq第一部分（原始数据下载，提取fastq文件，fastqc质控）</a>
+        </h2>
 
         <div class="post-meta">
             <span class="post-meta-item">
@@ -230,14 +197,14 @@
               </span>
               <span class="post-meta-item-text">发表于</span>
 
-              <time title="创建时间：2020-10-04 11:07:55" itemprop="dateCreated datePublished" datetime="2020-10-04T11:07:55+08:00">2020-10-04</time>
+              <time title="创建时间：2020-10-02 16:11:46" itemprop="dateCreated datePublished" datetime="2020-10-02T16:11:46+08:00">2020-10-02</time>
             </span>
               <span class="post-meta-item">
                 <span class="post-meta-item-icon">
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-10-05 19:18:04" itemprop="dateModified" datetime="2020-10-05T19:18:04+08:00">2020-10-05</time>
+                <time title="修改时间：2020-10-06 16:25:54" itemprop="dateModified" datetime="2020-10-06T16:25:54+08:00">2020-10-06</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -245,7 +212,7 @@
               </span>
               <span class="post-meta-item-text">分类于</span>
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/%E6%B5%8B%E5%BA%8F%E5%8E%9F%E7%90%86/" itemprop="url" rel="index"><span itemprop="name">测序原理</span></a>
+                  <a href="/categories/%E8%BD%AC%E5%BD%95%E7%BB%84/" itemprop="url" rel="index"><span itemprop="name">转录组</span></a>
                 </span>
             </span>
 
@@ -258,8 +225,8 @@
       </span>
       <span class="post-meta-item-text">Valine：</span>
     
-    <a title="valine" href="/2020/10/04/%E4%BA%8C%E4%BB%A3%E6%B5%8B%E5%BA%8F/#valine-comments" itemprop="discussionUrl">
-      <span class="post-comments-count valine-comment-count" data-xid="/2020/10/04/%E4%BA%8C%E4%BB%A3%E6%B5%8B%E5%BA%8F/" itemprop="commentCount"></span>
+    <a title="valine" href="/2020/10/02/%E8%BD%AC%E5%BD%95%E7%BB%84/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2020/10/02/%E8%BD%AC%E5%BD%95%E7%BB%84/" itemprop="commentCount"></span>
     </a>
   </span>
   
@@ -268,7 +235,7 @@
               <span class="post-meta-item-icon">
                 <i class="far fa-file-word"></i>
               </span>
-              <span>3.8k</span>
+              <span>3.1k</span>
             </span>
             <span class="post-meta-item" title="阅读时长">
               <span class="post-meta-item-icon">
@@ -286,160 +253,147 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <p>第二代测序（Next-generation sequencing，NGS）又称为高通量测序，其开创性的引入了可逆终止末端，从而实现边合成边测序，在DNA复制过程中通过捕捉新添加的碱基所携带的特殊标记来确定DNA序列。</p>
-<p>二代测序有两个重要特点：1．<strong>高通量</strong>，二代测序能一次并行对几十、几百万条DNA分子进行测序；2．<strong>读长短</strong>，测序过程随着读长增长，基因簇复制的协同性降低，会导致测序质量下降，二代测序的读长不超过500bp。因此基因组、宏基因组需要被打断成小片段再测序，测序完毕后再拼接。</p>
-<p>总的说来，第一代测序技术的主要特点是测序读长可达1000bp，准确性高达99.999%，但其测序成本高，通量低等方面的缺点，严重影响了其真正大规模的应用。经过不断的技术开发和改进，以Roche公司的454技术、illumina公司的Solexa，Hiseq技术和ABI公司的Solid技术为标记的第二代测序技术诞生了。第二代测序技术大大降低了测序成本的同时，还大幅提高了测序速度，并且保持了高准确性，以前完成一个人类基因组的测序需要3年时间，而使用二代测序技术则仅仅需要1周，但在序列读长方面比起第一代测序技术则要短很多。目前主流的二代测序平台是illumina，下文主要介绍illumina平台的测序原理。</p>
-<p><strong>Single-Read</strong>测序(Single-read)首先将DNA样本进行片段化处理形成200-500bp的片段，**<em>引物序列连接到DNA片段的一端**</em>，然后末端加上接头，将片段固定在flow cell上生成DNA簇，上机测序单端读取序列。该方式建库简单，操作步骤少，常用于小基因组、转录组、宏基因组测序。</p>
-<p><strong>Paired-end</strong>文库制备是指在构建待测DNA文库时在**<em>两端的接头上都加上测序引物结合位点**</em>，在第一轮测序完成后，去除第一轮测序的模板链，用对读测序模块(Paired-End Module)引导互补链在原位置再生和扩增，以达到第二轮测序所用的模板量，进行第二轮互补链的合成测序。</p>
-<p><img src="https://ss0.bdstatic.com/70cFvHSh_Q1YnxGkpoWK1HF6hhy/it/u=1022250266,1017686506&fm=26&gp=0.jpg" alt="hiseq3000"></p>
-<h2 id="第一步：-构建DNA文库"><a href="#第一步：-构建DNA文库" class="headerlink" title="第一步： 构建DNA文库"></a>第一步： 构建DNA文库</h2><p>利用超声波把待测的DNA样本打断成小片段，目前除了组装之外和一些其他的特殊要求之外，主要是打断成200-500bp长的序列片段，并在这些小片段的两端添加上不同的接头，构建出单链DNA文库。</p>
-<p>1．末端修饰。打断的片段是随机断裂，其末端可能是不平的。因此，建库第一步是补齐不平的末端。补平之后，需要在3’端加A碱基</p>
-<img src="/2020/10/04/%E4%BA%8C%E4%BB%A3%E6%B5%8B%E5%BA%8F/7eef8f255f0e7cd185253634.jpg" class>
+          <p>原始数据下载地址：<a target="_blank" rel="noopener" href="https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE50177">https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE50177</a></p>
+<h1 id="一-SRA数据下载"><a href="#一-SRA数据下载" class="headerlink" title="一.SRA数据下载"></a>一.SRA数据下载</h1><p>打开网页按以下步骤进行</p>
+<img src="/2020/10/02/%E8%BD%AC%E5%BD%95%E7%BB%84/%E6%8D%95%E8%8E%B7.PNG" class>
 
-<img src="/2020/10/04/%E4%BA%8C%E4%BB%A3%E6%B5%8B%E5%BA%8F/7eef8f255f0e7cd185253634(1).jpg" class>
+<img src="/2020/10/02/%E8%BD%AC%E5%BD%95%E7%BB%84/%E6%8D%95%E8%8E%B72.PNG" class>
 
-<p>2．添加接头。经过末端修饰后的DNA片段3’末端具有突出的A尾，而接头具有突出的T尾，可以使用连接酶将接头添加到DNA片段两端，形成“Y”形接头。</p>
-<img src="/2020/10/04/%E4%BA%8C%E4%BB%A3%E6%B5%8B%E5%BA%8F/7eef8f255f0e7cd185253634(2).jpg" class>
+<img src="/2020/10/02/%E8%BD%AC%E5%BD%95%E7%BB%84/VGVFDQ%5BV%60I%5DDNSX5H7UF852.png" class>
 
-<p>3．PCR扩增。添加了接头的DNA片段，可通过与接头互补的引物来扩增，富集文库</p>
-<img src="/2020/10/04/%E4%BA%8C%E4%BB%A3%E6%B5%8B%E5%BA%8F/7eef8f255f0e7cd185253634(3).jpg" class>
+<img src="/2020/10/02/%E8%BD%AC%E5%BD%95%E7%BB%84/QQ%E6%88%AA%E5%9B%BE20201006100851.png" class>
 
-<p><img src="https://pic3.zhimg.com/80/v2-815463cd17ad105115f6c8440c43ea66_1440w.jpg"></p>
-<p><strong>左边的是直接在fragment DNA的两端直接加上full Y-adapter</strong>, adapter中已经包括了和P5/P7 oligo互补的序列, index, 以及Read1/Read2的测序引物。</p>
-<p><strong>右边的那种是先在fragment DNA的两端加上PE adapter</strong>, 然后再引入和P5/P7 oligo互补配对的序列以及index序列。</p>
-<p><strong>一句话总结，这两种不同的indexing strategy的差别在于引入index序列的时机和方式不一样。</strong></p>
-<p>其实右边的图并不是画的特别形象，具体的的可以参看下面这张图</p>
-<p><img src="https://pic1.zhimg.com/80/v2-0abfd5500a3559cb71003b6ca4322b50_1440w.jpg"></p>
-<p>在这里我们能够清楚地看到，这种接头添加过程中，fragment DNA两端是<strong>先连上PE adapter</strong>, 然后再通过PCR引入的<strong>region complementary to P5/P7 sequence</strong>, <strong>index</strong>, and <strong>sequencing biding sites</strong>.</p>
-<p>1)P5和P7是不同的，它们分别和flowcell上的接头互补和相同。</p>
-<p>2)index1和index2也是不同的，与P5相连的是index2，与P7相连的是index1</p>
-<p>关于index，也叫barcodes，因为一个lane可以同时测多个样品，为了避免混淆样品的read products，每种样品的DNA由一种index修饰，这样测序得到的reads都是具有index标记的，在测序结果中，依据之前标签与样品的对应关系，就可以获得对应样品的数据。而这里的<strong>index1和index2是为了区分paired-end测序得到的双端reads</strong>。</p>
-<img src="/2020/10/04/%E4%BA%8C%E4%BB%A3%E6%B5%8B%E5%BA%8F/20180102102643081" class>
+<p>将连接复制到迅雷下载，可以淘宝临时买个会员下载，速度较快，建议使用该方式下载。</p>
+<p>也可复制地址用wget下载，速度贼慢，不建议。</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">wget 	https://sra-downloadb.be-md.ncbi.nlm.nih.gov/sos1/sra-pub-run-5/SRR957677/SRR957677.1</span><br></pre></td></tr></table></figure>
 
+<p>数据下载后通过xftp上传到服务器</p>
+<h1 id="二-使用sratoolkit从sra文件提取fastq文件"><a href="#二-使用sratoolkit从sra文件提取fastq文件" class="headerlink" title="二.使用sratoolkit从sra文件提取fastq文件"></a>二.使用sratoolkit从sra文件提取fastq文件</h1><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">fastq-dump --gzip --split-files SRR957677 #从SRR957677分别提取左端和右端reads</span><br></pre></td></tr></table></figure>
 
+<p>–gzip  生成压缩格式为gz的fastq文件</p>
+<p>SRR957677是一个PE测序结果，所以，需要–split-files参数可以将其分解为两个fastq文件。如果不加该参数，则只有1个fastq文件（包含了两端测序的结果）</p>
+<p>有四个文件分别是SRR957677，SRR957678，SRR957679，SRR957680,；可以一个一个地提取fastq文件，也可以批量提取，有多种方法批量提取。</p>
+<h2 id="1）for循环"><a href="#1）for循环" class="headerlink" title="1）for循环"></a>1）for循环</h2><p>检查当前文件夹是否有SRR文件，*是匹配任意字符</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ls SRR*</span><br></pre></td></tr></table></figure>
 
-<h2 id="第二步：桥式PCR"><a href="#第二步：桥式PCR" class="headerlink" title="第二步：桥式PCR"></a>第二步：桥式PCR</h2><p>Flowcell是用于吸附流动DNA片段的槽道，当文库建好后，这些文库中的DNA在通过flowcell的时候会随机附着在flowcell表面的lane上。每个Flowcell有8个lane，每个lane的表面都附有很多接头，这些接头能和建库过程中加在DNA片段两端的接头相互配对（这就是为什么flowcell能吸附建库后的DNA的原因），并能支持DNA在其表面进行桥式PCR的扩增。</p>
-<img src="/2020/10/04/%E4%BA%8C%E4%BB%A3%E6%B5%8B%E5%BA%8F/2018100911424515(1).jpg" class>
+<img src="/2020/10/02/%E8%BD%AC%E5%BD%95%E7%BB%84/QQ%E6%88%AA%E5%9B%BE20201006111404.png" class>
 
-<p>1.Flowcell上随机分布了两种不同的寡核苷酸序列，分别<strong>与P5互补（即P5’），与P7一致（即P7）</strong>。</p>
-<img src="/2020/10/04/%E4%BA%8C%E4%BB%A3%E6%B5%8B%E5%BA%8F/20180102103623636.jpg" class>
+<p>检查循环是否正确，echo打印出脚本</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">for i in `ls SRR*`;do echo fastq-dump --gzip --split-files $i ;done </span><br></pre></td></tr></table></figure>
 
-<p>2.待测sequence通过P5与folwcell上的P5’序列杂交互补，以待测sequence为模板进行互补链（即reverse strand）的延伸，互补链的两端为P5’和P7’。</p>
-<img src="/2020/10/04/%E4%BA%8C%E4%BB%A3%E6%B5%8B%E5%BA%8F/20180102104221274.jpg" class>
+<img src="/2020/10/02/%E8%BD%AC%E5%BD%95%E7%BB%84/QQ%E6%88%AA%E5%9B%BE20201006111508.png" class>
 
-<img src="/2020/10/04/%E4%BA%8C%E4%BB%A3%E6%B5%8B%E5%BA%8F/20180102103954806.jpg" class>
+<p>将上述命令中的echo去掉直接运行即可</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">for i in `ls SRR*`;do fastq-dump --gzip --split-files $i ;done</span><br></pre></td></tr></table></figure>
 
-<p>3.通过聚合酶生成杂交片段的互补片段，然后加入NaOH碱溶液后，双链分子变性，原始模板链（左边的链）被流动池中的液体洗去</p>
-<img src="/2020/10/04/%E4%BA%8C%E4%BB%A3%E6%B5%8B%E5%BA%8F/20180102104507815.jpg" class>
+<h2 id="2）while循环"><a href="#2）while循环" class="headerlink" title="2）while循环"></a>2）while循环</h2><p>新建文件列表这里命名SRR_list</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ls SRR* &gt;SRR_list</span><br></pre></td></tr></table></figure>
 
-<p>4.加入中性液体用于中和碱溶液，Reverse strand的P7’与Flowcell上的P7杂交互补，进行链的合成，聚合酶参与下，生成互补链，最终形成双链桥,这就是我们所熟知的<strong>桥式PCR</strong></p>
-<img src="/2020/10/04/%E4%BA%8C%E4%BB%A3%E6%B5%8B%E5%BA%8F/%E6%A1%A5%E5%BC%8FPCR.PNG" class>
+<p>查看文件列表是否正确</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">cat SRR_list</span><br></pre></td></tr></table></figure>
 
-<p>5.接下来合成的双链被解链，再分别与Flowcell上的接头杂交互补，延伸，解链，杂交，延伸，解链…如此重复35个循环</p>
-<img src="/2020/10/04/%E4%BA%8C%E4%BB%A3%E6%B5%8B%E5%BA%8F/%E6%A1%A5%E5%BC%8FPCR2.PNG" class>
+<img src="/2020/10/02/%E8%BD%AC%E5%BD%95%E7%BB%84/QQ%E6%88%AA%E5%9B%BE20201006112142.png" class>
 
-<p>6.桥式PCR完成后，使用NAOH将双链解链，并利用甲酰胺基嘧啶糖苷酶（Fpg）对8-氧鸟嘌呤糖苷（8-oxo-G）的选择性切断作用，选择性地将P5’与链的连接切断，<strong>留下与Flowcell上P7连接的链</strong>，也就是Forward strand。同时游离的3’端被阻断，防止不必要的DNA延伸</p>
-<img src="/2020/10/04/%E4%BA%8C%E4%BB%A3%E6%B5%8B%E5%BA%8F/20180102110455607.jpg" class>
+<p>检查循环是否正确，echo打印出脚本</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">cat SRR_list | while read id;do echo fastq-dump --gzip --split-files $id ;done</span><br></pre></td></tr></table></figure>
 
-<h2 id="第三步：测序"><a href="#第三步：测序" class="headerlink" title="第三步：测序"></a>第三步：测序</h2><p>首先，在Flowcell中加入荧光标记的dNTP和酶，由引物起始开始合成子链。但是dNTP存在 3’端叠氮基会阻碍子链延伸，这使得每个循环只能测得一个碱基。合成完一个碱基后， Flowcell 通入液体洗掉多余的dNTP和酶，使用显微镜的激光扫描特征荧光信号。</p>
-<ol>
-<li><p>测序引物（sequencing primer）结合到靠近P5的测序引物结合位点1（sequencing primer binding site 1）上，在系统中加入四种dNTP和DNA聚合酶。这里的dNTP有两个特点：它是有荧光基团标记的，每种碱基标记的荧光基团不一样；它的3’末端连了一个叠氮基，这个叠氮基能够阻断后面的碱基与它相连</p>
-<img src="/2020/10/04/%E4%BA%8C%E4%BB%A3%E6%B5%8B%E5%BA%8F/20180102110709747.jpg" class>
+<img src="/2020/10/02/%E8%BD%AC%E5%BD%95%E7%BB%84/QQ%E6%88%AA%E5%9B%BE20201006140935.png" class>
 
-<p>因此在聚合酶的作用下，与Forward strand相应位置碱基配对的dNTP就会结合到新合成的链上，而由于叠氮基的存在，后面的dNTP无法继续连接。这时用水将剩余的dNTP和酶给冲掉，将Flowcell进行扫描，扫描出来的荧光对应的碱基的配对碱基即是该链该位置的碱基。同时在这个Flowcell上有成千上万个cluster也在进行同样的反应，因此一个循环就能同时检测多个样本（这也是高通量的核心所在）。这个循环完成后，加入化学试剂把叠氮基和标记的荧光基团切掉，进行下一个循环（碱基的连接、检测与切除）。如此重复直至所有链的碱基序列被检测出，也就是Forward read 序列。</p>
-<img src="/2020/10/04/%E4%BA%8C%E4%BB%A3%E6%B5%8B%E5%BA%8F/20180102110801150.jpg" class>
+<p>或者</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ls SRR95* | while read id;do echo fastq-dump --gzip --split-files $id ;done#这里改为SRR95*是因为当前有个文件名为SRR_list,如果还是SRR*则会把这个文件也匹配进去</span><br></pre></td></tr></table></figure>
 
-</li>
-</ol>
-<p>2.Index测序：所有循环结束后，read products 被洗掉，index1 primer与链上index primer1 结合位点杂交配对，进行index1的合成及检测</p>
-<img src="/2020/10/04/%E4%BA%8C%E4%BB%A3%E6%B5%8B%E5%BA%8F/20180102111207627.jpg" class>
+<img src="/2020/10/02/%E8%BD%AC%E5%BD%95%E7%BB%84/QQ%E6%88%AA%E5%9B%BE20201006141055.png" class>
 
-<p>3.Index1测序完成后，洗脱测序产物。此时机器已通过荧光得到了index1的序列</p>
-<img src="/2020/10/04/%E4%BA%8C%E4%BB%A3%E6%B5%8B%E5%BA%8F/20180102111345135.jpg" class>
+<h2 id="3-xargs"><a href="#3-xargs" class="headerlink" title="3)xargs"></a>3)xargs</h2><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ls SRR95* | xargs -i echo echo fastq-dump --gzip --split-files &#123;&#125;</span><br></pre></td></tr></table></figure>
 
-<p>4.Index2测序：Forward strand顶端的P5序列与Flowcell上的P5’杂交配对，进行index2测序。测序完成后洗脱产物</p>
-<img src="/2020/10/04/%E4%BA%8C%E4%BB%A3%E6%B5%8B%E5%BA%8F/20180102121740290.jpg" class>
+<img src="/2020/10/02/%E8%BD%AC%E5%BD%95%E7%BB%84/QQ%E6%88%AA%E5%9B%BE20201006141657.png" class>
 
-<img src="/2020/10/04/%E4%BA%8C%E4%BB%A3%E6%B5%8B%E5%BA%8F/20180102121753750.jpg" class>
+<h2 id="4-awk"><a href="#4-awk" class="headerlink" title="4)awk"></a>4)awk</h2><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">awk &#x27;&#123;print &quot;nohup fastq-dump --gzip --split-files &quot;$0 &quot; &amp;&quot;&#125;&#x27; SRR_list &gt;fastq_dump.sh</span><br></pre></td></tr></table></figure>
 
-<p><strong>Paried-end sequencing（即对Reverse strand测序）</strong></p>
-<p>Paired-end测序已经是现在的主流，它提高了测序长度的同时，又可以为结构变异分析提供新方法。要完成双末端测序，首先要将模板链3’去保护，模板折叠，index片段引入</p>
-<p>1.洗脱index2测序产物后，以Flowcell上的P5’为引物，Forward strand为模板进行桥式扩增，得到双链</p>
-<img src="/2020/10/04/%E4%BA%8C%E4%BB%A3%E6%B5%8B%E5%BA%8F/20180102122603418.jpg" class>
+<img src="/2020/10/02/%E8%BD%AC%E5%BD%95%E7%BB%84/QQ%E6%88%AA%E5%9B%BE20201006142105.png" class>
 
-<p>2.NAOH使双链变性为单链，并洗去已经测序完成的Forward strand</p>
-<img src="/2020/10/04/%E4%BA%8C%E4%BB%A3%E6%B5%8B%E5%BA%8F/20180102122804843.jpg" class>
+<p>加nohup &amp; 是为了放后台，因为每一个子命令都有nohup &amp;所以这些命令是并行，&gt;fastq_dump.sh是将命令写入fastq_dump.sh中。</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">bash fastq_dump.sh</span><br></pre></td></tr></table></figure>
 
-<img src="/2020/10/04/%E4%BA%8C%E4%BB%A3%E6%B5%8B%E5%BA%8F/20180102122822016.jpg" class>
+<img src="/2020/10/02/%E8%BD%AC%E5%BD%95%E7%BB%84/QQ%E6%88%AA%E5%9B%BE20201006142636.png" class>
 
-<p>3.类似的，readprimer2结合到靠近P7’的read primer binding site 2开始对Reverse strand的测序。测序完成后即可得到Reverse read序列。</p>
-<img src="/2020/10/04/%E4%BA%8C%E4%BB%A3%E6%B5%8B%E5%BA%8F/20180102123012562.jpg" class>
+<p>查看命令是否挂后台，top查看进程，-u 参数接用户名</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">top -u liyue</span><br></pre></td></tr></table></figure>
 
-<p>荧光发射波长与信号强度一起决定了碱基的读出，所有的DNA片段的一个碱基会被同时读取。在大规模并行的过程中，机器读取的图像类似下面这样</p>
-<p><img src="https://imgconvert.csdnimg.cn/aHR0cDovL2JhaW1vYy56aXB0b3AudG9wL2Jsb2cvMjAxODEyMjcvcDZoU3JVY2NNbE9hLnBuZw?x-oss-process=image/format,png"></p>
-<p>加入化学试剂将叠氮基团与荧光基团切除，然后 Flowcell 再通入荧光标记的dNTP和酶，由引物起始开始合成一个碱基。不断重复这个过程，完成第一次读取</p>
-<h2 id="引用"><a href="#引用" class="headerlink" title="引用"></a>引用</h2><p>1.<a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/35278810">测序之前篇： NGS测序中，接头是如何添加上的，以及如何去接头</a></p>
-<p>2.<a target="_blank" rel="noopener" href="https://blog.csdn.net/u011262253/article/details/102525491">二代测序原理（Illumina）</a></p>
-<p>3.<a target="_blank" rel="noopener" href="https://wenku.baidu.com/view/6aa1c0e1a55177232f60ddccda38376bae1fe042.html">二代测序文库构建</a></p>
-<p>4.<a target="_blank" rel="noopener" href="https://blog.csdn.net/sixu_9days/article/details/78948914">illumina SBS测序详解</a></p>
+<img src="/2020/10/02/%E8%BD%AC%E5%BD%95%E7%BB%84/QQ%E6%88%AA%E5%9B%BE20201006142829.png" class>
 
+<p>可以看到有四个fastq-dump命令运行中</p>
+<p>还可以使用其他命令查询</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ps -aux | grep &quot;fastq_dump&quot;</span><br></pre></td></tr></table></figure>
+
+<img src="/2020/10/02/%E8%BD%AC%E5%BD%95%E7%BB%84/QQ%E6%88%AA%E5%9B%BE20201006143055.png" class>
+
+<p>注意以上命令有个小问题，-split-files参数可以不加，因为这些测序文件是单端测序，所以即使加了该参数也只有一个fastq文件生成，如果是双端测序则会生成左端，右端两个fastq文件,不过加了也没影响</p>
+<img src="/2020/10/02/%E8%BD%AC%E5%BD%95%E7%BB%84/QQ%E6%88%AA%E5%9B%BE20201006145214.png" class>
+
+<p>生成以下fastq文件</p>
+<img src="/2020/10/02/%E8%BD%AC%E5%BD%95%E7%BB%84/QQ%E6%88%AA%E5%9B%BE20201006145636.png" class>
+
+<h1 id="三-质控"><a href="#三-质控" class="headerlink" title="三.质控"></a>三.质控</h1><h2 id="1-质控使用fastqc软件"><a href="#1-质控使用fastqc软件" class="headerlink" title="1.质控使用fastqc软件"></a>1.质控使用fastqc软件</h2><p>该软件可直接用conda安装，这里使用循环进行质控</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ls *fastq.gz | awk &#x27;&#123;print &quot;nohup fastqc &quot; $0  &quot; &amp;&quot;&#125;&#x27; &gt;fastqc.sh</span><br></pre></td></tr></table></figure>
+
+<img src="/2020/10/02/%E8%BD%AC%E5%BD%95%E7%BB%84/QQ%E6%88%AA%E5%9B%BE20201006150329.png" class>
+
+<p>运行fastqc.sh脚本</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">bash fastqc.sh</span><br></pre></td></tr></table></figure>
+
+<p>每个fastq文件质控后生一个html和zip压缩格式文件，html可下载到本地用浏览器打开</p>
+<img src="/2020/10/02/%E8%BD%AC%E5%BD%95%E7%BB%84/QQ%E6%88%AA%E5%9B%BE20201006151448.png" class>
+
+<h2 id="2-multiqc"><a href="#2-multiqc" class="headerlink" title="2.multiqc"></a>2.multiqc</h2><p>可以将当前各个fastqz文件的质控报告综合到一起，生成一个总的html命令multiqc接fastqc结果文件所在地址</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">multiqc ./</span><br></pre></td></tr></table></figure>
+
+<img src="/2020/10/02/%E8%BD%AC%E5%BD%95%E7%BB%84/QQ%E6%88%AA%E5%9B%BE20201006151755.png" class>
+
+<p>生成结果文件为multiqc_report.html，html可下载到本地用浏览器打开</p>
+<h2 id="3-去除低质量碱基"><a href="#3-去除低质量碱基" class="headerlink" title="3.去除低质量碱基"></a>3.去除低质量碱基</h2><h2 id="1-fastp"><a href="#1-fastp" class="headerlink" title="1.fastp"></a>1.fastp</h2><p>fastp去除低质量碱基的同时可以自动识别接头</p>
+<p>单端测序：fastp -i 输入文件 -o 输出文件</p>
+<p>双端测序：fastp - i reads1 -I reads2 -o reads1输出文件 -O reads2输出文件</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">ls *fastq.gz &gt;fastq_list#生成fastq列表</span><br><span class="line">ls *fastq.gz | xargs -i basename &#123;&#125; .1_1.fastq.gz#获得fastq.gz文件的前缀</span><br><span class="line">ls *fastq.gz | xargs -i basename &#123;&#125; .1_1.fastq.gz | paste fastq_list - #生成第一列是fastq文件名，第二列是对应的前缀名</span><br><span class="line">ls *fastq.gz | xargs -i basename &#123;&#125; .1_1.fastq.gz | paste fastq_list - | awk &#x27;&#123;print &quot;nohup fastp -i &quot;$1&quot; -o &quot;$2 &quot;_clean.fastq.gz &amp;&quot; &#125;&#x27; &gt;fastp.sh #在前一步的基础上用awk生成fastp脚本</span><br><span class="line">bash fastp.sh#运行脚本</span><br></pre></td></tr></table></figure>
+
+<img src="/2020/10/02/%E8%BD%AC%E5%BD%95%E7%BB%84/QQ%E6%88%AA%E5%9B%BE20201006160420.png" class>
+
+<img src="/2020/10/02/%E8%BD%AC%E5%BD%95%E7%BB%84/QQ%E6%88%AA%E5%9B%BE20201006160014.png" class>
+
+<img src="/2020/10/02/%E8%BD%AC%E5%BD%95%E7%BB%84/QQ%E6%88%AA%E5%9B%BE20201006160528.png" class>
+
+<img src="/2020/10/02/%E8%BD%AC%E5%BD%95%E7%BB%84/QQ%E6%88%AA%E5%9B%BE20201006161011.png" class>
+
+<h2 id="2-trim-galore"><a href="#2-trim-galore" class="headerlink" title="2.trim-galore"></a>2.trim-galore</h2><figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">trim_galore [options] &lt;filename&gt;</span><br><span class="line">--quality&lt;int&gt;  #设定phred quality阈值。默认20（99%的read质量），如果测序深度较深，可以设定25</span><br><span class="line">--phred33       #设定记分方式，代表Q+33=ASCII码的方式来记分方式。这是默认值。</span><br><span class="line">--paired          # 对于双端结果，一对reads中若一个read因为质量或其他原因被抛弃，则对应的另一个read也抛弃。</span><br><span class="line">--output_dir   #输出目录，需确保路径存在并可以访问</span><br><span class="line">--length        #设定长度阈值，小于此长度会被抛弃。这里测序长度是100我设定来75，感觉有点浪费</span><br><span class="line">--strency     #设定可以忍受的前后adapter重叠的碱基数，默认是1。不是很明白这个参数的意义</span><br><span class="line">-e&lt;ERROR rate&gt;  #设定默认质量控制数，默认是0.1，即ERROR rate大于10%的read 会被舍弃，如果添加来--paired参数则会舍弃一对reads</span><br><span class="line">&lt;filename&gt;  #如果是采用illumina双端测序的测序文件，应该同时输入两个文件。</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">trim_galore -q 20 --phred33 --stringency 3 --length 20 -e 0.1 \</span><br><span class="line">            --paired $dir/cmp/01raw_data/$fq1 $dir/cmp/01raw_data/$fq2  \</span><br><span class="line">            --gzip -o $input_data #双端测序</span><br></pre></td></tr></table></figure>
+
+<h2 id="3-fastqc"><a href="#3-fastqc" class="headerlink" title="3.fastqc"></a>3.fastqc</h2><p>再次用fastqc检测碱基质量，并与去除低质量碱基前的fastqc结果进行对比</p>
+
+      
     </div>
 
     
     
     
-        <div class="reward-container">
-  <div>客官打个赏咯.</div>
-  <button onclick="var qr = document.getElementById('qr'); qr.style.display = (qr.style.display === 'none') ? 'block' : 'none';">
-    打赏
-  </button>
-  <div id="qr" style="display: none;">
-      
-      <div style="display: inline-block;">
-        <img src="/images/wechatpay.png" alt="Zou 微信支付">
-        <p>微信支付</p>
-      </div>
-      
-      <div style="display: inline-block;">
-        <img src="/images/alipay.png" alt="Zou 支付宝">
-        <p>支付宝</p>
-      </div>
-
-  </div>
-</div>
-
-
       <footer class="post-footer">
-          <div class="post-tags">
-              <a href="/tags/%E6%B5%8B%E5%BA%8F%E5%8E%9F%E7%90%86/" rel="tag"># -测序原理</a>
-          </div>
-
-        
-
-
-        
-    <div class="post-nav">
-      <div class="post-nav-item">
-    <a href="/2020/10/02/%E8%BD%AC%E5%BD%95%E7%BB%84/" rel="prev" title="RNA-seq第一部分（原始数据下载，提取fastq文件，fastqc质控）">
-      <i class="fa fa-chevron-left"></i> RNA-seq第一部分（原始数据下载，提取fastq文件，fastqc质控）
-    </a></div>
-      <div class="post-nav-item">
-    <a href="/2020/10/05/%E4%B8%80%E4%BB%A3%E6%B5%8B%E5%BA%8F/" rel="next" title="一代测序">
-      一代测序 <i class="fa fa-chevron-right"></i>
-    </a></div>
-    </div>
+        <div class="post-eof"></div>
       </footer>
-    
   </article>
   
   
   
 
 
+  
+  <nav class="pagination">
+    <a class="extend prev" rel="prev" href="/"><i class="fa fa-angle-left" aria-label="上一页"></i></a><a class="page-number" href="/">1</a><span class="page-number current">2</span>
+  </nav>
+
+
 
           </div>
           
-    <div class="comments" id="valine-comments"></div>
 
 <script>
   window.addEventListener('tabs:register', () => {
@@ -486,7 +440,6 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%AC%AC%E4%B8%80%E6%AD%A5%EF%BC%9A-%E6%9E%84%E5%BB%BADNA%E6%96%87%E5%BA%93"><span class="nav-number">1.</span> <span class="nav-text">第一步： 构建DNA文库</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%AC%AC%E4%BA%8C%E6%AD%A5%EF%BC%9A%E6%A1%A5%E5%BC%8FPCR"><span class="nav-number">2.</span> <span class="nav-text">第二步：桥式PCR</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%AC%AC%E4%B8%89%E6%AD%A5%EF%BC%9A%E6%B5%8B%E5%BA%8F"><span class="nav-number">3.</span> <span class="nav-text">第三步：测序</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%BC%95%E7%94%A8"><span class="nav-number">4.</span> <span class="nav-text">引用</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 
