@@ -1,0 +1,882 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="google-site-verification" content="sJ4ClziWGfZj4sSky9RQA_JbT7FoBV63Y5AlxqvUCQ4" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.2.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+  <link rel="stylesheet" href="/lib/pace/pace-theme-center-atom.min.css">
+  <script src="/lib/pace/pace.min.js"></script>
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"example.com","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":null},"back2top":{"enable":false,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":null,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="Snakemake 是基于 Python 的一款工具，所以它也继承了 Python 语言简单易读、逻辑清晰、便于维护的特点，同时它还支持 Python 语法，非常适合新手用户。例如遵循python中缩进表示层级；以及索引从0开始，{input[0]}表示input里的第1个元素；列表用中括号类似[‘A’,’B’,’C’]等。snakemake 的基本组成单位叫“规则”，即 rule；每个 rule">
+<meta property="og:type" content="article">
+<meta property="og:title" content="snakemake搭建流程(一)">
+<meta property="og:url" content="http://example.com/2020/10/22/snakemake%E6%90%AD%E5%BB%BA%E6%B5%81%E7%A8%8B/index.html">
+<meta property="og:site_name" content="zero">
+<meta property="og:description" content="Snakemake 是基于 Python 的一款工具，所以它也继承了 Python 语言简单易读、逻辑清晰、便于维护的特点，同时它还支持 Python 语法，非常适合新手用户。例如遵循python中缩进表示层级；以及索引从0开始，{input[0]}表示input里的第1个元素；列表用中括号类似[‘A’,’B’,’C’]等。snakemake 的基本组成单位叫“规则”，即 rule；每个 rule">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://example.com/2020/10/22/snakemake%E6%90%AD%E5%BB%BA%E6%B5%81%E7%A8%8B/%E6%8D%95%E8%8E%B7.PNG">
+<meta property="article:published_time" content="2020-10-22T15:17:34.000Z">
+<meta property="article:modified_time" content="2020-10-23T06:09:07.313Z">
+<meta property="article:author" content="Zou">
+<meta property="article:tag" content="-snakemake">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://example.com/2020/10/22/snakemake%E6%90%AD%E5%BB%BA%E6%B5%81%E7%A8%8B/%E6%8D%95%E8%8E%B7.PNG">
+
+<link rel="canonical" href="http://example.com/2020/10/22/snakemake%E6%90%AD%E5%BB%BA%E6%B5%81%E7%A8%8B/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+<link rel="stylesheet" type="text/css" href="/css/injector.css" />
+  <title>snakemake搭建流程(一) | zero</title>
+  
+    <script async src="https://www.googletagmanager.com/gtag/js?id=179475982-1"></script>
+    <script>
+      if (CONFIG.hostname === location.hostname) {
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', '179475982-1');
+      }
+    </script>
+
+
+  <script>
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?6464895b8e8b5662096ffbf3aa270de5";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+<link rel="alternate" href="/atom.xml" title="zero" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+	
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">zero</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2020/10/22/snakemake%E6%90%AD%E5%BB%BA%E6%B5%81%E7%A8%8B/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="https://ss0.bdstatic.com/70cFvHSh_Q1YnxGkpoWK1HF6hhy/it/u=404501654,960623944&fm=26&gp=0.jpg">
+      <meta itemprop="name" content="Zou">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="zero">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          snakemake搭建流程(一)
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2020-10-22 23:17:34" itemprop="dateCreated datePublished" datetime="2020-10-22T23:17:34+08:00">2020-10-22</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2020-10-23 14:09:07" itemprop="dateModified" datetime="2020-10-23T14:09:07+08:00">2020-10-23</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/snakemake/" itemprop="url" rel="index"><span itemprop="name">snakemake</span></a>
+                </span>
+            </span>
+
+          
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/2020/10/22/snakemake%E6%90%AD%E5%BB%BA%E6%B5%81%E7%A8%8B/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2020/10/22/snakemake%E6%90%AD%E5%BB%BA%E6%B5%81%E7%A8%8B/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+            <span class="post-meta-item" title="本文字数">
+              <span class="post-meta-item-icon">
+                <i class="far fa-file-word"></i>
+              </span>
+              <span>17k</span>
+            </span>
+            <span class="post-meta-item" title="阅读时长">
+              <span class="post-meta-item-icon">
+                <i class="far fa-clock"></i>
+              </span>
+              <span>15 分钟</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>Snakemake 是基于 Python 的一款工具，所以它也继承了 Python 语言简单易读、逻辑清晰、便于维护的特点，同时它还支持 Python 语法，非常适合新手用户。例如遵循python中缩进表示层级；以及索引从0开始，{input[0]}表示input里的第1个元素；列表用中括号类似[‘A’,’B’,’C’]等。snakemake 的基本组成单位叫“规则”，即 rule；每个 rule 里面又有多个元素（input、output、shell等）。它的执行逻辑就是将各个 rule 利用 input/output 连接起来，形成一个完整的工作流。</p>
+<a id="more"></a>
+
+<h1 id="一-数据准备"><a href="#一-数据准备" class="headerlink" title="一.数据准备"></a>一.数据准备</h1><p>以RNAseq的数据为例</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">snakefile_rnaseq</span><br><span class="line">├── genome</span><br><span class="line">│   ├── gencode.v19.annotation.gtf</span><br><span class="line">│   └── hg19.fa</span><br><span class="line">├── index</span><br><span class="line">│   └── hg19</span><br><span class="line">│       ├── genome.1.ht2</span><br><span class="line">│       ├── genome.2.ht2</span><br><span class="line">│       ├── genome.3.ht2</span><br><span class="line">│       ├── genome.4.ht2</span><br><span class="line">│       ├── genome.5.ht2</span><br><span class="line">│       ├── genome.6.ht2</span><br><span class="line">│       ├── genome.7.ht2</span><br><span class="line">│       ├── genome.8.ht2</span><br><span class="line">│       └── make_hg19.sh</span><br><span class="line">├── SRR957677.1_1.fastq.gz</span><br><span class="line">├── SRR957678.1_1.fastq.gz</span><br><span class="line">├── SRR957679.1_1.fastq.gz</span><br><span class="line">└── SRR957680.1_1.fastq.gz</span><br></pre></td></tr></table></figure>
+
+<h1 id="二-创建工作流文件snakefile"><a href="#二-创建工作流文件snakefile" class="headerlink" title="二.创建工作流文件snakefile"></a>二.创建工作流文件snakefile</h1><p>工作流文件 Snakefile 文件名并不是固定的，位置也不是固定的。当你的工作流文件就在当前目录下，且名称正好是 Snakefile 时，就可以像上面的示例一样，不用指定具体的工作流文件，snakemake 会自动调取当前路径的名为 Snakefile 的文件去执行。如果你要执行其他路径的 Snakefile 或者其他的文件名的工作流文件，可以使用 -s 参数。将工作流文件命名为 py 文件，这样你在写 Python 代码时会有语法高亮。</p>
+<ul>
+<li><code>--snakefile, -s</code> 指定Snakefile，否则是当前目录下的Snakefile</li>
+<li><code>--dryrun, -n</code> 不真正执行，一般用来查看Snakefile是否有错</li>
+<li><code>snakemake --dag | dot -Tpdf &gt; dag.pdf</code> 可视化</li>
+</ul>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> 创建 Snakefile</span></span><br><span class="line"><span class="meta">$</span><span class="bash"> touch rnaseqflow.py</span></span><br><span class="line"><span class="meta">$</span><span class="bash"> snakemake -n -s rnaseqflow.py </span></span><br><span class="line">Building DAG of jobs...</span><br><span class="line">Nothing to be done.</span><br></pre></td></tr></table></figure>
+
+<h1 id="三-创建第一条rule"><a href="#三-创建第一条rule" class="headerlink" title="三.创建第一条rule"></a>三.创建第一条rule</h1><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">rule fastqc:  # 定义第一条规则，命名为 fastqc</span><br><span class="line">    input:  # input: 指定输入</span><br><span class="line">        fq=&#x27;SRR957677.1_1.fastq.gz&#x27;</span><br><span class="line">    output: # output: 指定输出</span><br><span class="line">        &#x27;SRR957677.1_1_fastqc.zip&#x27;</span><br><span class="line">    log:#指定log文件</span><br><span class="line">        &#x27;SRR957677.1_1.log&#x27;</span><br><span class="line">    params: #指定参数</span><br><span class="line">        outdir=&#x27;qc&#x27;</span><br><span class="line">    shell:</span><br><span class="line">        &#x27;fastqc &#123;input[fq]&#125; -o &#123;params[outdir]&#125; 1&gt;&#123;log[0]&#125; 2&gt;&amp;1&#x27;</span><br><span class="line">     # 指定执行方式，这里有三种执行方式：shell、run、script。run执行python脚本，shell执行Bash脚本。还可以用script来执行外部脚本。比如 script:&quot;scripts/script.py&quot;或 script:&quot;scripts/script.R&quot;。</span><br><span class="line">     #&#123;input[fq]&#125; 也可以写成&#123;input[0]&#125;，同理&#123;params[outdir]&#125;可写成&#123;params[0]&#125;</span><br></pre></td></tr></table></figure>
+
+<p>参数-n为dry run，即不实际运行；-p为打印命令；-np即为只打印全部命令而不运行，-s 指定文件，否则是当前目录下的Snakefile，查看命令是否正确：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> snakemake -np -s rnaseqflow.py </span></span><br><span class="line">Building DAG of jobs...</span><br><span class="line">Job counts:</span><br><span class="line">	count	jobs</span><br><span class="line">	1	fastqc</span><br><span class="line">	1</span><br><span class="line"></span><br><span class="line">[Fri Oct 23 07:51:24 2020]</span><br><span class="line">rule fastqc:</span><br><span class="line">    input: SRR957677.1_1.fastq.gz</span><br><span class="line">    output: SRR957677.1_1_fastqc.zip</span><br><span class="line">    log: SRR957677.1_1.log</span><br><span class="line">    jobid: 0</span><br><span class="line"></span><br><span class="line">fastqc SRR957677.1_1.fastq.gz -o qc 1&gt;SRR957677.1_1.log 2&gt;&amp;1 #这里可以看出命令和我们平时写的一样</span><br><span class="line">Job counts:</span><br><span class="line">	count	jobs</span><br><span class="line">	1	fastqc</span><br><span class="line">	1</span><br><span class="line">This was a dry-run (flag -n). The order of jobs does not reflect the order of execution.</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<h1 id="四-使用通配符匹配多个输入文件"><a href="#四-使用通配符匹配多个输入文件" class="headerlink" title="四.使用通配符匹配多个输入文件"></a>四.使用通配符匹配多个输入文件</h1><p>上面的 fastqc规则仅仅比对了一个样本，可是实际项目中有几十上百的样本时，我们就不能这样直接写样本名来运行了。snakemake 允许使用通配符（wildcard）来批量运行命令。</p>
+<p>rule all的input是流程最终的目标文件，类似于GNU Make，从<strong>顶部指定目标</strong>。</p>
+<p>expand是Snakemake的特有函数，类似列表推导式。</p>
+<p>expand(‘{sample}.txt’,sample=SAMPLES)相当于[‘{sample}.txt’.format(sample=sample) for sample in SAMPLES]。</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">(SAMPLES,)= glob_wildcards(&quot;&#123;sample&#125;.1_1.fastq.gz&quot;)</span><br><span class="line"><span class="meta">#</span><span class="bash">这里也可运用列表一一列出来SAMPLES=[<span class="string">&#x27;SRR957677&#x27;</span>,<span class="string">&#x27;SRR957678&#x27;</span>,<span class="string">&#x27;SRR957679&#x27;</span>,<span class="string">&#x27;SRR957680&#x27;</span>]</span></span><br><span class="line">rule all:  </span><br><span class="line">    input:</span><br><span class="line">        expand(&#x27;&#123;sample_name&#125;.1_1_fastqc.zip&#x27;,sample_name=SAMPLES)</span><br><span class="line">rule fastqc:</span><br><span class="line">    input:</span><br><span class="line">        fq=&#x27;&#123;sample_name&#125;.1_1.fastq.gz&#x27;</span><br><span class="line">    output:</span><br><span class="line">        &#x27;&#123;sample_name&#125;.1_1_fastqc.zip&#x27;</span><br><span class="line">    log:</span><br><span class="line">        &#x27;&#123;sample_name&#125;.1_1.log&#x27;</span><br><span class="line">    params:</span><br><span class="line">        outdir=&#x27;qc&#x27;</span><br><span class="line">    shell:</span><br><span class="line">        &#x27;fastqc &#123;input[fq]&#125; -o &#123;params[outdir]&#125; 1&gt;&#123;log[0]&#125; 2&gt;&amp;1&#x27;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>dry run  一下，可以加上 -p 参数让终端打印出 shell 运行的命令：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> snakemake -np -s rnaseqflow.py </span></span><br><span class="line">Building DAG of jobs...</span><br><span class="line">Job counts:</span><br><span class="line">	count	jobs</span><br><span class="line">	1	all</span><br><span class="line">	4	fastqc</span><br><span class="line">	5</span><br><span class="line"></span><br><span class="line">[Fri Oct 23 08:04:34 2020]</span><br><span class="line">rule fastqc:</span><br><span class="line">    input: SRR957677.1_1.fastq.gz</span><br><span class="line">    output: SRR957677.1_1_fastqc.zip</span><br><span class="line">    log: SRR957677.1_1.log</span><br><span class="line">    jobid: 1</span><br><span class="line">    wildcards: sample_name=SRR957677</span><br><span class="line"></span><br><span class="line">fastqc SRR957677.1_1.fastq.gz -o qc 1&gt;SRR957677.1_1.log 2&gt;&amp;1</span><br><span class="line"></span><br><span class="line">[Fri Oct 23 08:04:34 2020]</span><br><span class="line">rule fastqc:</span><br><span class="line">    input: SRR957679.1_1.fastq.gz</span><br><span class="line">    output: SRR957679.1_1_fastqc.zip</span><br><span class="line">    log: SRR957679.1_1.log</span><br><span class="line">    jobid: 3</span><br><span class="line">    wildcards: sample_name=SRR957679</span><br><span class="line"></span><br><span class="line">fastqc SRR957679.1_1.fastq.gz -o qc 1&gt;SRR957679.1_1.log 2&gt;&amp;1</span><br><span class="line"></span><br><span class="line">[Fri Oct 23 08:04:34 2020]</span><br><span class="line">rule fastqc:</span><br><span class="line">    input: SRR957680.1_1.fastq.gz</span><br><span class="line">    output: SRR957680.1_1_fastqc.zip</span><br><span class="line">    log: SRR957680.1_1.log</span><br><span class="line">    jobid: 4</span><br><span class="line">    wildcards: sample_name=SRR957680</span><br><span class="line"></span><br><span class="line">fastqc SRR957680.1_1.fastq.gz -o qc 1&gt;SRR957680.1_1.log 2&gt;&amp;1</span><br><span class="line"></span><br><span class="line">[Fri Oct 23 08:04:34 2020]</span><br><span class="line">rule fastqc:</span><br><span class="line">    input: SRR957678.1_1.fastq.gz</span><br><span class="line">    output: SRR957678.1_1_fastqc.zip</span><br><span class="line">    log: SRR957678.1_1.log</span><br><span class="line">    jobid: 2</span><br><span class="line">    wildcards: sample_name=SRR957678</span><br><span class="line"></span><br><span class="line">fastqc SRR957678.1_1.fastq.gz -o qc 1&gt;SRR957678.1_1.log 2&gt;&amp;1</span><br><span class="line"></span><br><span class="line">[Fri Oct 23 08:04:34 2020]</span><br><span class="line">localrule all:</span><br><span class="line">    input: SRR957677.1_1_fastqc.zip, SRR957678.1_1_fastqc.zip, SRR957679.1_1_fastqc.zip, SRR957680.1_1_fastqc.zip</span><br><span class="line">    jobid: 0</span><br><span class="line"></span><br><span class="line">Job counts:</span><br><span class="line">	count	jobs</span><br><span class="line">	1	all</span><br><span class="line">	4	fastqc</span><br><span class="line">	5</span><br><span class="line">This was a dry-run (flag -n). The order of jobs does not reflect the order of execution.</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>本文的例子都是各个样品批量、并行运行同样的步骤，所以可以全部使用通配符 {sample} 完成匹配；但有的步骤需要将多个样本的bam文件传递给一个命令而不再并行，这种方法就不在适用了。例如在以变异检测为例。</p>
+<p><strong>1. 首先在工作流文件开头定义一个变量：</strong></p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">samples = [&quot;A&quot;, &quot;B&quot;, &quot;C&quot;]</span><br></pre></td></tr></table></figure>
+
+<p><strong>2. 然后使用 snakemake 的内置函数 expand：</strong></p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">bam=expand(&quot;mapped/&#123;sample&#125;.sorted.bam&quot;, sample=samples) </span><br></pre></td></tr></table></figure>
+
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">rule calling:</span><br><span class="line">  input:</span><br><span class="line">      fa=&quot;data/genome.fa&quot;,</span><br><span class="line">      bam=expand(&quot;mapped/&#123;sample&#125;.sorted.bam&quot;, sample=samples),</span><br><span class="line">      bai=expand(&quot;mapped/&#123;sample&#125;.sorted.bam.bai&quot;, sample=samples)</span><br><span class="line">  output:</span><br><span class="line">      &quot;calling/all.vcf&quot;</span><br><span class="line">  shell:</span><br><span class="line">      &quot;samtools mpileup -g -f &#123;input.fa&#125; &#123;input.bam&#125; | &quot;</span><br><span class="line"></span><br><span class="line">      &quot;bcftools call -mv - &gt; &#123;output&#125;&quot;</span><br></pre></td></tr></table></figure>
+
+
+
+<h1 id="五-添加其他rule"><a href="#五-添加其他rule" class="headerlink" title="五.添加其他rule"></a>五.添加其他rule</h1><p>在fastqc的基础上添加fastp、hisat2、samtools sort、htseq等rule。前后相连的rule，前一个rule的输出文件须是后一个的输入文件。</p>
+<p>rule all的input是流程最终的目标文件，从顶部指定目标。fastqc不能和其他的rule串起来，它的输出文件不能作为其它rule的输入文件，所以要单独在rule all里指定。</p>
+<p>rule all 指定输出文件{sample_name}.count后，通过顶部目标从上往下确定运行逻辑顺序，首先寻找哪个rule的输出文件是{sample_name}.count，可以看出是rule htseq；那么rule htseq的输入文件{sample_name}_nsorted.bam是哪个rule来的呢，它是rule samtools_sort的输出文件；同理我们可以看出rule samtools_sort的输入文件是从rule hisat2的输出结果；以此类推从顶部倒推的结果是rule all &gt;rule htseq&gt;rule samtools_sort&gt;rule hisat2&gt;rule fastqc，所以运行顺序是与之相反的。</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br></pre></td><td class="code"><pre><span class="line">(SAMPLES,)= glob_wildcards(&quot;&#123;sample&#125;.1_1.fastq.gz&quot;)</span><br><span class="line">rule all:</span><br><span class="line">    input:</span><br><span class="line">        expand(&#x27;&#123;sample_name&#125;.1_1_fastqc.zip&#x27;,sample_name=SAMPLES),</span><br><span class="line">        expand(&#x27;&#123;sample_name&#125;.count&#x27;,sample_name=SAMPLES)</span><br><span class="line">rule fastqc:</span><br><span class="line">    input:</span><br><span class="line">        fq=&#x27;&#123;sample_name&#125;.1_1.fastq.gz&#x27;</span><br><span class="line">    output:</span><br><span class="line">        &#x27;&#123;sample_name&#125;.1_1_fastqc.zip&#x27;</span><br><span class="line">    log:</span><br><span class="line">        &#x27;&#123;sample_name&#125;.1_1.log&#x27;</span><br><span class="line">    params:</span><br><span class="line">        outdir=&#x27;qc&#x27;</span><br><span class="line">    shell:</span><br><span class="line">        &#x27;fastqc &#123;input[fq]&#125; -o &#123;params[outdir]&#125; 1&gt;&#123;log[0]&#125; 2&gt;&amp;1&#x27;</span><br><span class="line">rule fastp:</span><br><span class="line">    input:</span><br><span class="line">        fq=&#x27;&#123;sample_name&#125;.1_1.fastq.gz&#x27;</span><br><span class="line">    output:</span><br><span class="line">        &#x27;&#123;sample_name&#125;.1_1_clean.fastq.gz&#x27;</span><br><span class="line">    log:</span><br><span class="line">        &#x27;&#123;sample_name&#125;.fastp.log&#x27;</span><br><span class="line">    params:</span><br><span class="line">        outdir=&#x27;fastp&#x27;</span><br><span class="line">    shell:</span><br><span class="line">        &#x27;fastp -i &#123;input[fq]&#125; -o &#123;params[outdir]&#125;/&#123;output[0]&#125;&#x27;</span><br><span class="line">rule hisat2:</span><br><span class="line">    input:</span><br><span class="line">        clean_fq=&#x27;&#123;sample_name&#125;.1_1_clean.fastq.gz&#x27;</span><br><span class="line">    output:</span><br><span class="line">        &#x27;&#123;sample_name&#125;.sam&#x27;</span><br><span class="line">    log:</span><br><span class="line">        &#x27;&#123;sample_name&#125;.hisat2.log&#x27;</span><br><span class="line">    params:</span><br><span class="line">        outdir=&#x27;hisat2&#x27;,</span><br><span class="line">        index=&#x27;index/hg19/genome&#x27;</span><br><span class="line">    shell:</span><br><span class="line">        &#x27;hisat2 -x &#123;params[index]&#125; -p 10 -U fastp/&#123;input[clean_fq]&#125; -S &#123;params[outdir]&#125;/&#123;output[0]&#125;&#x27;</span><br><span class="line">rule samtools_sort:</span><br><span class="line">    input:</span><br><span class="line">        &#x27;&#123;sample_name&#125;.sam&#x27;</span><br><span class="line">    output:</span><br><span class="line">        &#x27;&#123;sample_name&#125;_nsorted.bam&#x27;</span><br><span class="line">    shell:</span><br><span class="line">        &#x27;samtools sort -o hisat2/&#123;output[0]&#125; hisat2/&#123;input[0]&#125;&#x27;</span><br><span class="line">rule htseq:</span><br><span class="line">    input:</span><br><span class="line">        &#x27;&#123;sample_name&#125;_nsorted.bam&#x27;</span><br><span class="line">    output:</span><br><span class="line">        &#x27;&#123;sample_name&#125;.count&#x27;</span><br><span class="line">    log:</span><br><span class="line">        &#x27;&#123;sample_name&#125;.htseq.log&#x27;</span><br><span class="line">    params:</span><br><span class="line">        outdir=&#x27;htseq&#x27;,</span><br><span class="line">        gtf=&#x27;genome/gencode.v19.annotation.gtf&#x27;</span><br><span class="line">    shell:</span><br><span class="line">        &#x27;htseq-count -f bam -r name hisat2/&#123;input[0]&#125; &#123;params[gtf]&#125;  &gt;&#123;output[0]&#125;&#x27;</span><br></pre></td></tr></table></figure>
+
+<p>dry run  一下，可以加上 -p 参数让终端打印出 shell 运行的命令：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br><span class="line">149</span><br><span class="line">150</span><br><span class="line">151</span><br><span class="line">152</span><br><span class="line">153</span><br><span class="line">154</span><br><span class="line">155</span><br><span class="line">156</span><br><span class="line">157</span><br><span class="line">158</span><br><span class="line">159</span><br><span class="line">160</span><br><span class="line">161</span><br><span class="line">162</span><br><span class="line">163</span><br><span class="line">164</span><br><span class="line">165</span><br><span class="line">166</span><br><span class="line">167</span><br><span class="line">168</span><br><span class="line">169</span><br><span class="line">170</span><br><span class="line">171</span><br><span class="line">172</span><br><span class="line">173</span><br><span class="line">174</span><br><span class="line">175</span><br><span class="line">176</span><br><span class="line">177</span><br><span class="line">178</span><br><span class="line">179</span><br><span class="line">180</span><br><span class="line">181</span><br><span class="line">182</span><br><span class="line">183</span><br><span class="line">184</span><br><span class="line">185</span><br><span class="line">186</span><br><span class="line">187</span><br><span class="line">188</span><br><span class="line">189</span><br><span class="line">190</span><br><span class="line">191</span><br><span class="line">192</span><br><span class="line">193</span><br><span class="line">194</span><br><span class="line">195</span><br><span class="line">196</span><br><span class="line">197</span><br><span class="line">198</span><br><span class="line">199</span><br><span class="line">200</span><br><span class="line">201</span><br><span class="line">202</span><br><span class="line">203</span><br><span class="line">204</span><br><span class="line">205</span><br><span class="line">206</span><br><span class="line">207</span><br><span class="line">208</span><br><span class="line">209</span><br><span class="line">210</span><br><span class="line">211</span><br><span class="line">212</span><br><span class="line">213</span><br><span class="line">214</span><br><span class="line">215</span><br><span class="line">216</span><br><span class="line">217</span><br><span class="line">218</span><br><span class="line">219</span><br><span class="line">220</span><br><span class="line">221</span><br><span class="line">222</span><br><span class="line">223</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> snakemake -np -s rnaseqflow.py </span></span><br><span class="line">Building DAG of jobs...</span><br><span class="line">Job counts:</span><br><span class="line">	count	jobs</span><br><span class="line">	1	all</span><br><span class="line">	4	fastp</span><br><span class="line">	4	fastqc</span><br><span class="line">	4	hisat2</span><br><span class="line">	4	htseq</span><br><span class="line">	4	samtools_sort</span><br><span class="line">	21</span><br><span class="line"></span><br><span class="line">[Fri Oct 23 10:23:24 2020]</span><br><span class="line">rule fastp:</span><br><span class="line">    input: SRR957678.1_1.fastq.gz</span><br><span class="line">    output: SRR957678.1_1_clean.fastq.gz</span><br><span class="line">    log: SRR957678.fastp.log</span><br><span class="line">    jobid: 18</span><br><span class="line">    wildcards: sample_name=SRR957678</span><br><span class="line"></span><br><span class="line">fastp -i SRR957678.1_1.fastq.gz -o fastp/SRR957678.1_1_clean.fastq.gz</span><br><span class="line"></span><br><span class="line">[Fri Oct 23 10:23:24 2020]</span><br><span class="line">rule fastqc:</span><br><span class="line">    input: SRR957679.1_1.fastq.gz</span><br><span class="line">    output: SRR957679.1_1_fastqc.zip</span><br><span class="line">    log: SRR957679.1_1.log</span><br><span class="line">    jobid: 3</span><br><span class="line">    wildcards: sample_name=SRR957679</span><br><span class="line"></span><br><span class="line">fastqc SRR957679.1_1.fastq.gz -o qc 1&gt;SRR957679.1_1.log 2&gt;&amp;1</span><br><span class="line"></span><br><span class="line">[Fri Oct 23 10:23:24 2020]</span><br><span class="line">rule fastqc:</span><br><span class="line">    input: SRR957680.1_1.fastq.gz</span><br><span class="line">    output: SRR957680.1_1_fastqc.zip</span><br><span class="line">    log: SRR957680.1_1.log</span><br><span class="line">    jobid: 4</span><br><span class="line">    wildcards: sample_name=SRR957680</span><br><span class="line"></span><br><span class="line">fastqc SRR957680.1_1.fastq.gz -o qc 1&gt;SRR957680.1_1.log 2&gt;&amp;1</span><br><span class="line"></span><br><span class="line">[Fri Oct 23 10:23:24 2020]</span><br><span class="line">rule fastp:</span><br><span class="line">    input: SRR957679.1_1.fastq.gz</span><br><span class="line">    output: SRR957679.1_1_clean.fastq.gz</span><br><span class="line">    log: SRR957679.fastp.log</span><br><span class="line">    jobid: 19</span><br><span class="line">    wildcards: sample_name=SRR957679</span><br><span class="line"></span><br><span class="line">fastp -i SRR957679.1_1.fastq.gz -o fastp/SRR957679.1_1_clean.fastq.gz</span><br><span class="line"></span><br><span class="line">[Fri Oct 23 10:23:24 2020]</span><br><span class="line">rule fastp:</span><br><span class="line">    input: SRR957677.1_1.fastq.gz</span><br><span class="line">    output: SRR957677.1_1_clean.fastq.gz</span><br><span class="line">    log: SRR957677.fastp.log</span><br><span class="line">    jobid: 17</span><br><span class="line">    wildcards: sample_name=SRR957677</span><br><span class="line"></span><br><span class="line">fastp -i SRR957677.1_1.fastq.gz -o fastp/SRR957677.1_1_clean.fastq.gz</span><br><span class="line"></span><br><span class="line">[Fri Oct 23 10:23:24 2020]</span><br><span class="line">rule fastqc:</span><br><span class="line">    input: SRR957678.1_1.fastq.gz</span><br><span class="line">    output: SRR957678.1_1_fastqc.zip</span><br><span class="line">    log: SRR957678.1_1.log</span><br><span class="line">    jobid: 2</span><br><span class="line">    wildcards: sample_name=SRR957678</span><br><span class="line"></span><br><span class="line">fastqc SRR957678.1_1.fastq.gz -o qc 1&gt;SRR957678.1_1.log 2&gt;&amp;1</span><br><span class="line"></span><br><span class="line">[Fri Oct 23 10:23:24 2020]</span><br><span class="line">rule fastqc:</span><br><span class="line">    input: SRR957677.1_1.fastq.gz</span><br><span class="line">    output: SRR957677.1_1_fastqc.zip</span><br><span class="line">    log: SRR957677.1_1.log</span><br><span class="line">    jobid: 1</span><br><span class="line">    wildcards: sample_name=SRR957677</span><br><span class="line"></span><br><span class="line">fastqc SRR957677.1_1.fastq.gz -o qc 1&gt;SRR957677.1_1.log 2&gt;&amp;1</span><br><span class="line"></span><br><span class="line">[Fri Oct 23 10:23:24 2020]</span><br><span class="line">rule fastp:</span><br><span class="line">    input: SRR957680.1_1.fastq.gz</span><br><span class="line">    output: SRR957680.1_1_clean.fastq.gz</span><br><span class="line">    log: SRR957680.fastp.log</span><br><span class="line">    jobid: 20</span><br><span class="line">    wildcards: sample_name=SRR957680</span><br><span class="line"></span><br><span class="line">fastp -i SRR957680.1_1.fastq.gz -o fastp/SRR957680.1_1_clean.fastq.gz</span><br><span class="line"></span><br><span class="line">[Fri Oct 23 10:23:24 2020]</span><br><span class="line">rule hisat2:</span><br><span class="line">    input: SRR957679.1_1_clean.fastq.gz</span><br><span class="line">    output: SRR957679.sam</span><br><span class="line">    log: SRR957679.hisat2.log</span><br><span class="line">    jobid: 15</span><br><span class="line">    wildcards: sample_name=SRR957679</span><br><span class="line"></span><br><span class="line">hisat2 -x index/hg19/genome -p 10 -U fastp/SRR957679.1_1_clean.fastq.gz -S hisat2/SRR957679.sam</span><br><span class="line"></span><br><span class="line">[Fri Oct 23 10:23:24 2020]</span><br><span class="line">rule hisat2:</span><br><span class="line">    input: SRR957680.1_1_clean.fastq.gz</span><br><span class="line">    output: SRR957680.sam</span><br><span class="line">    log: SRR957680.hisat2.log</span><br><span class="line">    jobid: 16</span><br><span class="line">    wildcards: sample_name=SRR957680</span><br><span class="line"></span><br><span class="line">hisat2 -x index/hg19/genome -p 10 -U fastp/SRR957680.1_1_clean.fastq.gz -S hisat2/SRR957680.sam</span><br><span class="line"></span><br><span class="line">[Fri Oct 23 10:23:24 2020]</span><br><span class="line">rule hisat2:</span><br><span class="line">    input: SRR957678.1_1_clean.fastq.gz</span><br><span class="line">    output: SRR957678.sam</span><br><span class="line">    log: SRR957678.hisat2.log</span><br><span class="line">    jobid: 14</span><br><span class="line">    wildcards: sample_name=SRR957678</span><br><span class="line"></span><br><span class="line">hisat2 -x index/hg19/genome -p 10 -U fastp/SRR957678.1_1_clean.fastq.gz -S hisat2/SRR957678.sam</span><br><span class="line"></span><br><span class="line">[Fri Oct 23 10:23:24 2020]</span><br><span class="line">rule hisat2:</span><br><span class="line">    input: SRR957677.1_1_clean.fastq.gz</span><br><span class="line">    output: SRR957677.sam</span><br><span class="line">    log: SRR957677.hisat2.log</span><br><span class="line">    jobid: 13</span><br><span class="line">    wildcards: sample_name=SRR957677</span><br><span class="line"></span><br><span class="line">hisat2 -x index/hg19/genome -p 10 -U fastp/SRR957677.1_1_clean.fastq.gz -S hisat2/SRR957677.sam</span><br><span class="line"></span><br><span class="line">[Fri Oct 23 10:23:24 2020]</span><br><span class="line">rule samtools_sort:</span><br><span class="line">    input: SRR957677.sam</span><br><span class="line">    output: SRR957677_nsorted.bam</span><br><span class="line">    jobid: 9</span><br><span class="line">    wildcards: sample_name=SRR957677</span><br><span class="line"></span><br><span class="line">samtools sort -o hisat2/SRR957677_nsorted.bam hisat2/SRR957677.sam</span><br><span class="line"></span><br><span class="line">[Fri Oct 23 10:23:24 2020]</span><br><span class="line">rule samtools_sort:</span><br><span class="line">    input: SRR957679.sam</span><br><span class="line">    output: SRR957679_nsorted.bam</span><br><span class="line">    jobid: 11</span><br><span class="line">    wildcards: sample_name=SRR957679</span><br><span class="line"></span><br><span class="line">samtools sort -o hisat2/SRR957679_nsorted.bam hisat2/SRR957679.sam</span><br><span class="line"></span><br><span class="line">[Fri Oct 23 10:23:24 2020]</span><br><span class="line">rule samtools_sort:</span><br><span class="line">    input: SRR957680.sam</span><br><span class="line">    output: SRR957680_nsorted.bam</span><br><span class="line">    jobid: 12</span><br><span class="line">    wildcards: sample_name=SRR957680</span><br><span class="line"></span><br><span class="line">samtools sort -o hisat2/SRR957680_nsorted.bam hisat2/SRR957680.sam</span><br><span class="line"></span><br><span class="line">[Fri Oct 23 10:23:24 2020]</span><br><span class="line">rule samtools_sort:</span><br><span class="line">    input: SRR957678.sam</span><br><span class="line">    output: SRR957678_nsorted.bam</span><br><span class="line">    jobid: 10</span><br><span class="line">    wildcards: sample_name=SRR957678</span><br><span class="line"></span><br><span class="line">samtools sort -o hisat2/SRR957678_nsorted.bam hisat2/SRR957678.sam</span><br><span class="line"></span><br><span class="line">[Fri Oct 23 10:23:24 2020]</span><br><span class="line">rule htseq:</span><br><span class="line">    input: SRR957678_nsorted.bam</span><br><span class="line">    output: SRR957678.count</span><br><span class="line">    log: SRR957678.htseq.log</span><br><span class="line">    jobid: 6</span><br><span class="line">    wildcards: sample_name=SRR957678</span><br><span class="line"></span><br><span class="line">htseq-count -f bam -r name hisat2/SRR957678_nsorted.bam genome/gencode.v19.annotation.gtf  &gt;SRR957678.count</span><br><span class="line"></span><br><span class="line">[Fri Oct 23 10:23:24 2020]</span><br><span class="line">rule htseq:</span><br><span class="line">    input: SRR957680_nsorted.bam</span><br><span class="line">    output: SRR957680.count</span><br><span class="line">    log: SRR957680.htseq.log</span><br><span class="line">    jobid: 8</span><br><span class="line">    wildcards: sample_name=SRR957680</span><br><span class="line"></span><br><span class="line">htseq-count -f bam -r name hisat2/SRR957680_nsorted.bam genome/gencode.v19.annotation.gtf  &gt;SRR957680.count</span><br><span class="line"></span><br><span class="line">[Fri Oct 23 10:23:24 2020]</span><br><span class="line">rule htseq:</span><br><span class="line">    input: SRR957677_nsorted.bam</span><br><span class="line">    output: SRR957677.count</span><br><span class="line">    log: SRR957677.htseq.log</span><br><span class="line">    jobid: 5</span><br><span class="line">    wildcards: sample_name=SRR957677</span><br><span class="line"></span><br><span class="line">htseq-count -f bam -r name hisat2/SRR957677_nsorted.bam genome/gencode.v19.annotation.gtf  &gt;SRR957677.count</span><br><span class="line"></span><br><span class="line">[Fri Oct 23 10:23:24 2020]</span><br><span class="line">rule htseq:</span><br><span class="line">    input: SRR957679_nsorted.bam</span><br><span class="line">    output: SRR957679.count</span><br><span class="line">    log: SRR957679.htseq.log</span><br><span class="line">    jobid: 7</span><br><span class="line">    wildcards: sample_name=SRR957679</span><br><span class="line"></span><br><span class="line">htseq-count -f bam -r name hisat2/SRR957679_nsorted.bam genome/gencode.v19.annotation.gtf  &gt;SRR957679.count</span><br><span class="line"></span><br><span class="line">[Fri Oct 23 10:23:24 2020]</span><br><span class="line">localrule all:</span><br><span class="line">    input: SRR957677.1_1_fastqc.zip, SRR957678.1_1_fastqc.zip, SRR957679.1_1_fastqc.zip, SRR957680.1_1_fastqc.zip, SRR957677.count, SRR957678.count, SRR957679.count, SRR957680.count</span><br><span class="line">    jobid: 0</span><br><span class="line"></span><br><span class="line">Job counts:</span><br><span class="line">	count	jobs</span><br><span class="line">	1	all</span><br><span class="line">	4	fastp</span><br><span class="line">	4	fastqc</span><br><span class="line">	4	hisat2</span><br><span class="line">	4	htseq</span><br><span class="line">	4	samtools_sort</span><br><span class="line">	21</span><br><span class="line">This was a dry-run (flag -n). The order of jobs does not reflect the order of execution.</span><br></pre></td></tr></table></figure>
+
+<p>假设我们将rule all 里的{sample_name}.count 改为{sample_name}.sam那么命令只会运行到rule hisat2，跳过之后的命令。顶部倒推，rule all指定目标{sample_name}.sam是rule hisat2的输出文件，所以最后运行的rule是rule hisat2，之后的命令不运行。</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">(SAMPLES,)= glob_wildcards(&quot;&#123;sample&#125;.1_1.fastq.gz&quot;)</span><br><span class="line">rule all:</span><br><span class="line">    input:</span><br><span class="line">        expand(&#x27;&#123;sample_name&#125;.1_1_fastqc.zip&#x27;,sample_name=SAMPLES),</span><br><span class="line">        expand(&#x27;&#123;sample_name&#125;.sam&#x27;,sample_name=SAMPLES)</span><br></pre></td></tr></table></figure>
+
+<p>dry run  一下，可以加上 -p 参数让终端打印出 shell 运行的命令：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> snakemake -np -s rnaseqflow.py </span></span><br><span class="line">Building DAG of jobs...</span><br><span class="line">Job counts:</span><br><span class="line">	count	jobs</span><br><span class="line">	1	all</span><br><span class="line">	4	fastp</span><br><span class="line">	4	fastqc</span><br><span class="line">	4	hisat2</span><br><span class="line">	13</span><br><span class="line"></span><br><span class="line">[Fri Oct 23 10:43:36 2020]</span><br><span class="line">rule fastqc:</span><br><span class="line">    input: SRR957679.1_1.fastq.gz</span><br><span class="line">    output: SRR957679.1_1_fastqc.zip</span><br><span class="line">    log: SRR957679.1_1.log</span><br><span class="line">    jobid: 3</span><br><span class="line">    wildcards: sample_name=SRR957679</span><br><span class="line"></span><br><span class="line">fastqc SRR957679.1_1.fastq.gz -o qc 1&gt;SRR957679.1_1.log 2&gt;&amp;1</span><br><span class="line"></span><br><span class="line">[Fri Oct 23 10:43:36 2020]</span><br><span class="line">rule fastqc:</span><br><span class="line">    input: SRR957680.1_1.fastq.gz</span><br><span class="line">    output: SRR957680.1_1_fastqc.zip</span><br><span class="line">    log: SRR957680.1_1.log</span><br><span class="line">    jobid: 4</span><br><span class="line">    wildcards: sample_name=SRR957680</span><br><span class="line"></span><br><span class="line">fastqc SRR957680.1_1.fastq.gz -o qc 1&gt;SRR957680.1_1.log 2&gt;&amp;1</span><br><span class="line"></span><br><span class="line">[Fri Oct 23 10:43:36 2020]</span><br><span class="line">rule fastp:</span><br><span class="line">    input: SRR957678.1_1.fastq.gz</span><br><span class="line">    output: SRR957678.1_1_clean.fastq.gz</span><br><span class="line">    log: SRR957678.fastp.log</span><br><span class="line">    jobid: 10</span><br><span class="line">    wildcards: sample_name=SRR957678</span><br><span class="line"></span><br><span class="line">fastp -i SRR957678.1_1.fastq.gz -o fastp/SRR957678.1_1_clean.fastq.gz</span><br><span class="line"></span><br><span class="line">[Fri Oct 23 10:43:36 2020]</span><br><span class="line">rule fastp:</span><br><span class="line">    input: SRR957680.1_1.fastq.gz</span><br><span class="line">    output: SRR957680.1_1_clean.fastq.gz</span><br><span class="line">    log: SRR957680.fastp.log</span><br><span class="line">    jobid: 12</span><br><span class="line">    wildcards: sample_name=SRR957680</span><br><span class="line"></span><br><span class="line">fastp -i SRR957680.1_1.fastq.gz -o fastp/SRR957680.1_1_clean.fastq.gz</span><br><span class="line"></span><br><span class="line">[Fri Oct 23 10:43:36 2020]</span><br><span class="line">rule fastqc:</span><br><span class="line">    input: SRR957678.1_1.fastq.gz</span><br><span class="line">    output: SRR957678.1_1_fastqc.zip</span><br><span class="line">    log: SRR957678.1_1.log</span><br><span class="line">    jobid: 2</span><br><span class="line">    wildcards: sample_name=SRR957678</span><br><span class="line"></span><br><span class="line">fastqc SRR957678.1_1.fastq.gz -o qc 1&gt;SRR957678.1_1.log 2&gt;&amp;1</span><br><span class="line"></span><br><span class="line">[Fri Oct 23 10:43:36 2020]</span><br><span class="line">rule fastqc:</span><br><span class="line">    input: SRR957677.1_1.fastq.gz</span><br><span class="line">    output: SRR957677.1_1_fastqc.zip</span><br><span class="line">    log: SRR957677.1_1.log</span><br><span class="line">    jobid: 1</span><br><span class="line">    wildcards: sample_name=SRR957677</span><br><span class="line"></span><br><span class="line">fastqc SRR957677.1_1.fastq.gz -o qc 1&gt;SRR957677.1_1.log 2&gt;&amp;1</span><br><span class="line"></span><br><span class="line">[Fri Oct 23 10:43:36 2020]</span><br><span class="line">rule fastp:</span><br><span class="line">    input: SRR957677.1_1.fastq.gz</span><br><span class="line">    output: SRR957677.1_1_clean.fastq.gz</span><br><span class="line">    log: SRR957677.fastp.log</span><br><span class="line">    jobid: 9</span><br><span class="line">    wildcards: sample_name=SRR957677</span><br><span class="line"></span><br><span class="line">fastp -i SRR957677.1_1.fastq.gz -o fastp/SRR957677.1_1_clean.fastq.gz</span><br><span class="line"></span><br><span class="line">[Fri Oct 23 10:43:36 2020]</span><br><span class="line">rule fastp:</span><br><span class="line">    input: SRR957679.1_1.fastq.gz</span><br><span class="line">    output: SRR957679.1_1_clean.fastq.gz</span><br><span class="line">    log: SRR957679.fastp.log</span><br><span class="line">    jobid: 11</span><br><span class="line">    wildcards: sample_name=SRR957679</span><br><span class="line"></span><br><span class="line">fastp -i SRR957679.1_1.fastq.gz -o fastp/SRR957679.1_1_clean.fastq.gz</span><br><span class="line"></span><br><span class="line">[Fri Oct 23 10:43:36 2020]</span><br><span class="line">rule hisat2:</span><br><span class="line">    input: SRR957678.1_1_clean.fastq.gz</span><br><span class="line">    output: SRR957678.sam</span><br><span class="line">    log: SRR957678.hisat2.log</span><br><span class="line">    jobid: 6</span><br><span class="line">    wildcards: sample_name=SRR957678</span><br><span class="line"></span><br><span class="line">hisat2 -x index/hg19/genome -p 10 -U fastp/SRR957678.1_1_clean.fastq.gz -S hisat2/SRR957678.sam</span><br><span class="line"></span><br><span class="line">[Fri Oct 23 10:43:36 2020]</span><br><span class="line">rule hisat2:</span><br><span class="line">    input: SRR957680.1_1_clean.fastq.gz</span><br><span class="line">    output: SRR957680.sam</span><br><span class="line">    log: SRR957680.hisat2.log</span><br><span class="line">    jobid: 8</span><br><span class="line">    wildcards: sample_name=SRR957680</span><br><span class="line"></span><br><span class="line">hisat2 -x index/hg19/genome -p 10 -U fastp/SRR957680.1_1_clean.fastq.gz -S hisat2/SRR957680.sam</span><br><span class="line"></span><br><span class="line">[Fri Oct 23 10:43:36 2020]</span><br><span class="line">rule hisat2:</span><br><span class="line">    input: SRR957677.1_1_clean.fastq.gz</span><br><span class="line">    output: SRR957677.sam</span><br><span class="line">    log: SRR957677.hisat2.log</span><br><span class="line">    jobid: 5</span><br><span class="line">    wildcards: sample_name=SRR957677</span><br><span class="line"></span><br><span class="line">hisat2 -x index/hg19/genome -p 10 -U fastp/SRR957677.1_1_clean.fastq.gz -S hisat2/SRR957677.sam</span><br><span class="line"></span><br><span class="line">[Fri Oct 23 10:43:36 2020]</span><br><span class="line">rule hisat2:</span><br><span class="line">    input: SRR957679.1_1_clean.fastq.gz</span><br><span class="line">    output: SRR957679.sam</span><br><span class="line">    log: SRR957679.hisat2.log</span><br><span class="line">    jobid: 7</span><br><span class="line">    wildcards: sample_name=SRR957679</span><br><span class="line"></span><br><span class="line">hisat2 -x index/hg19/genome -p 10 -U fastp/SRR957679.1_1_clean.fastq.gz -S hisat2/SRR957679.sam</span><br><span class="line"></span><br><span class="line">[Fri Oct 23 10:43:36 2020]</span><br><span class="line">localrule all:</span><br><span class="line">    input: SRR957677.1_1_fastqc.zip, SRR957678.1_1_fastqc.zip, SRR957679.1_1_fastqc.zip, SRR957680.1_1_fastqc.zip, SRR957677.sam, SRR957678.sam, SRR957679.sam, SRR957680.sam</span><br><span class="line">    jobid: 0</span><br><span class="line"></span><br><span class="line">Job counts:</span><br><span class="line">	count	jobs</span><br><span class="line">	1	all</span><br><span class="line">	4	fastp</span><br><span class="line">	4	fastqc</span><br><span class="line">	4	hisat2</span><br><span class="line">	13</span><br><span class="line">This was a dry-run (flag -n). The order of jobs does not reflect the order of execution.</span><br></pre></td></tr></table></figure>
+
+<h1 id="六-生成可视化流程图"><a href="#六-生成可视化流程图" class="headerlink" title="六.生成可视化流程图"></a>六.生成可视化流程图</h1><p>Snakemake 可以将整个工作流以流程图的形式导出（结合 dot 命令），文件格式可以使png、pdf等。命令如下： </p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> snakemake --dag -s rnaseqflow.py| dot -Tpdf &gt; test.pdf</span></span><br><span class="line">Building DAG of jobs...</span><br></pre></td></tr></table></figure>
+
+<img src="/2020/10/22/snakemake%E6%90%AD%E5%BB%BA%E6%B5%81%E7%A8%8B/%E6%8D%95%E8%8E%B7.PNG" class>
+
+<h1 id="引用"><a href="#引用" class="headerlink" title="引用"></a>引用</h1><p>1.<a target="_blank" rel="noopener" href="https://mp.weixin.qq.com/s?src=11&timestamp=1603380716&ver=2660&signature=ox3vdNwRM6Y4Y8UfjG3fFrac8kuX*xuZWn-7tSItrKYWs9dRCo7LKLv5PZYNu-WYGhFzYBitDOGDRVHYfffpbx8iNehOsw9Y9p21q9r4asU7d7kIySzijKR8hPCvdDT*&new=1">Snakemake：简单好用的生信流程搭建工具</a></p>
+<p>2.<a target="_blank" rel="noopener" href="https://mp.weixin.qq.com/s?src=11&timestamp=1603380716&ver=2660&signature=6SCHc1y8ZzOe2vqvfdhn0txg87uXQ3K6EccUJpT3Fk9FZqqqhvNN5lOzGuKDybUEGrFzVOCJNUe4m7griLsvsFlfPMHs7pG-hfaeFxuj8ZINj-je*aK4SiDDstykyjxT&new=1">小白手册：使用Snakemake来轻松搞定生信分析流程</a></p>
+
+    </div>
+
+    
+    
+    
+        <div class="reward-container">
+  <div>客官打个赏咯.</div>
+  <button onclick="var qr = document.getElementById('qr'); qr.style.display = (qr.style.display === 'none') ? 'block' : 'none';">
+    打赏
+  </button>
+  <div id="qr" style="display: none;">
+      
+      <div style="display: inline-block;">
+        <img src="/images/wechatpay.png" alt="Zou 微信支付">
+        <p>微信支付</p>
+      </div>
+      
+      <div style="display: inline-block;">
+        <img src="/images/alipay.png" alt="Zou 支付宝">
+        <p>支付宝</p>
+      </div>
+
+  </div>
+</div>
+
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/snakemake/" rel="tag"># -snakemake</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2020/10/21/GEO/" rel="prev" title="GEO">
+      <i class="fa fa-chevron-left"></i> GEO
+    </a></div>
+      <div class="post-nav-item"></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+    <div class="comments" id="valine-comments"></div>
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E4%B8%80-%E6%95%B0%E6%8D%AE%E5%87%86%E5%A4%87"><span class="nav-number">1.</span> <span class="nav-text">一.数据准备</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E4%BA%8C-%E5%88%9B%E5%BB%BA%E5%B7%A5%E4%BD%9C%E6%B5%81%E6%96%87%E4%BB%B6snakefile"><span class="nav-number">2.</span> <span class="nav-text">二.创建工作流文件snakefile</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E4%B8%89-%E5%88%9B%E5%BB%BA%E7%AC%AC%E4%B8%80%E6%9D%A1rule"><span class="nav-number">3.</span> <span class="nav-text">三.创建第一条rule</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%9B%9B-%E4%BD%BF%E7%94%A8%E9%80%9A%E9%85%8D%E7%AC%A6%E5%8C%B9%E9%85%8D%E5%A4%9A%E4%B8%AA%E8%BE%93%E5%85%A5%E6%96%87%E4%BB%B6"><span class="nav-number">4.</span> <span class="nav-text">四.使用通配符匹配多个输入文件</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E4%BA%94-%E6%B7%BB%E5%8A%A0%E5%85%B6%E4%BB%96rule"><span class="nav-number">5.</span> <span class="nav-text">五.添加其他rule</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%85%AD-%E7%94%9F%E6%88%90%E5%8F%AF%E8%A7%86%E5%8C%96%E6%B5%81%E7%A8%8B%E5%9B%BE"><span class="nav-number">6.</span> <span class="nav-text">六.生成可视化流程图</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%BC%95%E7%94%A8"><span class="nav-number">7.</span> <span class="nav-text">引用</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Zou"
+      src="https://ss0.bdstatic.com/70cFvHSh_Q1YnxGkpoWK1HF6hhy/it/u=404501654,960623944&fm=26&gp=0.jpg">
+  <p class="site-author-name" itemprop="name">Zou</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">12</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">4</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">4</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/zou-yawen" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;zou-yawen" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+  </div>
+
+
+
+      </div>
+	  <div style="">
+  <canvas id="canvas" style="width:60%;">当前浏览器不支持canvas，请更换浏览器后再试</canvas>
+</div>
+<script>
+(function(){
+
+   var digit=
+    [
+        [
+            [0,0,1,1,1,0,0],
+            [0,1,1,0,1,1,0],
+            [1,1,0,0,0,1,1],
+            [1,1,0,0,0,1,1],
+            [1,1,0,0,0,1,1],
+            [1,1,0,0,0,1,1],
+            [1,1,0,0,0,1,1],
+            [1,1,0,0,0,1,1],
+            [0,1,1,0,1,1,0],
+            [0,0,1,1,1,0,0]
+        ],//0
+        [
+            [0,0,0,1,1,0,0],
+            [0,1,1,1,1,0,0],
+            [0,0,0,1,1,0,0],
+            [0,0,0,1,1,0,0],
+            [0,0,0,1,1,0,0],
+            [0,0,0,1,1,0,0],
+            [0,0,0,1,1,0,0],
+            [0,0,0,1,1,0,0],
+            [0,0,0,1,1,0,0],
+            [1,1,1,1,1,1,1]
+        ],//1
+        [
+            [0,1,1,1,1,1,0],
+            [1,1,0,0,0,1,1],
+            [0,0,0,0,0,1,1],
+            [0,0,0,0,1,1,0],
+            [0,0,0,1,1,0,0],
+            [0,0,1,1,0,0,0],
+            [0,1,1,0,0,0,0],
+            [1,1,0,0,0,0,0],
+            [1,1,0,0,0,1,1],
+            [1,1,1,1,1,1,1]
+        ],//2
+        [
+            [1,1,1,1,1,1,1],
+            [0,0,0,0,0,1,1],
+            [0,0,0,0,1,1,0],
+            [0,0,0,1,1,0,0],
+            [0,0,1,1,1,0,0],
+            [0,0,0,0,1,1,0],
+            [0,0,0,0,0,1,1],
+            [0,0,0,0,0,1,1],
+            [1,1,0,0,0,1,1],
+            [0,1,1,1,1,1,0]
+        ],//3
+        [
+            [0,0,0,0,1,1,0],
+            [0,0,0,1,1,1,0],
+            [0,0,1,1,1,1,0],
+            [0,1,1,0,1,1,0],
+            [1,1,0,0,1,1,0],
+            [1,1,1,1,1,1,1],
+            [0,0,0,0,1,1,0],
+            [0,0,0,0,1,1,0],
+            [0,0,0,0,1,1,0],
+            [0,0,0,1,1,1,1]
+        ],//4
+        [
+            [1,1,1,1,1,1,1],
+            [1,1,0,0,0,0,0],
+            [1,1,0,0,0,0,0],
+            [1,1,1,1,1,1,0],
+            [0,0,0,0,0,1,1],
+            [0,0,0,0,0,1,1],
+            [0,0,0,0,0,1,1],
+            [0,0,0,0,0,1,1],
+            [1,1,0,0,0,1,1],
+            [0,1,1,1,1,1,0]
+        ],//5
+        [
+            [0,0,0,0,1,1,0],
+            [0,0,1,1,0,0,0],
+            [0,1,1,0,0,0,0],
+            [1,1,0,0,0,0,0],
+            [1,1,0,1,1,1,0],
+            [1,1,0,0,0,1,1],
+            [1,1,0,0,0,1,1],
+            [1,1,0,0,0,1,1],
+            [1,1,0,0,0,1,1],
+            [0,1,1,1,1,1,0]
+        ],//6
+        [
+            [1,1,1,1,1,1,1],
+            [1,1,0,0,0,1,1],
+            [0,0,0,0,1,1,0],
+            [0,0,0,0,1,1,0],
+            [0,0,0,1,1,0,0],
+            [0,0,0,1,1,0,0],
+            [0,0,1,1,0,0,0],
+            [0,0,1,1,0,0,0],
+            [0,0,1,1,0,0,0],
+            [0,0,1,1,0,0,0]
+        ],//7
+        [
+            [0,1,1,1,1,1,0],
+            [1,1,0,0,0,1,1],
+            [1,1,0,0,0,1,1],
+            [1,1,0,0,0,1,1],
+            [0,1,1,1,1,1,0],
+            [1,1,0,0,0,1,1],
+            [1,1,0,0,0,1,1],
+            [1,1,0,0,0,1,1],
+            [1,1,0,0,0,1,1],
+            [0,1,1,1,1,1,0]
+        ],//8
+        [
+            [0,1,1,1,1,1,0],
+            [1,1,0,0,0,1,1],
+            [1,1,0,0,0,1,1],
+            [1,1,0,0,0,1,1],
+            [0,1,1,1,0,1,1],
+            [0,0,0,0,0,1,1],
+            [0,0,0,0,0,1,1],
+            [0,0,0,0,1,1,0],
+            [0,0,0,1,1,0,0],
+            [0,1,1,0,0,0,0]
+        ],//9
+        [
+            [0,0,0,0,0,0,0],
+            [0,0,1,1,1,0,0],
+            [0,0,1,1,1,0,0],
+            [0,0,1,1,1,0,0],
+            [0,0,0,0,0,0,0],
+            [0,0,0,0,0,0,0],
+            [0,0,1,1,1,0,0],
+            [0,0,1,1,1,0,0],
+            [0,0,1,1,1,0,0],
+            [0,0,0,0,0,0,0]
+        ]//:
+    ];
+
+var canvas = document.getElementById('canvas');
+
+if(canvas.getContext){
+    var cxt = canvas.getContext('2d');
+    //声明canvas的宽高
+    var H = 100,W = 700;
+    canvas.height = H;
+    canvas.width = W;
+    cxt.fillStyle = '#f00';
+    cxt.fillRect(10,10,50,50);
+
+    //存储时间数据
+    var data = [];
+    //存储运动的小球
+    var balls = [];
+    //设置粒子半径
+    var R = canvas.height/20-1;
+    (function(){
+        var temp = /(\d)(\d):(\d)(\d):(\d)(\d)/.exec(new Date());
+        //存储时间数字，由十位小时、个位小时、冒号、十位分钟、个位分钟、冒号、十位秒钟、个位秒钟这7个数字组成
+        data.push(temp[1],temp[2],10,temp[3],temp[4],10,temp[5],temp[6]);
+    })();
+
+    /*生成点阵数字*/
+    function renderDigit(index,num){
+        for(var i = 0; i < digit[num].length; i++){
+            for(var j = 0; j < digit[num][i].length; j++){
+                if(digit[num][i][j] == 1){
+                    cxt.beginPath();
+                    cxt.arc(14*(R+2)*index + j*2*(R+1)+(R+1),i*2*(R+1)+(R+1),R,0,2*Math.PI);
+                    cxt.closePath();
+                    cxt.fill();
+                }
+            }
+        }
+    }
+
+    /*更新时钟*/
+    function updateDigitTime(){
+        var changeNumArray = [];
+        var temp = /(\d)(\d):(\d)(\d):(\d)(\d)/.exec(new Date());
+        var NewData = [];
+        NewData.push(temp[1],temp[2],10,temp[3],temp[4],10,temp[5],temp[6]);
+        for(var i = data.length-1; i >=0 ; i--){
+            //时间发生变化
+            if(NewData[i] !== data[i]){
+                //将变化的数字值和在data数组中的索引存储在changeNumArray数组中
+                changeNumArray.push(i+'_'+(Number(data[i])+1)%10);
+            }
+        }
+        //增加小球
+        for(var i = 0; i< changeNumArray.length; i++){
+            addBalls.apply(this,changeNumArray[i].split('_'));
+        }
+        data = NewData.concat();
+    }
+
+    /*更新小球状态*/
+    function updateBalls(){
+        for(var i = 0; i < balls.length; i++){
+            balls[i].stepY += balls[i].disY;
+            balls[i].x += balls[i].stepX;
+            balls[i].y += balls[i].stepY;
+            if(balls[i].x > W + R || balls[i].y > H + R){
+                balls.splice(i,1);
+                i--;
+            }
+        }
+    }
+
+    /*增加要运动的小球*/
+    function addBalls(index,num){
+        var numArray = [1,2,3];
+        var colorArray =  ["#3BE","#09C","#A6C","#93C","#9C0","#690","#FB3","#F80","#F44","#C00"];
+        for(var i = 0; i < digit[num].length; i++){
+            for(var j = 0; j < digit[num][i].length; j++){
+                if(digit[num][i][j] == 1){
+                    var ball = {
+                        x:14*(R+2)*index + j*2*(R+1)+(R+1),
+                        y:i*2*(R+1)+(R+1),
+                        stepX:Math.floor(Math.random() * 4 -2),
+                        stepY:-2*numArray[Math.floor(Math.random()*numArray.length)],
+                        color:colorArray[Math.floor(Math.random()*colorArray.length)],
+                        disY:1
+                    };
+                    balls.push(ball);
+                }
+            }
+        }
+    }
+
+    /*渲染*/
+    function render(){
+        //重置画布宽度，达到清空画布的效果
+        canvas.height = 100;
+        //渲染时钟
+        for(var i = 0; i < data.length; i++){
+            renderDigit(i,data[i]);
+        }
+        //渲染小球
+        for(var i = 0; i < balls.length; i++){
+            cxt.beginPath();
+            cxt.arc(balls[i].x,balls[i].y,R,0,2*Math.PI);
+            cxt.fillStyle = balls[i].color;
+            cxt.closePath();
+            cxt.fill();
+        }
+    }
+
+    clearInterval(oTimer);
+    var oTimer = setInterval(function(){
+        //更新时钟
+        updateDigitTime();
+        //更新小球状态
+        updateBalls();
+        //渲染
+        render();
+    },50);
+}
+
+})();
+</script>
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Zou</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-area"></i>
+    </span>
+    <span title="站点总字数">82k</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    <span title="站点阅读时长">1:15</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
+  </div>
+
+  <div>
+  <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  本站总访问量 <span id="busuanzi_value_site_pv"></span> 次&nbsp&nbsp&nbsp
+  本站访客数<span id="busuanzi_value_site_uv"></span>人次
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  
+  <script color='0,0,255' opacity='0.5' zIndex='-1' count='99' src="/lib/canvas-nest/canvas-nest.min.js"></script>
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+
+<script>
+NexT.utils.loadComments(document.querySelector('#valine-comments'), () => {
+  NexT.utils.getScript('//unpkg.com/valine/dist/Valine.min.js', () => {
+    var GUEST = ['nick', 'mail', 'link'];
+    var guest = 'nick,mail,link';
+    guest = guest.split(',').filter(item => {
+      return GUEST.includes(item);
+    });
+    new Valine({
+      el         : '#valine-comments',
+      verify     : false,
+      notify     : false,
+      appId      : 'y4GHkTMDe6wgDNM2HBBmdCiE-gzGzoHsz',
+      appKey     : 'xCP8RGkrjsLOs5VQOifjzVnA',
+      placeholder: "Just go go",
+      avatar     : 'mm',
+      meta       : guest,
+      pageSize   : '10' || 10,
+      visitor    : false,
+      lang       : '' || 'zh-cn',
+      path       : location.pathname,
+      recordIP   : false,
+      serverURLs : ''
+    });
+  }, window.Valine);
+});
+</script>
+<div class="moon-menu">
+  <div class="moon-menu-items">
+    
+    <div class="moon-menu-item" onclick="back2bottom()">
+      <i class='fa fa-chevron-down'></i>    </div>
+    
+    <div class="moon-menu-item" onclick="back2top()">
+      <i class='fa fa-chevron-up'></i>    </div>
+    
+  </div>
+  <div class="moon-menu-button">
+    <svg class="moon-menu-bg">
+      <circle class="moon-menu-cricle" cx="50%" cy="50%" r="44%"></circle>
+      <circle class="moon-menu-border" cx="50%" cy="50%" r="48%"></circle>
+    </svg>
+    <div class="moon-menu-content">
+      <div class="moon-menu-icon"><i class='fas fa-ellipsis-v'></i></div>
+      <div class="moon-menu-text"></div>
+    </div>
+  </div>
+</div><script src="/js/injector.js"></script>
+  
+  
+    <script src="/js/cursor/love.min.js"></script>
+  
+
+</body>
+</html>
