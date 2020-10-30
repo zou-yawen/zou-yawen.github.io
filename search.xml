@@ -220,6 +220,8 @@
     <title>去除宿主菌序列</title>
     <url>/2020/10/23/%E5%8E%BB%E9%99%A4%E5%AE%BF%E4%B8%BB%E8%8F%8C%E5%BA%8F%E5%88%97/</url>
     <content><![CDATA[<p>噬菌体（phage）是侵袭细菌的病毒，也是赋予宿主菌生物学性状的遗传物质。噬菌体必须在活菌内寄生，有严格的宿主特异性，其取决于噬菌体吸附器官和受体菌表面受体的分子结构和互补性。噬菌体测序过程中会有宿主菌污染，因此组装前需要去除宿主菌序列。</p>
+<a id="more"></a>
+
 <h1 id="一-bowtie2"><a href="#一-bowtie2" class="headerlink" title="一.bowtie2"></a>一.bowtie2</h1><p>文件夹内容如下所示：</p>
 <figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">├── index</span><br><span class="line">├── SG15.fasta</span><br><span class="line">├── SMP1_R1.clean.fq.gz</span><br><span class="line">└── SMP1_R2.clean.fq.gz</span><br><span class="line"></span><br><span class="line">0 directories, 3 files</span><br></pre></td></tr></table></figure>
 
