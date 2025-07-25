@@ -4,33 +4,8 @@ title: "Publications"
 permalink: /publications/
 author_profile: true
 ---
-
-{% if site.author.googlescholar %}
-  <div class="wordwrap">You can also find my articles on <a href="{{site.author.googlescholar}}">my Google Scholar profile</a>.</div>
-{% endif %}
-
-{% include base_path %}
-
-<!-- New style rendering if publication categories are defined -->
-{% if site.publication_category %}
-  {% for category in site.publication_category  %}
-    {% assign title_shown = false %}
-    {% for post in site.publications reversed %}
-      {% if post.category != category[0] %}
-        {% continue %}
-      {% endif %}
-      {% unless title_shown %}
-        <h2>{{ category[1].title }}</h2><hr />
-        {% assign title_shown = true %}
-      {% endunless %}
-      {% include archive-single.html %}
-    {% endfor %}
-  {% endfor %}
-{% else %}
-  {% for post in site.publications reversed %}
-    {% include archive-single.html %}
-  {% endfor %}
-{% endif %}
-
-
+### Journal:
+[3]  Shuo Xu, **Yawen Zou**, Liyun Ji, Muhammad Bilal, and Hairong Cheng. "Synthesis of Trehalose by the Erythritol-Producing Yeast Yarrowia lipolytica Co-Displaying Maltooligosyltrehalose Synthase and Maltooligosyltrehalose Trehalohydrolase." ACS Sustainable Chemistry & Engineering 12, no. 10 (2024): 4041-4050. [pdf] 
+[2]  Xiangyu Yang, Xuankai Wang, **Yawen Zou**, Shilong Zhang, Manying Xia, Lianting Fu, Mitchell R. Vollger et al. "Characterization of large-scale genomic differences in the first complete human genome." Genome biology 24, no. 1 (2023): 157. [pdf] 
+[1]  Nan Wang, Ping Chi, **Yawen Zou**, Yirong Xu, Shuo Xu, Muhammad Bilal, Patrick Fickers, and Hairong Cheng. "Metabolic engineering of Yarrowia lipolytica for thermoresistance and enhanced erythritol productivity." Biotechnology for biofuels 13 (2020): 1-20. [pdf] 
 
