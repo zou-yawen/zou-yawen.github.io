@@ -27,5 +27,6 @@ Research interest
 
 News
 ======
-**2025/07/24** – Our paper has been selected as **ICCV 2025 Highlight** (<3.0%)! \[**Project**\](https://zou-yawen.github.io/DD_via_vision-language/)
+**2025/07/24** – Our paper has been selected as **ICCV 2025 Highlight** (<3.0%)! <span>[</span><a href="https://zou-yawen.github.io/DD_via_vision-language/"><strong>Project</strong></a><span>]</span>
+
 
