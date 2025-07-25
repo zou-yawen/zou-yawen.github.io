@@ -11,11 +11,11 @@ redirect_from:
 
 About me
 ======
-I am a first-year Ph.D. student at the University of Toyama, Japan, specializing in computer vision and machine learning. My current work explores dataset distillation and diffusion models.
+I am a first-year Ph.D. student at the University of Toyama, Japan, specializing in computer vision and deep learning. My research focuses on dataset distillation and diffusion models for controllable and efficient image generation.
 
-I hold a Master’s degree in Bioengineering, with experience in molecular biology (e.g., PCR, ELISA, plasmid construction) and bioinformatics (e.g., transcriptomics, genomics, tumor sequencing). I am passionate about bridging disciplines—bringing insights from AI applications into life sciences—and have actively engaged in interdisciplinary collaborations, including joint research with the College of Food Science at Zhejiang Gongshang University. 
+I hold a Master’s degree in Bioengineering, with hands-on experience in molecular biology (e.g., PCR, ELISA, plasmid construction) and bioinformatics (e.g., transcriptomics, genomics, tumor sequencing). I am particularly interested in bridging AI and life sciences, and have been involved in interdisciplinary collaborations, including joint research with the College of Food Science at Zhejiang Gongshang University.
 
-My recent work centers on advancing dataset distillation techniques and integrating them with generative models. I am passionate about bridging the gap between data efficiency and generation quality, aiming to develop scalable and practical solutions for real-world computer vision applications.
+My recent work aims to enhance dataset distillation methods and integrate them with generative models, with the goal of improving data efficiency and generation quality for practical computer vision applications.
 
 Research interest
 ======
