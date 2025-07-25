@@ -19,10 +19,12 @@ My recent work centers on advancing dataset distillation techniques and integrat
 Research interest
 ======
 1.Dataset Distillation
+
 2.Unsupervised Domain Adaptation
+
 3.Interdisciplinary Collaboration
 
 News
 ======
-**2025/07/24** – Our paper has been selected as [ICCV 2025 Highlight](https://openaccess.thecvf.com/ICCV2025)! (<3.0%) [**Paper**](https://zou-yawen.github.io/DD_via_vision-language/)
+**2025/07/24** – Our paper has been selected as **ICCV 2025 Highlight**! (<3.0%) [**Project**](https://zou-yawen.github.io/DD_via_vision-language/)
 
