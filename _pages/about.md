@@ -7,10 +7,9 @@ redirect_from:
   - /about.html
 ---
 
+<img src="/images/welcome.png" alt="My photo"">
 
 About me
-
-<img src="/images/welcome.png" alt="My photo" width="200" style="border-radius: 50%; margin-bottom: 20px;">
 ======
 I am a first-year Ph.D. student at the University of Toyama, Japan, specializing in computer vision and machine learning. My current work explores dataset distillation and diffusion models.
 
