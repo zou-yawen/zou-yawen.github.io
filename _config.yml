@@ -22,7 +22,7 @@ repository               : "zou-yawen.github.io"
 #               Additional customization can be done by editing /_includes/author-profile.html
 author:
   # Biographic information
-  avatar           : "media.png"
+  avatar           : "profile.png"
   name             : "Yawen Zou"
   pronouns         : # example: "she/her"  
   bio              : 'PhD student, <a href="https://www.labzhang.com/" target="_blank">KiZuLab</a> at University of Toyama'
