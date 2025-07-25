@@ -11,54 +11,36 @@ redirect_from:
 
 Education
 ======
-* Ph.D in Version Control Theory, GitHub University, 2018 (expected)
-* M.S. in Jekyll, GitHub University, 2014
-* B.S. in GitHub, GitHub University, 2012
+* Ph.D in Data Science, University of Toyama, Japan, 2024-Present
+* M.S. in Bioengineering, Shanghai Jiao Tong University, China, 2017-2021
+* B.S. Food Science and Engineering, Nanchang University, China, 2011-2015
 
 Work experience
 ======
-* Spring 2024: Academic Pages Collaborator
-  * GitHub University
-  * Duties includes: Updates and improvements to template
-  * Supervisor: The Users
+* Bioinformatics Engineer
+* Zhejiang Dian Diagnostics Co., Ltd. — April 2021 to June 2022
+  * Conducted genetic mutation analysis for cancer patients.
+  * Assisted physicians in personalized medication recommendations based on genomic data.
+* Research Assistant
+* Shanghai Jiao Tong University — July 2022 to November 2022
+  * Developed and implemented human genome analysis pipelines.
+  * Supported bioinformatics research related to large-scale genomic data processing.
 
-* Fall 2015: Research Assistant
-  * GitHub University
-  * Duties included: Merging pull requests
-  * Supervisor: Professor Hub
-
-* Summer 2015: Research Assistant
-  * GitHub University
-  * Duties included: Tagging issues
-  * Supervisor: Professor Git
   
 Skills
 ======
-* Skill 1
-* Skill 2
-  * Sub-skill 2.1
-  * Sub-skill 2.2
-  * Sub-skill 2.3
-* Skill 3
+* **Computer Science**
+  * Python
+  * HTML/CSS
 
-Publications
-======
-  <ul>{% for post in site.publications reversed %}
-    {% include archive-single-cv.html %}
-  {% endfor %}</ul>
-  
-Talks
-======
-  <ul>{% for post in site.talks reversed %}
-    {% include archive-single-talk-cv.html  %}
-  {% endfor %}</ul>
-  
-Teaching
-======
-  <ul>{% for post in site.teaching reversed %}
-    {% include archive-single-cv.html %}
-  {% endfor %}</ul>
-  
-Service and leadership
-======
-* Currently signed in to 43 different slack teams
+* **Molecular Biology**
+  * PCR
+  * Plasmid Construction
+  * ELISA
+  * Gene Overexpression & Knockout
+
+* **Bioinformatics**
+  * Transcriptomics
+  * Genomics
+  * Tumor-Targeted Sequencing
+
