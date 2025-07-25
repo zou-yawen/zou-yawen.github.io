@@ -7,7 +7,7 @@ redirect_from:
   - /about.html
 ---
 
-<img src="/images/welcome.png" alt="My photo"">
+<img src="/images/welcome.png" alt="My photo">
 
 About me
 ======
