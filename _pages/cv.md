@@ -44,3 +44,7 @@ Skills
   * Genomics
   * Tumor-Targeted Sequencing
 
+
+外部資金獲得
+======
+**2025/08/19** – We have received support from the **Telecommunication Advancement Foundation Overseas Travel Grant (電気通信普及財団　海外渡航旅費援助)**!
