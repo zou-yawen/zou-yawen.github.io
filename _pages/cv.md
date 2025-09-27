@@ -1,17 +1,17 @@
 ---
 layout: archive
-layout: archive
 title: "CV"
 permalink: /cv/
 author_profile: true
 redirect_from:
   - /resume
+---
 {% include base_path %}
 <div style="display:flex; align-items:center; gap:12px; flex-wrap:wrap; margin: .5rem 0 1rem;">
   <h1 id="cv" style="margin:0;">CV</h1>
   <a href="https://drive.google.com/uc?export=download&id=1as5AO5GEH1S7_9tdqBMTG03xCRtZCYcF"
      class="btn btn--primary" target="_blank" rel="noopener">
-    Download CV (PDF)
+    Download CV
   </a>
 </div>
 Education
