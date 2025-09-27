@@ -1,12 +1,5 @@
 ---
 layout: archive
-title: "CV"
-permalink: /cv/
-author_profile: true
-redirect_from:
-  - /resume
----
-
 {% include base_path %}
 <div style="display:flex; align-items:center; gap:12px; flex-wrap:wrap; margin: .5rem 0 1rem;">
   <h1 id="cv" style="margin:0;">CV</h1>
