@@ -7,12 +7,13 @@ redirect_from:
 ---
 {% include base_path %}
 <div style="display:flex; align-items:center; gap:12px; flex-wrap:wrap; margin: .5rem 0 1rem;">
-  <span>CV</span>
+  <h1 style="margin:0;">CV</h1>
   <a href="https://drive.google.com/uc?export=download&id=1as5AO5GEH1S7_9tdqBMTG03xCRtZCYcF"
      class="btn btn--primary" target="_blank" rel="noopener">
     [Download]
   </a>
 </div>
+
 Education
 ======
 * Ph.D in Data Science, University of Toyama, Japan, 2024-Present
