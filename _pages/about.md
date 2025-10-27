@@ -28,6 +28,7 @@ Research interest
 News
 ======
 **2025/10/28** – 1 paper accepted to Journal of Visual Communication and Image Representation (IF=3.1).[<a href="https://arxiv.org/pdf/2405.16437" target="_blank">arXiv</a>]
+
 **2025/08/19** – We have received support from the **Telecommunication Advancement Foundation Overseas Travel Grant (電気通信普及財団　海外渡航旅費援助)**! <span>[</span><a href="https://taf.yoshida-p.net/"><strong>Link</strong></a><span>]</span>
 
 **2025/07/24** – Our paper has been selected as **ICCV 2025 Highlight** (<3.0%)! <span>[</span><a href="https://zou-yawen.github.io/DD_via_vision-language/"><strong>Project</strong></a><span>]</span>
