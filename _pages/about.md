@@ -27,7 +27,8 @@ Research interest
 
 News
 ======
-**2025/10/28** – 1 paper accepted to Journal of Visual Communication and Image Representation (IF=3.1).[<a href="https://arxiv.org/pdf/2405.16437" target="_blank">arXiv</a>]
+**2026/02/18**  One paper accepted to IEICE Transactions on Information and Systems. [<a href="https://arxiv.org/abs/2507.13074" target="_blank">arXiv</a>]
+**2025/10/28** – One paper accepted to Journal of Visual Communication and Image Representation (IF=3.1).[<a href="https://arxiv.org/pdf/2405.16437" target="_blank">arXiv</a>]
 
 **2025/08/19** – We have received support from the **Telecommunication Advancement Foundation Overseas Travel Grant (電気通信普及財団　海外渡航旅費援助)**! <span>[</span><a href="https://taf.yoshida-p.net/"><strong>Link</strong></a><span>]</span>
 
