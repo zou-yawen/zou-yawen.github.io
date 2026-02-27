@@ -27,6 +27,8 @@ Research interest
 
 News
 ======
+**2026/02/21** – One paper accepted to CVPR2026.
+
 **2026/02/18** – One paper accepted to IEICE Transactions on Information and Systems. [<a href="https://arxiv.org/abs/2507.13074" target="_blank">arXiv</a>]
 
 **2026/02/12** – One paper accepted to IEICE Transactions on Information and Systems. [<a href="https://github.com/bigbearbear520/3DKeyAD" target="_blank">Code</a>]
