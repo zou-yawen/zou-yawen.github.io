@@ -27,9 +27,7 @@ Research interest
 
 News
 ======
-**2026/02/21** – One paper accepted to <a href="https://www.art-science.org/nicograph/nicoint2026/index.html" target="_blank" 
-style="text-decoration: none !important; border: none !important; border-bottom: none !important; box-shadow: none !important; outline: none !important;">
-NICOGRAPH International 2026</a>.
+**2026/02/21** – One paper accepted to NICOGRAPH International 2026.
 
 **2026/02/21** – One paper accepted to CVPR2026.
 
