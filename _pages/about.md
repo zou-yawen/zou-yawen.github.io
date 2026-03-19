@@ -27,6 +27,8 @@ Research interest
 
 News
 ======
+**2026/02/21** – One paper accepted to  [<a href="https://www.art-science.org/nicograph/nicoint2026/index.html" target="_blank">NICOGRAPH International 2026</a>].
+
 **2026/02/21** – One paper accepted to CVPR2026.
 
 **2026/02/18** – One paper accepted to IEICE Transactions on Information and Systems. [<a href="https://arxiv.org/abs/2507.13074" target="_blank">arXiv</a>]
