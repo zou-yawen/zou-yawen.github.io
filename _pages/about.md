@@ -27,6 +27,8 @@ Research interest
 
 News
 ======
+**2026/04/02** – One paper accepted to IEEJ Transactions on Electrical and Electronic Engineering.
+
 **2026/02/21** – One paper accepted to NICOGRAPH International 2026.
 
 **2026/02/21** – One paper accepted to CVPR2026.
