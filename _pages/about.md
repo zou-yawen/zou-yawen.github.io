@@ -27,6 +27,8 @@ Research interest
 
 News
 ======
+**2026/05/31** – One paper accepted to 19th International Conference on Machine Vision (ICMV)
+
 **2026/04/30** – One paper accepted to IEICE Transactions on Information and Systems. [<a href="https://arxiv.org/pdf/2602.10806" target="_blank">arXiv</a>]
 
 **2026/04/02** – One paper accepted to IEEJ Transactions on Electrical and Electronic Engineering.
