@@ -27,6 +27,8 @@ Research interest
 
 News
 ======
+**2026/06/20** – One paper accepted to the European Conference on Computer Vision (ECCV2026).
+
 **2026/05/31** – One paper accepted to 19th International Conference on Machine Vision (ICMV)
 
 **2026/04/30** – One paper accepted to IEICE Transactions on Information and Systems. [<a href="https://arxiv.org/pdf/2602.10806" target="_blank">arXiv</a>]
@@ -35,7 +37,7 @@ News
 
 **2026/02/21** – One paper accepted to NICOGRAPH International 2026.
 
-**2026/02/21** – One paper accepted to CVPR2026.
+**2026/02/21** – One paper accepted to CVPR2026.[<a href="https://wenqi-cai297.github.io/earlyfusion-HP/">Project</a>]
 
 **2026/02/18** – One paper accepted to IEICE Transactions on Information and Systems. [<a href="https://arxiv.org/abs/2507.13074" target="_blank">arXiv</a>]
 
